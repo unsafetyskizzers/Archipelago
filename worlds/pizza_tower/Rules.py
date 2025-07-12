@@ -309,7 +309,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Chef Task: Good Egg": "SLAM+UPPER+GRAB | SLAM+SJUMP | SLAM+CLIMB",
         "Chef Task: No One Is Safe": "SLAM+STAUNT+SJUMP | SLAM+STAUNT+CLIMB",
         "Chef Task: Cube Menace": "SLAM+UPPER | SLAM+SJUMP | SLAM+CLIMB",
-        "Fun Farm S Rank": "SLAM+UPPER+GRAB | SLAM+SJUMP | SLAM+CLIMB",
+        "Fun Farm S Rank": "LAP2+SLAM+GRAB+CLIMB | LAP2+SLAM+SJUMP",
 
     #Fastfood Saloon
         "Fastfood Saloon Complete": "GRAB+SJUMP | GRAB+CLIMB",
@@ -699,7 +699,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Chef Task: Good Egg": "SLAM+SJUMP | SLAM+CLIMB",
         "Chef Task: No One Is Safe": "SLAM+SJUMP+STAUNT | SLAM+CLIMB+STAUNT",
         "Chef Task: Cube Menace": "SLAM+SJUMP | SLAM+CLIMB | SLAM+UPPER",
-        "Fun Farm S Rank": "SLAM+SJUMP | SLAM+CLIMB",
+        "Fun Farm S Rank": "SLAM+SJUMP",
 
     #Fastfood Saloon
         "Fastfood Saloon Complete": "SJUMP+GRAB+CLIMB",
@@ -803,7 +803,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Peppibot Factory Cheese Toppin": "SJUMP+CLIMB | SJUMP+UPPER",
         "Peppibot Factory Tomato Toppin": "SJUMP+CLIMB | SJUMP+UPPER",
         "Peppibot Factory Sausage Toppin": "SJUMP+CLIMB | SJUMP+UPPER",
-        "Peppibot Factory Pineapple Toppin": "SJUMP+CLIMB+SLAM | SJUMP+UPPER+SLAM",
+        "Peppibot Factory Pineapple Toppin": "SJUMP+CLIMB | SJUMP+UPPER",
         "Peppibot Factory Secret 1": "SJUMP",
         "Peppibot Factory Secret 2": "SJUMP+UPPER",
         "Peppibot Factory Secret 3": "SJUMP+CLIMB+SLAM | SJUMP+UPPER+SLAM",
