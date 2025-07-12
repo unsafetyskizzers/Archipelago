@@ -562,7 +562,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Oregano Desert Pumpkin": "UPPER+GRAB | SJUMP+GRAB | CLIMB",
         "Wasteyard Pumpkin": "SJUMP | CLIMB | UPPER",
         "Fun Farm Pumpkin": "SLAM+UPPER+GRAB | SLAM+SJUMP | SLAM+CLIMB",
-        "Fastfood Saloon Pumpkin": "SLAM+UPPER+CLIMB | SLAM+SJUMP+UPPER",
+        "Fastfood Saloon Pumpkin": "GRAB+SJUMP | GRAB+CLIMB",
         "Crust Cove Pumpkin": "CLIMB+SLAM+SJUMP",
         "Gnome Forest Pumpkin": "SLAM+DJUMP",
         "Deep-Dish 9 Pumpkin": "SLAM+SJUMP | SLAM+CLIMB",
