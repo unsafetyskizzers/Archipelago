@@ -880,7 +880,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
     #WAR
         "WAR Complete": "GRAB+SJUMP+SLAM",
         "WAR Mushroom Toppin": "GRAB+SJUMP | GRAB+CLIMB",
-        "WAR Cheese Toppin": "GRAB+SJUMP+SLAM | GRAB+CLIMB+SLAM",
+        "WAR Cheese Toppin": "GRAB+SJUMP | GRAB+CLIMB",
         "WAR Tomato Toppin": "GRAB+SJUMP+SLAM | GRAB+CLIMB+SLAM",
         "WAR Sausage Toppin": "GRAB+SJUMP+SLAM | GRAB+CLIMB+SLAM",
         "WAR Pineapple Toppin": "GRAB+SJUMP+SLAM",
