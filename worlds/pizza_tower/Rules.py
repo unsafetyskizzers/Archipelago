@@ -602,7 +602,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "John Gutter Treasure": "SJUMP",
         "Chef Task: John Gutted": "SJUMP",
         "Chef Task: Primate Rage": "LAP2+SJUMP",
-        "Chef Task: Let's Make This Quick": "SJUMP+MACH4", 
+        "Chef Task: Let's Make This Quick": "CLIMB+SJUMP+MACH4", 
         "John Gutter S Rank": "SJUMP+SLAM",
 
     #Pizzascape
@@ -638,7 +638,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Ancient Cheese S Rank": "GRAB+SJUMP+SLAM | GRAB+CLIMB+SLAM",
 
     #Bloodsauce Dungeon
-        "Bloodsauce Dungeon Complete": "SJUMP+SLAM | CLIMB+SLAM",
+        "Bloodsauce Dungeon Complete": "CLIMB+SLAM",
         "Bloodsauce Dungeon Mushroom Toppin": "SJUMP | CLIMB",
         "Bloodsauce Dungeon Cheese Toppin": "NONE",
         "Bloodsauce Dungeon Tomato Toppin": "SLAM",
@@ -649,9 +649,9 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Bloodsauce Dungeon Secret 3": "SJUMP+SLAM | CLIMB+SLAM",
         "Bloodsauce Dungeon Treasure": "SJUMP+SLAM | CLIMB+SLAM",
         "Chef Task: Eruption Man": "SJUMP+SLAM",
-        "Chef Task: Very Very Hot Sauce": "SJUMP+SLAM | CLIMB+SLAM",
-        "Chef Task: Unsliced Pizzaman": "SJUMP+SLAM | CLIMB+SLAM",
-        "Bloodsauce Dungeon S Rank": "SJUMP+SLAM | CLIMB+SLAM",
+        "Chef Task: Very Very Hot Sauce": "CLIMB+SLAM",
+        "Chef Task: Unsliced Pizzaman": "CLIMB+SLAM",
+        "Bloodsauce Dungeon S Rank": "CLIMB+SLAM",
 
     #Oregano Desert
         "Oregano Desert Complete": "CLIMB",
@@ -686,20 +686,20 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Wasteyard S Rank": "SJUMP | CLIMB",
 
     #Fun Farm
-        "Fun Farm Complete": "SLAM+SJUMP | SLAM+CLIMB",
+        "Fun Farm Complete": "SLAM+CLIMB",
         "Fun Farm Mushroom Toppin": "SLAM+SJUMP | SLAM+CLIMB | SLAM+UPPER",
         "Fun Farm Cheese Toppin": "SLAM+SJUMP | SLAM+CLIMB | SLAM+UPPER",
-        "Fun Farm Tomato Toppin": "SLAM+SJUMP | SLAM+CLIMB",
-        "Fun Farm Sausage Toppin": "SLAM+SJUMP | SLAM+CLIMB",
-        "Fun Farm Pineapple Toppin": "SLAM+SJUMP | SLAM+CLIMB",
+        "Fun Farm Tomato Toppin": "SLAM+CLIMB",
+        "Fun Farm Sausage Toppin": "SLAM+CLIMB",
+        "Fun Farm Pineapple Toppin": "SLAM+CLIMB",
         "Fun Farm Secret 1": "SLAM+SJUMP | SLAM+CLIMB | SLAM+UPPER",
-        "Fun Farm Secret 2": "SLAM+SJUMP | SLAM+CLIMB",
-        "Fun Farm Secret 3": "SLAM+SJUMP | SLAM+CLIMB",
-        "Fun Farm Treasure": "SLAM+SJUMP | SLAM+CLIMB",
-        "Chef Task: Good Egg": "SLAM+SJUMP | SLAM+CLIMB",
-        "Chef Task: No One Is Safe": "SLAM+SJUMP+STAUNT | SLAM+CLIMB+STAUNT",
+        "Fun Farm Secret 2": "SLAM+CLIMB",
+        "Fun Farm Secret 3": "SLAM+CLIMB",
+        "Fun Farm Treasure": "SLAM+CLIMB",
+        "Chef Task: Good Egg": "SLAM+CLIMB",
+        "Chef Task: No One Is Safe": "SLAM+CLIMB+STAUNT",
         "Chef Task: Cube Menace": "SLAM+SJUMP | SLAM+CLIMB | SLAM+UPPER",
-        "Fun Farm S Rank": "SLAM+SJUMP",
+        "Fun Farm S Rank": "SLAM+CLIMB+SJUMP",
 
     #Fastfood Saloon
         "Fastfood Saloon Complete": "SJUMP+GRAB+CLIMB",
@@ -795,7 +795,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Chef Task: Say Oink!": "SLAM+DJUMP+TAUNT",
         "Chef Task: Pan Fried": "SLAM+DJUMP",
         "Chef Task: Strike!": "SLAM+DJUMP+KICK",
-        "The Pig City S Rank": "SJUMP+SLAM+DJUMP | CLIMB+SLAM+DJUMP | UPPER+SLAM+DJUMP",
+        "The Pig City S Rank": "SJUMP+SLAM+DJUMP | CLIMB+SLAM+DJUMP",
 
     #Peppibot Factory
         "Peppibot Factory Complete": "SJUMP+CLIMB+SLAM | SJUMP+UPPER+SLAM",
@@ -927,13 +927,13 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Chef Task: Face Off": "GRAB",
 
     #Tutorial
-        "Tutorial Complete": "SLAM+SJUMP+GRAB",
+        "Tutorial Complete": "SLAM+CLIMB+SJUMP+GRAB",
         "Tutorial Complete in under 2 minutes": "SLAM+CLIMB+SJUMP+GRAB",
         "Tutorial Mushroom Toppin": "SLAM",
         "Tutorial Cheese Toppin": "SLAM+CLIMB",
         "Tutorial Tomato Toppin": "SLAM+CLIMB",
         "Tutorial Sausage Toppin": "SLAM+CLIMB+SJUMP",
-        "Tutorial Pineapple Toppin": "SLAM+SJUMP+GRAB",
+        "Tutorial Pineapple Toppin": "SLAM+CLIMB+SJUMP+GRAB",
 
     #misc
         "Snotty Murdered": "NONE",
@@ -951,7 +951,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Bloodsauce Dungeon Pumpkin": "SLAM",
         "Oregano Desert Pumpkin": "CLIMB",
         "Wasteyard Pumpkin": "SJUMP | CLIMB",
-        "Fun Farm Pumpkin": "SLAM+SJUMP | SLAM+CLIMB",
+        "Fun Farm Pumpkin": "SLAM+CLIMB",
         "Fastfood Saloon Pumpkin": "SJUMP+GRAB+CLIMB",
         "Crust Cove Pumpkin": "CLIMB+SLAM+SJUMP",
         "Gnome Forest Pumpkin": "SLAM+DJUMP+SPIN | SLAM+DJUMP+KICK",
