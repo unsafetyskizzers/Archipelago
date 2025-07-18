@@ -57,11 +57,8 @@ rule_moves = {
 
 #these levels don't require a second lap on expert difficulty
 lap1_levels = [
-    "Fastfood Saloon",
     "Gnome Forest",
-    "Peppibot Factory",
-    "Freezerator",
-    "Pizzascare"
+    "Freezerator"
 ]
 
 def level_gate_rando(world: World, is_noise: bool, logic_type: int) -> list[str]:
