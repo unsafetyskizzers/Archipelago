@@ -158,6 +158,2046 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
     if options.character != 0:
         bosses_list[2] = "The Doise"
 
+
+
+    rules_dict = { #tuples in this format: (pep easy, pep hard, noise easy, noise hard)
+        #John Gutter
+        "John Gutter Complete": (
+            "SJUMP", 
+            "SJUMP | CLIMB", 
+            "SJUMP", 
+            "SJUMP | UPPER | CRUSH | BOUNCE"
+        ),
+        "John Gutter Mushroom Toppin": (
+            "SJUMP | CLIMB | UPPER", 
+            "SJUMP | CLIMB | UPPER | GRAB | SLAM", 
+            "SJUMP | BOUNCE | CRUSH | UPPER", 
+            "SJUMP | UPPER | CRUSH | BOUNCE | GRAB | SLAM"
+        ),
+        "John Gutter Cheese Toppin": (
+            "SJUMP | CLIMB | UPPER", 
+            "SJUMP | CLIMB | UPPER | GRAB | SLAM", 
+            "SJUMP | BOUNCE | CRUSH | UPPER", 
+            "SJUMP | UPPER | CRUSH | BOUNCE | GRAB | SLAM"
+        ),
+        "John Gutter Tomato Toppin": (
+            "SJUMP | CLIMB | UPPER", 
+            "SJUMP | CLIMB | UPPER | GRAB | SLAM", 
+            "SJUMP | BOUNCE | CRUSH | UPPER", 
+            "SJUMP | UPPER | CRUSH | BOUNCE | GRAB | SLAM"
+        ),
+        "John Gutter Sausage Toppin": (
+            "SJUMP", 
+            "SJUMP | CLIMB", 
+            "SJUMP", 
+            "SJUMP | UPPER | CRUSH | BOUNCE"
+        ),
+        "John Gutter Pineapple Toppin": (
+            "SJUMP", 
+            "SJUMP | CLIMB", 
+            "SJUMP", 
+            "SJUMP | UPPER | CRUSH | BOUNCE"
+        ),
+        "John Gutter Secret 1": (
+            "SJUMP | CLIMB | UPPER", 
+            "SJUMP | CLIMB | UPPER | GRAB | SLAM", 
+            "SJUMP | BOUNCE | CRUSH | UPPER", 
+            "SJUMP | UPPER | CRUSH | BOUNCE | GRAB | SLAM"
+        ),
+        "John Gutter Secret 2": (
+            "SJUMP+SLAM", 
+            "SJUMP | CLIMB", 
+            "SJUMP+SLAM | SJUMP+CRUSH | SJUMP+TORN", 
+            "SJUMP | UPPER | CRUSH | BOUNCE"
+        ),
+        "John Gutter Secret 3": (
+            "SJUMP", 
+            "SJUMP | CLIMB", 
+            "SJUMP", 
+            "SJUMP | UPPER | CRUSH | BOUNCE"
+        ),
+        "John Gutter Treasure": (
+            "SJUMP", 
+            "SJUMP | CLIMB", 
+            "SJUMP", 
+            "SJUMP | UPPER | CRUSH | BOUNCE"
+        ),
+        "Chef Task: John Gutted": (
+			"SJUMP", 
+			"SJUMP | CLIMB", 
+			"SJUMP", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Chef Task: Primate Rage": (
+			"LAP2+SJUMP", 
+			"LAP2+SJUMP | LAP2+CLIMB", 
+			"LAP2+SJUMP", 
+			"LAP2+SJUMP | LAP2+UPPER | LAP2+CRUSH | LAP2+BOUNCE"
+		),
+        "Chef Task: Let's Make This Quick": (
+			"CLIMB+SJUMP+MACH4", 
+			"SJUMP | CLIMB", 
+			"SJUMP+MACH4", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "John Gutter S Rank": (
+			"SJUMP+SLAM", 
+			"SJUMP | CLIMB", 
+			"SJUMP+SLAM | SJUMP+CRUSH | SJUMP+TORN", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+
+    #Pizzascape
+        "Pizzascape Complete": (
+			"GRAB+CLIMB", 
+			"UPPER+SJUMP | UPPER+CLIMB | GRAB+SJUMP | GRAB+CLIMB", 
+			"GRAB+UPPER | GRAB+SJUMP | GRAB+BOUNCE | GRAB+CRUSH", 
+			"GRAB+SJUMP | UPPER | GRAB+BOUNCE | GRAB+CRUSH"
+		),
+        "Pizzascape Mushroom Toppin": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Pizzascape Cheese Toppin": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Pizzascape Tomato Toppin": (
+			"GRAB", 
+			"UPPER | GRAB", 
+			"GRAB", 
+			"GRAB | UPPER"
+		),
+        "Pizzascape Sausage Toppin": (
+			"GRAB", 
+			"UPPER | GRAB", 
+			"GRAB", 
+			"GRAB | UPPER"
+		),
+        "Pizzascape Pineapple Toppin": (
+			"GRAB","UPPER | GRAB", 
+			"GRAB", 
+			"GRAB | UPPER"
+		),
+        "Pizzascape Secret 1": (
+			"GRAB", 
+			"UPPER | GRAB", 
+			"GRAB", 
+			"GRAB | UPPER"
+		),
+        "Pizzascape Secret 2": (
+			"GRAB", 
+			"UPPER | GRAB", 
+			"GRAB", 
+			"GRAB | UPPER"
+		),
+        "Pizzascape Secret 3": (
+			"GRAB+SJUMP", 
+			"UPPER+SJUMP | UPPER+CLIMB | GRAB+SJUMP | GRAB+CLIMB", 
+			"GRAB+SJUMP", 
+			"GRAB+SJUMP | UPPER | GRAB+BOUNCE | GRAB+CRUSH"
+		),
+        "Pizzascape Treasure": (
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"UPPER+SJUMP | UPPER+CLIMB | GRAB+SJUMP | GRAB+CLIMB", 
+			"GRAB+SJUMP", 
+			"GRAB+SJUMP | UPPER | GRAB+BOUNCE | GRAB+CRUSH"
+		),
+        "Chef Task: Shining Armor": (
+			"GRAB", 
+			"UPPER | GRAB", 
+			"GRAB+UPPER | GRAB+SJUMP | GRAB+BOUNCE | GRAB+CRUSH", 
+			"GRAB | UPPER"
+		),
+        "Chef Task: Spoonknight": (
+			"TAUNT", 
+			"TAUNT", 
+			"TAUNT", 
+			"TAUNT"
+		),
+        "Chef Task: Spherical": (
+			"GRAB", 
+			"UPPER | GRAB", 
+			"GRAB", 
+			"GRAB | UPPER"
+		),
+        "Pizzascape S Rank": (
+			"GRAB+CLIMB", 
+			"UPPER+SJUMP | UPPER+CLIMB | GRAB+SJUMP | GRAB+CLIMB", 
+			"GRAB+SJUMP", 
+			"GRAB+SJUMP | UPPER | GRAB+BOUNCE | GRAB+CRUSH"
+		),
+
+    #Ancient Cheese
+        "Ancient Cheese Complete": (
+			"GRAB+SJUMP+SLAM | GRAB+CLIMB+SLAM", 
+			"UPPER+CLIMB+SLAM | UPPER+SJUMP+SLAM | GRAB+CLIMB+SLAM | GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | GRAB+SJUMP+CRUSH", 
+			"GRAB+SJUMP+CRUSH | GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | UPPER+SJUMP+SLAM | UPPER+SJUMP+TORN | UPPER+SJUMP+CRUSH | UPPER+BOUNCE+SLAM | UPPER+BOUNCE+TORN | UPPER+BOUNCE+CRUSH"
+		),
+        "Ancient Cheese Mushroom Toppin": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Ancient Cheese Cheese Toppin": (
+			"GRAB", 
+			"UPPER | GRAB", 
+			"GRAB+SJUMP | GRAB+UPPER | GRAB+BOUNCE | GRAB+CRUSH", 
+			"GRAB | UPPER"
+		),
+        "Ancient Cheese Tomato Toppin": (
+			"GRAB+SLAM+CLIMB | GRAB+SLAM+SJUMP", 
+			"UPPER | GRAB+CLIMB | GRAB+SJUMP", 
+			"GRAB+SJUMP+SLAM | GRAB+UPPER+SLAM | GRAB+BOUNCE+SLAM | GRAB+SJUMP+TORN | GRAB+UPPER+TORN | GRAB+BOUNCE+TORN | GRAB+SJUMP+CRUSH | GRAB+UPPER+CRUSH | GRAB+BOUNCE+CRUSH", 
+			"GRAB+BOUNCE | GRAB+SJUMP | UPPER"
+		),
+        "Ancient Cheese Sausage Toppin": (
+			"GRAB+SLAM+CLIMB | GRAB+SLAM+SJUMP", 
+			"UPPER+SLAM | GRAB+CLIMB+SLAM | GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+UPPER+SLAM | GRAB+BOUNCE+SLAM | GRAB+SJUMP+TORN | GRAB+UPPER+TORN | GRAB+BOUNCE+TORN | GRAB+SJUMP+CRUSH | GRAB+UPPER+CRUSH | GRAB+BOUNCE+CRUSH", 
+			"GRAB+BOUNCE+SLAM | GRAB+BOUNCE+TORN | GRAB+BOUNCE+CRUSH | GRAB+SJUMP+CRUSH | GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | UPPER+SLAM | UPPER+TORN | UPPER+CRUSH"
+		),
+        "Ancient Cheese Pineapple Toppin": (
+			"GRAB+SLAM+CLIMB | GRAB+SLAM+SJUMP", 
+			"UPPER+SLAM | GRAB+CLIMB+SLAM | GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+UPPER+SLAM | GRAB+BOUNCE+SLAM | GRAB+SJUMP+TORN | GRAB+UPPER+TORN | GRAB+BOUNCE+TORN | GRAB+SJUMP+CRUSH | GRAB+UPPER+CRUSH | GRAB+BOUNCE+CRUSH", 
+			"GRAB+BOUNCE+SLAM | GRAB+BOUNCE+TORN | GRAB+BOUNCE+CRUSH | GRAB+SJUMP+CRUSH | GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | UPPER+SLAM | UPPER+TORN | UPPER+CRUSH"
+		),
+        "Ancient Cheese Secret 1": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Ancient Cheese Secret 2": (
+			"GRAB+SLAM+CLIMB | GRAB+SLAM+SJUMP", 
+			"UPPER | GRAB+CLIMB | GRAB+SJUMP", 
+			"GRAB+SJUMP+SLAM | GRAB+UPPER+SLAM | GRAB+BOUNCE+SLAM | GRAB+SJUMP+TORN | GRAB+UPPER+TORN | GRAB+BOUNCE+TORN | GRAB+SJUMP+CRUSH | GRAB+UPPER+CRUSH | GRAB+BOUNCE+CRUSH", 
+			"GRAB+BOUNCE | GRAB+SJUMP | UPPER"
+		),
+        "Ancient Cheese Secret 3": (
+			"GRAB+SLAM+CLIMB | GRAB+SLAM+SJUMP", 
+			"UPPER+SLAM | GRAB+CLIMB+SLAM | GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+UPPER+SLAM | GRAB+BOUNCE+SLAM | GRAB+SJUMP+TORN | GRAB+UPPER+TORN | GRAB+BOUNCE+TORN | GRAB+SJUMP+CRUSH | GRAB+UPPER+CRUSH | GRAB+BOUNCE+CRUSH", 
+			"GRAB+BOUNCE+SLAM | GRAB+BOUNCE+TORN | GRAB+BOUNCE+CRUSH | GRAB+SJUMP+CRUSH | GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | UPPER+SLAM | UPPER+TORN | UPPER+CRUSH"
+		),
+        "Ancient Cheese Treasure": (
+			"GRAB+SLAM+CLIMB | GRAB+SLAM+SJUMP", 
+			"UPPER+CLIMB | UPPER+SJUMP | GRAB+CLIMB | GRAB+SJUMP", 
+			"GRAB+SJUMP+SLAM | GRAB+UPPER+SLAM | GRAB+BOUNCE+SLAM | GRAB+SJUMP+TORN | GRAB+UPPER+TORN | GRAB+BOUNCE+TORN | GRAB+SJUMP+CRUSH | GRAB+UPPER+CRUSH | GRAB+BOUNCE+CRUSH", 
+			"GRAB+BOUNCE | GRAB+SJUMP | UPPER"
+		),
+        "Chef Task: Thrill Seeker": (
+			"GRAB+SLAM+CLIMB | GRAB+SLAM+SJUMP", 
+			"UPPER+CLIMB+SLAM | UPPER+SJUMP+SLAM | GRAB+CLIMB+SLAM | GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+UPPER+SLAM | GRAB+BOUNCE+SLAM | GRAB+SJUMP+TORN | GRAB+UPPER+TORN | GRAB+BOUNCE+TORN | GRAB+SJUMP+CRUSH | GRAB+UPPER+CRUSH | GRAB+BOUNCE+CRUSH", 
+			"GRAB+SJUMP+CRUSH | GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | UPPER+SJUMP+SLAM | UPPER+SJUMP+TORN | UPPER+SJUMP+CRUSH | UPPER+BOUNCE+SLAM | UPPER+BOUNCE+TORN | UPPER+BOUNCE+CRUSH"
+		),
+        "Chef Task: Volleybomb": (
+			"GRAB+SLAM+CLIMB | GRAB+SLAM+SJUMP", 
+			"UPPER | GRAB+CLIMB | GRAB+SJUMP", 
+			"GRAB+SJUMP+SLAM | GRAB+UPPER+SLAM | GRAB+BOUNCE+SLAM | GRAB+SJUMP+TORN | GRAB+UPPER+TORN | GRAB+BOUNCE+TORN | GRAB+SJUMP+CRUSH | GRAB+UPPER+CRUSH | GRAB+BOUNCE+CRUSH", 
+			"GRAB+BOUNCE | GRAB+SJUMP | UPPER"
+		),
+        "Chef Task: Delicacy": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Ancient Cheese S Rank": (
+			"GRAB+SJUMP+SLAM | GRAB+CLIMB+SLAM", 
+			"UPPER+CLIMB+SLAM | UPPER+SJUMP+SLAM | GRAB+CLIMB+SLAM | GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | GRAB+SJUMP+CRUSH", 
+			"GRAB+SJUMP+CRUSH | GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | UPPER+SJUMP+SLAM | UPPER+SJUMP+TORN | UPPER+SJUMP+CRUSH | UPPER+BOUNCE+SLAM | UPPER+BOUNCE+TORN | UPPER+BOUNCE+CRUSH"
+		),
+
+    #Bloodsauce Dungeon
+        "Bloodsauce Dungeon Complete": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH | SJUMP+BOUNCE"
+		),
+        "Bloodsauce Dungeon Mushroom Toppin": (
+			"SJUMP | CLIMB", 
+			"NONE", 
+			"SJUMP | BOUNCE | UPPER | CRUSH", 
+			"NONE"
+		),
+        "Bloodsauce Dungeon Cheese Toppin": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Bloodsauce Dungeon Tomato Toppin": (
+			"SLAM", 
+			"SLAM", 
+			"SLAM | TORN | CRUSH", 
+			"SLAM | CRUSH | BOUNCE | TORN"
+		),
+        "Bloodsauce Dungeon Sausage Toppin": (
+			"SLAM", 
+			"SLAM", 
+			"SLAM | TORN | CRUSH", 
+			"SLAM | CRUSH | BOUNCE | TORN"
+		),
+        "Bloodsauce Dungeon Pineapple Toppin": (
+			"SLAM", 
+			"SLAM", 
+			"SLAM | TORN | CRUSH", 
+			"SLAM | CRUSH | BOUNCE | TORN"
+		),
+        "Bloodsauce Dungeon Secret 1": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Bloodsauce Dungeon Secret 2": (
+			"SJUMP+SLAM", 
+			"SJUMP+SLAM", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP", 
+			"SJUMP+SLAM | SJUMP+BOUNCE | SJUMP+CRUSH | SJUMP+TORN"
+		),
+        "Bloodsauce Dungeon Secret 3": (
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH | SJUMP+BOUNCE"
+		),
+        "Bloodsauce Dungeon Treasure": (
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH | SJUMP+BOUNCE"
+		),
+        "Chef Task: Eruption Man": (
+			"SJUMP+SLAM", 
+			"SJUMP+SLAM", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH | SJUMP+BOUNCE"
+		),
+        "Chef Task: Very Very Hot Sauce": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH | SJUMP+BOUNCE"
+		),
+        "Chef Task: Unsliced Pizzaman": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH | SJUMP+BOUNCE"
+		),
+        "Bloodsauce Dungeon S Rank": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH | SJUMP+BOUNCE"
+		),
+
+    #Oregano Desert
+        "Oregano Desert Complete": (
+			"CLIMB", 
+			"SJUMP+GRAB | UPPER+GRAB | CLIMB", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Oregano Desert Mushroom Toppin": (
+			"SJUMP | CLIMB", 
+			"UPPER | SJUMP | CLIMB", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Oregano Desert Cheese Toppin": (
+			"SJUMP | CLIMB", 
+			"UPPER+GRAB | SJUMP | CLIMB", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Oregano Desert Tomato Toppin": (
+			"CLIMB", 
+			"UPPER+GRAB | SJUMP+GRAB | CLIMB", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Oregano Desert Sausage Toppin": (
+			"CLIMB", 
+			"UPPER+GRAB | SJUMP+GRAB | CLIMB", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Oregano Desert Pineapple Toppin": (
+			"CLIMB", 
+			"UPPER+GRAB | SJUMP+GRAB | CLIMB", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Oregano Desert Secret 1": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"BOUNCE", 
+			"SJUMP | BOUNCE"
+		),
+        "Oregano Desert Secret 2": (
+			"CLIMB", 
+			"CLIMB", 
+			 "SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Oregano Desert Secret 3": (
+			"CLIMB", 
+			"CLIMB", 
+			 "SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Oregano Desert Treasure": (
+			"CLIMB", 
+			"CLIMB", 
+			 "SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Chef Task: Peppino's Rain Dance": (
+			"SJUMP | CLIMB", 
+			"UPPER | SJUMP | CLIMB", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Chef Task: Unnecessary Violence": (
+			"CLIMB", 
+			"CLIMB", 
+			 "SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Chef Task: Alien Cow": (
+			"CLIMB", 
+			"SJUMP+GRAB | UPPER+GRAB | CLIMB", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Oregano Desert S Rank": (
+			"CLIMB", 
+			"SJUMP+GRAB | UPPER+GRAB | CLIMB", 
+			"BOUNCE", 
+			"SJUMP | BOUNCE"
+		),
+
+    #Wasteyard
+        "Wasteyard Complete": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP | UPPER | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Wasteyard Mushroom Toppin": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Wasteyard Cheese Toppin": (
+			"SJUMP | CLIMB", 
+			"NONE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"NONE"
+		),
+        "Wasteyard Tomato Toppin": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB | UPPER", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Wasteyard Sausage Toppin": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB | UPPER", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Wasteyard Pineapple Toppin": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB | UPPER", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Wasteyard Secret 1": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Wasteyard Secret 2": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB | UPPER", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Wasteyard Secret 3": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Wasteyard Treasure": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Chef Task: Alive and Well": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Chef Task: Pretend Ghost": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP | UPPER | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Chef Task: Ghosted": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP | UPPER | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Wasteyard S Rank": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+
+    #Fun Farm
+        "Fun Farm Complete": (
+			"SLAM+CLIMB", 
+			"SLAM+UPPER+GRAB | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | CRUSH", 
+			"CRUSH | SLAM+UPPER | SLAM+BOUNCE | SLAM+SJUMP"
+		),
+        "Fun Farm Mushroom Toppin": (
+			"SLAM+SJUMP | SLAM+CLIMB | SLAM+UPPER", 
+			"SLAM+UPPER | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | BOUNCE+TORN | UPPER+TORN | SJUMP+TORN | CRUSH", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Fun Farm Cheese Toppin": (
+			"SLAM+SJUMP | SLAM+CLIMB | SLAM+UPPER", 
+			"SLAM+UPPER | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | BOUNCE+TORN | UPPER+TORN | SJUMP+TORN | CRUSH", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Fun Farm Tomato Toppin": (
+			"SLAM+CLIMB", 
+			"SLAM+UPPER+GRAB | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | BOUNCE+TORN | UPPER+TORN | SJUMP+TORN | CRUSH", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Fun Farm Sausage Toppin": (
+			"SLAM+CLIMB", 
+			"SLAM+UPPER+GRAB | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | BOUNCE+TORN | UPPER+TORN | SJUMP+TORN | CRUSH", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Fun Farm Pineapple Toppin": (
+			"SLAM+CLIMB", 
+			"SLAM+UPPER+GRAB | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | CRUSH", 
+			"CRUSH | SLAM+UPPER | SLAM+BOUNCE | SLAM+SJUMP"
+		),
+        "Fun Farm Secret 1": (
+			"SLAM+SJUMP | SLAM+CLIMB | SLAM+UPPER", 
+			"SLAM+UPPER | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | BOUNCE+TORN | UPPER+TORN | SJUMP+TORN | CRUSH", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Fun Farm Secret 2": (
+			"SLAM+CLIMB", 
+			"SLAM+UPPER+GRAB | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | BOUNCE+TORN | UPPER+TORN | SJUMP+TORN | CRUSH", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Fun Farm Secret 3": (
+			"SLAM+CLIMB", 
+			"SLAM+UPPER+GRAB | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | CRUSH", 
+			"CRUSH | SLAM+UPPER | SLAM+BOUNCE | SLAM+SJUMP"
+		),
+        "Fun Farm Treasure": (
+			"SLAM+CLIMB", 
+			"SLAM+UPPER+GRAB | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | CRUSH", 
+			"CRUSH | SLAM+UPPER | SLAM+BOUNCE | SLAM+SJUMP"
+		),
+        "Chef Task: Good Egg": (
+			"SLAM+CLIMB", 
+			"SLAM+UPPER+GRAB | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | CRUSH", 
+			"CRUSH | SLAM+UPPER | SLAM+BOUNCE | SLAM+SJUMP"
+		),
+        "Chef Task: No One Is Safe": (
+			"SLAM+CLIMB+STAUNT", 
+			"SLAM+STAUNT+SJUMP | SLAM+STAUNT+CLIMB", 
+			"BOUNCE+SLAM+STAUNT | UPPER+SLAM+STAUNT | SJUMP+SLAM+STAUNT | BOUNCE+TORN+STAUNT | UPPER+TORN+STAUNT | SJUMP+TORN+STAUNT | CRUSH+STAUNT", 
+			"CRUSH+STAUNT | SLAM+UPPER+STAUNT | SLAM+BOUNCE+STAUNT | SLAM+SJUMP+STAUNT"
+		),
+        "Chef Task: Cube Menace": (
+			"SLAM+SJUMP | SLAM+CLIMB | SLAM+UPPER", 
+			"SLAM+UPPER | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | BOUNCE+TORN | UPPER+TORN | SJUMP+TORN | CRUSH", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Fun Farm S Rank": (
+			"SLAM+CLIMB+SJUMP", 
+			"LAP2+SLAM+GRAB+CLIMB | LAP2+SLAM+SJUMP", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | CRUSH", 
+			"CRUSH | SLAM+UPPER | SLAM+BOUNCE | SLAM+SJUMP"
+		),
+
+    #Fastfood Saloon
+        "Fastfood Saloon Complete": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+        "Fastfood Saloon Mushroom Toppin": (
+			"SJUMP", 
+			"SJUMP | CLIMB", 
+			"SJUMP", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Fastfood Saloon Cheese Toppin": (
+			"SJUMP+GRAB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+        "Fastfood Saloon Tomato Toppin": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+        "Fastfood Saloon Sausage Toppin": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+        "Fastfood Saloon Pineapple Toppin": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+        "Fastfood Saloon Secret 1": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+        "Fastfood Saloon Secret 2": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+        "Fastfood Saloon Secret 3": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+	    "Fastfood Saloon Treasure": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+        "Chef Task: Royal Flush": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+        "Chef Task: Non-Alcoholic": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+        "Chef Task: Already Pressed": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+        "Fastfood Saloon S Rank": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+
+    #Crust Cove
+        "Crust Cove Complete": (
+			"CLIMB+SLAM", 
+			"SLAM+CLIMB | SLAM+SJUMP+UPPER", 
+			"SJUMP+SLAM | SJUMP+CRUSH | SJUMP+TORN", 
+			"CRUSH | SJUMP+TORN | SJUMP+SLAM | SJUMP+BOUNCE"
+		),
+        "Crust Cove Mushroom Toppin": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP", 
+			"CRUSH | SJUMP"
+		),
+        "Crust Cove Cheese Toppin": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP", 
+			"CRUSH | SJUMP"
+		),
+        "Crust Cove Tomato Toppin": (
+			"CLIMB+SLAM", 
+			"SLAM+CLIMB | SLAM+SJUMP+UPPER", 
+			"SJUMP+SLAM | SJUMP+CRUSH | SJUMP+TORN", 
+			"CRUSH | SJUMP+TORN | SJUMP+SLAM | SJUMP+BOUNCE"
+		),
+        "Crust Cove Sausage Toppin": (
+			"CLIMB+SLAM", 
+			"SLAM+CLIMB | SLAM+SJUMP+UPPER", 
+			"SJUMP+SLAM | SJUMP+CRUSH | SJUMP+TORN", 
+			"CRUSH | SJUMP+TORN | SJUMP+SLAM | SJUMP+BOUNCE"
+		),
+        "Crust Cove Pineapple Toppin": (
+			"CLIMB+SLAM", 
+			"SLAM+CLIMB | SLAM+SJUMP+UPPER", 
+			"SJUMP+SLAM | SJUMP+CRUSH | SJUMP+TORN", 
+			"CRUSH | SJUMP+TORN | SJUMP+SLAM | SJUMP+BOUNCE"
+		),
+        "Crust Cove Secret 1": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP", 
+			"CRUSH | SJUMP"
+		),
+        "Crust Cove Secret 2": (
+			"CLIMB+SLAM", 
+			"SLAM+CLIMB | SLAM+SJUMP+UPPER", 
+			"SJUMP+SLAM | SJUMP+CRUSH | SJUMP+TORN", 
+			"CRUSH | SJUMP+TORN | SJUMP+SLAM | SJUMP+BOUNCE"
+		),
+        "Crust Cove Secret 3": (
+			"CLIMB+SLAM+TAUNT", 
+			"SLAM+CLIMB+TAUNT | SLAM+SJUMP+UPPER+TAUNT", 
+			"SJUMP+SLAM+TAUNT | SJUMP+CRUSH+TAUNT | SJUMP+TORN+TAUNT", 
+			"CRUSH+TAUNT | SJUMP+TORN+TAUNT | SJUMP+SLAM+TAUNT | SJUMP+BOUNCE+TAUNT"
+		),
+        "Crust Cove Treasure": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP", 
+			"CRUSH | SJUMP"
+		),
+        "Chef Task: Demolition Expert": (
+			"CLIMB+SLAM", 
+			"SLAM+CLIMB | SLAM+SJUMP+UPPER", 
+			"SJUMP+SLAM | SJUMP+CRUSH | SJUMP+TORN", 
+			"CRUSH | SJUMP+TORN | SJUMP+SLAM | SJUMP+BOUNCE"
+		),
+        "Chef Task: Blowback": (
+			"SJUMP+TAUNT | CLIMB+TAUNT", 
+			"SJUMP+TAUNT | CLIMB+TAUNT", 
+			 "SJUMP+TAUNT", 
+			"CRUSH+TAUNT | SJUMP+TAUNT"
+		),
+        "Chef Task: X": (
+			"CLIMB+SLAM", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SJUMP+SLAM | SJUMP+CRUSH | SJUMP+TORN", 
+			"CRUSH | SJUMP+SLAM | BOUNCE+SLAM | UPPER+SLAM"
+		),
+        "Crust Cove S Rank": (
+			"CLIMB+SLAM+TAUNT", 
+			"SLAM+CLIMB+TAUNT | SLAM+SJUMP+UPPER+TAUNT", 
+			"SJUMP+SLAM+TAUNT | SJUMP+CRUSH+TAUNT | SJUMP+TORN+TAUNT", 
+			"CRUSH+TAUNT | SJUMP+TORN+TAUNT | SJUMP+SLAM+TAUNT | SJUMP+BOUNCE+TAUNT"
+		),
+
+    #Gnome Forest
+        "Gnome Forest Complete": (
+			"SLAM+DJUMP+SPIN+SJUMP | SLAM+DJUMP+KICK+SJUMP | SLAM+DJUMP+SPIN+CLIMB | SLAM+DJUMP+KICK+CLIMB", 
+			"SJUMP+SLAM+DJUMP | CLIMB+SLAM+DJUMP", 
+			"BOUNCE+CRUSH | SJUMP+CRUSH", 
+			"CRUSH"
+		),
+        "Gnome Forest Mushroom Toppin": (
+			"SLAM+DJUMP+SPIN | SLAM+DJUMP+KICK", 
+			"SLAM+DJUMP", 
+			"CRUSH", 
+			"CRUSH | SJUMP+GRAB+SLAM | BOUNCE+GRAB+SLAM | UPPER+GRAB+SLAM"
+		),
+        "Gnome Forest Cheese Toppin": (
+			"SLAM+DJUMP+SPIN | SLAM+DJUMP+KICK", 
+			"SLAM+DJUMP", 
+			"CRUSH", 
+			"CRUSH | SJUMP+GRAB+SLAM | BOUNCE+GRAB+SLAM | UPPER+GRAB+SLAM"
+		),
+        "Gnome Forest Tomato Toppin": (
+			"SLAM+DJUMP+SPIN | SLAM+DJUMP+KICK", 
+			"SLAM+DJUMP", 
+			"BOUNCE+CRUSH | SJUMP+CRUSH | UPPER+CRUSH", 
+			"CRUSH | SJUMP+GRAB+SLAM | BOUNCE+GRAB+SLAM | UPPER+GRAB+SLAM"
+		),
+        "Gnome Forest Sausage Toppin": (
+			"SLAM+DJUMP+SPIN | SLAM+DJUMP+KICK", 
+			"SLAM+DJUMP", 
+			"BOUNCE+CRUSH | SJUMP+CRUSH | UPPER+CRUSH", 
+			"CRUSH"
+		),
+        "Gnome Forest Pineapple Toppin": (
+			"SLAM+DJUMP+SPIN | SLAM+DJUMP+KICK", 
+			"SLAM+DJUMP", 
+			"BOUNCE+CRUSH | SJUMP+CRUSH | UPPER+CRUSH", 
+			"CRUSH"
+		),
+        "Gnome Forest Secret 1": (
+			"SLAM+DJUMP+SPIN | SLAM+DJUMP+KICK", 
+			"SLAM+DJUMP", 
+			"BOUNCE+CRUSH | SJUMP+CRUSH | UPPER+CRUSH", 
+			"CRUSH | SJUMP+GRAB+SLAM | BOUNCE+GRAB+SLAM | UPPER+GRAB+SLAM"
+		),
+        "Gnome Forest Secret 2": (
+			"SLAM+DJUMP+SPIN | SLAM+DJUMP+KICK", 
+			"SLAM+DJUMP", 
+			"BOUNCE+CRUSH | SJUMP+CRUSH | UPPER+CRUSH", 
+			"CRUSH | SJUMP+GRAB+SLAM | BOUNCE+GRAB+SLAM | UPPER+GRAB+SLAM"
+		),
+        "Gnome Forest Secret 3": (
+			"SLAM+DJUMP+SPIN+SJUMP | SLAM+DJUMP+KICK+SJUMP | SLAM+DJUMP+SPIN+CLIMB | SLAM+DJUMP+KICK+CLIMB", 
+			"SJUMP+SLAM+DJUMP | CLIMB+SLAM+DJUMP", 
+			"BOUNCE+CRUSH | SJUMP+CRUSH", 
+			"CRUSH"
+		),
+        "Gnome Forest Treasure": (
+			"SLAM+DJUMP+SPIN+SJUMP | SLAM+DJUMP+KICK+SJUMP | SLAM+DJUMP+SPIN+CLIMB | SLAM+DJUMP+KICK+CLIMB", 
+			"SJUMP+SLAM+DJUMP | CLIMB+SLAM+DJUMP", 
+			"BOUNCE+CRUSH | SJUMP+CRUSH", 
+			"CRUSH"
+		),
+        "Chef Task: Bee Nice": (
+			"TAUNT", 
+			"TAUNT", 
+			"TAUNT", 
+			"TAUNT"
+		),
+        "Chef Task: Bullseye": (
+			"TAUNT", 
+			"TAUNT", 
+			"TAUNT", 
+			"TAUNT"
+		),
+        "Chef Task: Lumberjack": (
+			"SLAM+DJUMP+SPIN+SJUMP | SLAM+DJUMP+KICK+SJUMP | SLAM+DJUMP+SPIN+CLIMB | SLAM+DJUMP+KICK+CLIMB", 
+			"SJUMP+SLAM+DJUMP | CLIMB+SLAM+DJUMP", 
+			"BOUNCE+CRUSH | SJUMP+CRUSH", 
+			"CRUSH"
+		),
+        "Gnome Forest S Rank": (
+			"SLAM+DJUMP+SPIN+SJUMP | SLAM+DJUMP+KICK+SJUMP | SLAM+DJUMP+SPIN+CLIMB | SLAM+DJUMP+KICK+CLIMB", 
+			"SJUMP+SLAM+DJUMP | CLIMB+SLAM+DJUMP", 
+			"BOUNCE+CRUSH | SJUMP+CRUSH", 
+			"CRUSH"
+		),
+
+    #Deep-Dish 9
+        "Deep-Dish 9 Complete": (
+			"SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Deep-Dish 9 Mushroom Toppin": (
+			"SLAM", 
+			"SLAM", 
+			"SLAM | CRUSH | TORN", 
+			"SLAM | CRUSH | BOUNCE | TORN"
+		),
+        "Deep-Dish 9 Cheese Toppin": (
+			"SLAM+UPPER | SLAM+SJUMP | SLAM+CLIMB", 
+			 "SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SLAM | CRUSH | BOUNCE | TORN"
+		),
+        "Deep-Dish 9 Tomato Toppin": (
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SLAM | CRUSH | BOUNCE | TORN"
+		),
+        "Deep-Dish 9 Sausage Toppin": (
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SJUMP+BOUNCE | SJUMP+TORN | UPPER+BOUNCE | UPPER+TORN | CRUSH"
+		),
+        "Deep-Dish 9 Pineapple Toppin": (
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SJUMP+BOUNCE | SJUMP+TORN | UPPER+BOUNCE | UPPER+TORN | CRUSH"
+		),
+        "Deep-Dish 9 Secret 1": (
+			"SLAM+UPPER | SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SLAM | CRUSH | BOUNCE | TORN"
+		),
+        "Deep-Dish 9 Secret 2": (
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SJUMP+BOUNCE | SJUMP+TORN | UPPER+BOUNCE | UPPER+TORN | CRUSH"
+		),
+        "Deep-Dish 9 Secret 3": (
+			"SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Deep-Dish 9 Treasure": (
+			"SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Chef Task: Blast 'Em Asteroids": (
+			"SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Chef Task: Turbo Tunnel": (
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SJUMP+BOUNCE | SJUMP+TORN | UPPER+BOUNCE | UPPER+TORN | CRUSH"
+		),
+        "Chef Task: Man Meteor": (
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+BOUNCE | SLAM+UPPER", 
+			"SJUMP+SLAM | UPPER+SLAM | CRUSH+SLAM | BOUNCE+SLAM"
+		),
+        "Deep-Dish 9 S Rank": (
+			"SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+
+    #GOLF
+        "GOLF Complete": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"NONE"
+		),
+        "GOLF Mushroom Toppin": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"NONE"
+		),
+        "GOLF Cheese Toppin": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"NONE"
+		),
+        "GOLF Tomato Toppin": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"NONE"
+		),
+        "GOLF Sausage Toppin": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"NONE"
+		),
+        "GOLF Pineapple Toppin": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"NONE"
+		),
+        "GOLF Secret 1": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"NONE"
+		),
+        "GOLF Secret 2": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"NONE"
+		),
+        "GOLF Secret 3": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"NONE"
+		),
+        "GOLF Treasure": (
+			"GRAB+CLIMB | GRAB+SJUMP", 
+			"SJUMP | CLIMB+GRAB | CLIMB+SLAM", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"SJUMP | BOUNCE | CRUSH | UPPER"
+		),
+        "Chef Task: Primo Golfer": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"NONE"
+		),
+        "Chef Task: Helpful Burger": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"NONE"
+		),
+        "Chef Task: Nice Shot": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"NONE"
+		),
+        "GOLF S Rank": (
+			"GRAB+CLIMB | GRAB+SJUMP", 
+			"SJUMP | CLIMB+GRAB | CLIMB+SLAM", 
+			"SJUMP+GRAB | CRUSH+GRAB | UPPER+GRAB | BOUNCE+GRAB", 
+			"SJUMP | BOUNCE | CRUSH | UPPER"
+		),
+
+    #The Pig City
+        "The Pig City Complete": (
+			"SLAM+DJUMP", 
+			"SLAM+DJUMP", 
+			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "The Pig City Mushroom Toppin": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "The Pig City Cheese Toppin": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP", 
+			"SJUMP | CRUSH | UPPER | BOUNCE"
+		),
+        "The Pig City Tomato Toppin": (
+			"SLAM", 
+			"SLAM", 
+			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
+			"CRUSH | SLAM"
+		),
+        "The Pig City Sausage Toppin": (
+			"SLAM+DJUMP", 
+			"SLAM+DJUMP", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "The Pig City Pineapple Toppin": (
+			"SLAM+DJUMP", 
+			"SLAM+DJUMP", 
+			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "The Pig City Secret 1": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "The Pig City Secret 2": (
+			"SLAM+DJUMP", 
+			"SLAM+DJUMP", 
+			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "The Pig City Secret 3": (
+			"SLAM+DJUMP", 
+			"SLAM+DJUMP", 
+			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "The Pig City Treasure": (
+			"SLAM+DJUMP", 
+			"SLAM+DJUMP", 
+			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Chef Task: Say Oink!": (
+			"SLAM+DJUMP+TAUNT", 
+			"SLAM+DJUMP+TAUNT", 
+			"SJUMP+SLAM+TAUNT | CRUSH+TAUNT | BOUNCE+SLAM+TAUNT | UPPER+SLAM+TAUNT", 
+			"CRUSH+TAUNT | SLAM+SJUMP+TAUNT | SLAM+BOUNCE+TAUNT | SLAM+UPPER+TAUNT"
+		),
+        "Chef Task: Pan Fried": (
+			"SLAM+DJUMP", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
+			"CRUSH | SLAM+SJUMP | SLAM+UPPER | SLAM+BOUNCE"
+		),
+        "Chef Task: Strike!": (
+			"SLAM+DJUMP+KICK", 
+			"SLAM+DJUMP+KICK", 
+			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "The Pig City S Rank": (
+			"SJUMP+SLAM+DJUMP+SPIN | CLIMB+SLAM+DJUMP+SPIN | SJUMP+SLAM+DJUMP+KICK | CLIMB+SLAM+DJUMP+KICK", 
+			"SJUMP+SLAM+DJUMP | CLIMB+SLAM+DJUMP", 
+			"SJUMP+SLAM | SJUMP+CRUSH", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+
+    #Peppibot Factory
+        "Peppibot Factory Complete": (
+			"SJUMP+CLIMB+SLAM | SJUMP+UPPER+SLAM", 
+			"SJUMP+SLAM | CLIMB+GRAB+SLAM | CLIMB+UPPER+SLAM", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH", 
+			"SJUMP+BOUNCE | SJUMP+TORN | UPPER+BOUNCE | UPPER+TORN | CRUSH"
+		),
+        "Peppibot Factory Mushroom Toppin": (
+			"SJUMP", 
+			"SJUMP | CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP", 
+			"SJUMP | CRUSH | UPPER"
+		),
+        "Peppibot Factory Cheese Toppin": (
+			"SJUMP+CLIMB | SJUMP+UPPER", 
+			"SJUMP | CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP", 
+			"SJUMP | CRUSH | UPPER"
+		),
+        "Peppibot Factory Tomato Toppin": (
+			"SJUMP+CLIMB | SJUMP+UPPER", 
+			"SJUMP | CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP", 
+			"SJUMP | CRUSH | UPPER"
+		),
+        "Peppibot Factory Sausage Toppin": (
+			"SJUMP+CLIMB | SJUMP+UPPER", 
+			"SJUMP | CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP", 
+			"SJUMP | CRUSH | UPPER"
+		),
+        "Peppibot Factory Pineapple Toppin": (
+			"SJUMP+CLIMB | SJUMP+UPPER", 
+			"SJUMP | CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP", 
+			"SJUMP | CRUSH | UPPER"
+		),
+        "Peppibot Factory Secret 1": (
+			"SJUMP", 
+			"SJUMP | CLIMB", 
+			"SJUMP", 
+			"SJUMP | CRUSH | UPPER"
+		),
+        "Peppibot Factory Secret 2": (
+			"SJUMP+UPPER", 
+			"SJUMP | CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP", 
+			"SJUMP | CRUSH | UPPER"
+		),
+        "Peppibot Factory Secret 3": (
+			"SJUMP+CLIMB+SLAM | SJUMP+UPPER+SLAM", 
+			"SJUMP+SLAM | CLIMB+GRAB+SLAM | CLIMB+UPPER+SLAM", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH", 
+			"SJUMP+BOUNCE | SJUMP+TORN | UPPER+BOUNCE | UPPER+TORN | CRUSH"
+		),
+        "Peppibot Factory Treasure": (
+			"SJUMP+CLIMB+SLAM | SJUMP+UPPER+SLAM", 
+			"SJUMP+SLAM | CLIMB+GRAB+SLAM | CLIMB+UPPER+SLAM", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH", 
+			"SJUMP+BOUNCE | SJUMP+TORN | UPPER+BOUNCE | UPPER+TORN | CRUSH"
+		),
+        "Chef Task: There Can Be Only One": (
+			"LAP2+SJUMP+CLIMB+SLAM | LAP2+SJUMP+UPPER+SLAM", 
+			"LAP2+SJUMP+SLAM | LAP2+CLIMB+GRAB+SLAM | LAP2+CLIMB+UPPER+SLAM", 
+			"LAP2+SJUMP+SLAM | LAP2+SJUMP+TORN | LAP2+SJUMP+CRUSH", 
+			"LAP2+SJUMP+BOUNCE | LAP2+SJUMP+TORN | LAP2+UPPER+BOUNCE | LAP2+UPPER+TORN | LAP2+CRUSH"
+		),
+        "Chef Task: Whoop This!": (
+			"SJUMP", 
+			"SJUMP | CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP", 
+			"SJUMP | CRUSH | UPPER"
+		),
+        "Chef Task: Unflattening": (
+			"SJUMP+CLIMB+SLAM | SJUMP+UPPER+SLAM", 
+			"SJUMP+SLAM | CLIMB+GRAB+SLAM | CLIMB+UPPER+SLAM", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH", 
+			"SJUMP+BOUNCE | SJUMP+TORN | UPPER+BOUNCE | UPPER+TORN | CRUSH"
+		),
+        "Peppibot Factory S Rank": (
+			"SJUMP+CLIMB+SLAM | SJUMP+UPPER+SLAM", 
+			"SJUMP+SLAM | CLIMB+GRAB+SLAM | CLIMB+UPPER+SLAM", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH", 
+			"SJUMP+BOUNCE | SJUMP+TORN | UPPER+BOUNCE | UPPER+TORN | CRUSH"
+		),
+
+    #Oh Shit!
+        "Oh Shit! Complete": (
+			"SLAM+CLIMB", 
+			"SLAM+CLIMB", 
+			"SLAM+BOUNCE | TORN+BOUNCE | SLAM+SJUMP | TORN+SJUMP | SLAM+UPPER | TORN+UPPER | CRUSH+SJUMP | CRUSH+BOUNCE | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Oh Shit! Mushroom Toppin": (
+			"SLAM", 
+			"SLAM", 
+			"SLAM | TORN | CRUSH", 
+			"SLAM | CRUSH | BOUNCE | TORN"
+		),
+        "Oh Shit! Cheese Toppin": (
+			"SLAM+CLIMB | SLAM+SJUMP | SLAM+UPPER", 
+			"SLAM+SJUMP | SLAM+CLIMB | SLAM+UPPER", 
+			"SLAM+BOUNCE | TORN+BOUNCE | CRUSH | SLAM+SJUMP | TORN+SJUMP | SLAM+UPPER | TORN+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Oh Shit! Tomato Toppin": (
+			"SLAM+CLIMB", 
+			"SLAM+CLIMB", 
+			"SLAM+BOUNCE | TORN+BOUNCE | SLAM+SJUMP | TORN+SJUMP | SLAM+UPPER | TORN+UPPER | CRUSH+SJUMP | CRUSH+BOUNCE | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Oh Shit! Sausage Toppin": (
+			"SLAM+CLIMB", 
+			"SLAM+CLIMB", 
+			"SLAM+BOUNCE | TORN+BOUNCE | SLAM+SJUMP | TORN+SJUMP | SLAM+UPPER | TORN+UPPER | CRUSH+SJUMP | CRUSH+BOUNCE | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Oh Shit! Pineapple Toppin": (
+			"SLAM+CLIMB", 
+			"SLAM+CLIMB", 
+			"SLAM+BOUNCE | TORN+BOUNCE | SLAM+SJUMP | TORN+SJUMP | SLAM+UPPER | TORN+UPPER | CRUSH+SJUMP | CRUSH+BOUNCE | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Oh Shit! Secret 1": (
+			"SLAM", 
+			"SLAM", 
+			"SLAM | TORN | CRUSH", 
+			"SLAM | CRUSH | BOUNCE | TORN"
+		),
+        "Oh Shit! Secret 2": (
+			"SLAM+CLIMB", 
+			"SLAM+CLIMB", 
+			"SLAM+BOUNCE | TORN+BOUNCE | SLAM+SJUMP | TORN+SJUMP | SLAM+UPPER | TORN+UPPER | CRUSH+SJUMP | CRUSH+BOUNCE | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Oh Shit! Secret 3": (
+			"SLAM+CLIMB", 
+			"SLAM+CLIMB", 
+			"SLAM+BOUNCE | TORN+BOUNCE | SLAM+SJUMP | TORN+SJUMP | SLAM+UPPER | TORN+UPPER | CRUSH+SJUMP | CRUSH+BOUNCE | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Oh Shit! Treasure": (
+			"SLAM+CLIMB", 
+			"SLAM+CLIMB", 
+			"SLAM+BOUNCE | TORN+BOUNCE | SLAM+SJUMP | TORN+SJUMP | SLAM+UPPER | TORN+UPPER | CRUSH+SJUMP | CRUSH+BOUNCE | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Chef Task: Food Clan": (
+			"SLAM+CLIMB+TAUNT", 
+			"SLAM+SJUMP+TAUNT | SLAM+CLIMB+TAUNT | SLAM+UPPER+TAUNT", 
+			"SLAM+BOUNCE+TAUNT | TORN+BOUNCE+TAUNT | CRUSH+TAUNT | SLAM+SJUMP+TAUNT | TORN+SJUMP+TAUNT | SLAM+UPPER+TAUNT | TORN+UPPER+TAUNT", 
+			"SJUMP+SLAM+TAUNT | SJUMP+TORN+TAUNT | BOUNCE+TAUNT | CRUSH+TAUNT | UPPER+SLAM+TAUNT | UPPER+TORN+TAUNT"
+		),
+        "Chef Task: Can't Fool Me": (
+			"SLAM+CLIMB", 
+			"SLAM+CLIMB", 
+			"SLAM+BOUNCE | TORN+BOUNCE | SLAM+SJUMP | TORN+SJUMP | SLAM+UPPER | TORN+UPPER | CRUSH+SJUMP | CRUSH+BOUNCE | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Chef Task: Penny Pincher": (
+			"SLAM+CLIMB+SJUMP", 
+			"SLAM+CLIMB", 
+			"SLAM+BOUNCE | TORN+BOUNCE | SLAM+SJUMP | TORN+SJUMP | SLAM+UPPER | TORN+UPPER | CRUSH+SJUMP | CRUSH+BOUNCE | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Oh Shit! S Rank": (
+			"SLAM+CLIMB", 
+			"SLAM+CLIMB", 
+			"SLAM+BOUNCE | TORN+BOUNCE | SLAM+SJUMP | TORN+SJUMP | SLAM+UPPER | TORN+UPPER | CRUSH+SJUMP | CRUSH+BOUNCE | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+
+    #Freezerator
+        "Freezerator Complete": (
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"NONE", 
+			"NONE"
+		),
+        "Freezerator Mushroom Toppin": (
+			"CLIMB | SJUMP", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Freezerator Cheese Toppin": (
+			"CLIMB", 
+			"SJUMP | CLIMB | UPPER", 
+			"NONE", 
+			"NONE"
+		),
+        "Freezerator Tomato Toppin": (
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"NONE", 
+			"NONE"
+		),
+        "Freezerator Sausage Toppin": (
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"NONE", 
+			"NONE"
+		),
+        "Freezerator Pineapple Toppin": (
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"NONE", 
+			"NONE"
+		),
+        "Freezerator Secret 1": (
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"NONE", 
+			"NONE"
+		),
+        "Freezerator Secret 2": (
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"NONE", 
+			"NONE"
+		),
+        "Freezerator Secret 3": (
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"NONE", 
+			"NONE"
+		),
+        "Freezerator Treasure": (
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"NONE", 
+			"NONE"
+		),
+        "Chef Task: Ice Climber": (
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"NONE", 
+			"NONE"
+		),
+        "Chef Task: Season's Greetings": (
+			"CLIMB+SLAM+SJUMP+GRAB+STAUNT", 
+			"SJUMP+SLAM+STAUNT | CLIMB+SLAM+STAUNT", 
+			"GRAB | STAUNT", 
+			"STAUNT | GRAB"
+		),
+        "Chef Task: Frozen Nuggets": (
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"NONE", 
+			"NONE"
+		),
+        "Freezerator S Rank": (
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SLAM | CRUSH | TORN | BOUNCE", 
+			"SLAM | CRUSH | TORN | BOUNCE"
+		),
+
+    #Pizzascare
+        "Pizzascare Complete": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+TORN | BOUNCE+TORN | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Pizzascare Mushroom Toppin": (
+			"CLIMB+SLAM | SJUMP+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | CRUSH | UPPER+SLAM | SJUMP+TORN | BOUNCE+TORN | UPPER+TORN", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Pizzascare Cheese Toppin": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | CRUSH | UPPER+SLAM | SJUMP+TORN | BOUNCE+TORN | UPPER+TORN", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Pizzascare Tomato Toppin": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+TORN | BOUNCE+TORN | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Pizzascare Sausage Toppin": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+TORN | BOUNCE+TORN | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Pizzascare Pineapple Toppin": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+TORN | BOUNCE+TORN | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Pizzascare Secret 1": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+TORN | BOUNCE+TORN | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Pizzascare Secret 2": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+TORN | BOUNCE+TORN | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Pizzascare Secret 3": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+TORN | BOUNCE+TORN | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Pizzascare Treasure": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+TORN | BOUNCE+TORN | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Chef Task: Haunted Playground": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+TORN | BOUNCE+TORN | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Chef Task: Skullsplitter": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+TORN | BOUNCE+TORN | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Chef Task: Cross To Bare": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+TORN | BOUNCE+TORN | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+        "Pizzascare S Rank": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+TORN | BOUNCE+TORN | SJUMP+CRUSH | BOUNCE+CRUSH", 
+			"CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN | BOUNCE"
+		),
+
+    #Don't Make A Sound
+        "Don't Make A Sound Complete": (
+			"CLIMB+SLAM+GRAB", 
+			"CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP+SLAM+GRAB", 
+			"SJUMP+GRAB | SJUMP+UPPER | CRUSH+GRAB | CRUSH+UPPER | BOUNCE+GRAB | BOUNCE+UPPER"
+		),
+        "Don't Make A Sound Mushroom Toppin": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Don't Make A Sound Cheese Toppin": (
+			"CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP | CRUSH | BOUNCE | UPPER", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Don't Make A Sound Tomato Toppin": (
+			"CLIMB+SLAM", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH", 
+			"CRUSH | SJUMP+TORN | SJUMP+SLAM | BOUNCE"
+		),
+        "Don't Make A Sound Sausage Toppin": (
+			"CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP", 
+			"SJUMP | CRUSH | UPPER | BOUNCE"
+		),
+        "Don't Make A Sound Pineapple Toppin": (
+			"CLIMB+SLAM+GRAB", 
+			"CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP+SLAM+GRAB", 
+			"SJUMP+GRAB | SJUMP+UPPER | CRUSH+GRAB | CRUSH+UPPER | BOUNCE+GRAB | BOUNCE+UPPER"
+		),
+        "Don't Make A Sound Secret 1": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Don't Make A Sound Secret 2": (
+			"CLIMB", 
+			"SJUMP+UPPER | CLIMB", 
+			"SJUMP | CRUSH | BOUNCE | UPPER", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Don't Make A Sound Secret 3": (
+			"CLIMB", 
+			"SJUMP+UPPER | CLIMB", 
+			"SJUMP", 
+			"SJUMP | CRUSH | BOUNCE"
+		),
+        "Don't Make A Sound Treasure": (
+			"CLIMB+SLAM+GRAB", 
+			"CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP+SLAM+GRAB", 
+			"SJUMP+GRAB | SJUMP+UPPER | CRUSH+GRAB | CRUSH+UPPER | BOUNCE+GRAB | BOUNCE+UPPER"
+		),
+        "Chef Task: Let Them Sleep": (
+			"CLIMB+SLAM+GRAB", 
+			"CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP+SLAM+GRAB", 
+			"SJUMP+GRAB | SJUMP+UPPER | CRUSH+GRAB | CRUSH+UPPER | BOUNCE+GRAB | BOUNCE+UPPER"
+		),
+        "Chef Task: Jumpspared": (
+			"CLIMB+SLAM+GRAB", 
+			"CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP+SLAM+GRAB", 
+			"SJUMP+GRAB | SJUMP+UPPER | CRUSH+GRAB | CRUSH+UPPER | BOUNCE+GRAB | BOUNCE+UPPER"
+		),
+        "Chef Task: And This... Is My Gun On A Stick!": (
+			"CLIMB+SLAM+GRAB", 
+			"CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP+SLAM+GRAB", 
+			"SJUMP+GRAB | SJUMP+UPPER | CRUSH+GRAB | CRUSH+UPPER | BOUNCE+GRAB | BOUNCE+UPPER"
+		),
+        "Don't Make A Sound S Rank": (
+			"CLIMB+SLAM+GRAB+TAUNT", 
+			"CLIMB+GRAB+SLAM+TAUNT | CLIMB+UPPER+SLAM+TAUNT", 
+			"SJUMP+GRAB+SLAM+TAUNT | SJUMP+UPPER+SLAM+TAUNT | SJUMP+GRAB+TORN+TAUNT | SJUMP+UPPER+TORN+TAUNT | CRUSH+GRAB+TAUNT | CRUSH+UPPER+TAUNT | BOUNCE+GRAB+TAUNT | BOUNCE+UPPER+TAUNT"
+		),
+
+    #WAR
+        "WAR Complete": (
+			"GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+CRUSH | GRAB+SJUMP+TORN", 
+			"GRAB+SJUMP | UPPER+SJUMP | GRAB+SLAM | UPPER+SLAM | GRAB+CRUSH | UPPER+CRUSH"
+		),
+        "WAR Mushroom Toppin": (
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+BOUNCE | GRAB+SJUMP", 
+			"GRAB+CRUSH | GRAB+SJUMP | GRAB+BOUNCE | GRAB+SLAM | UPPER+CRUSH | UPPER+SJUMP | UPPER+BOUNCE | UPPER+SLAM"
+		),
+        "WAR Cheese Toppin": (
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+BOUNCE | GRAB+SJUMP", 
+			"GRAB+CRUSH | GRAB+SJUMP | GRAB+BOUNCE | GRAB+SLAM | UPPER+CRUSH | UPPER+SJUMP | UPPER+BOUNCE | UPPER+SLAM"
+		),
+        "WAR Tomato Toppin": (
+			"GRAB+SJUMP+SLAM | GRAB+CLIMB+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+BOUNCE+SLAM | GRAB+BOUNCE+CRUSH | GRAB+BOUNCE+TORN | GRAB+SJUMP+SLAM | GRAB+SJUMP+CRUSH | GRAB+SJUMP+TORN", 
+			"GRAB+CRUSH | GRAB+SJUMP | GRAB+BOUNCE | GRAB+SLAM | UPPER+CRUSH | UPPER+SJUMP | UPPER+BOUNCE | UPPER+SLAM"
+		),
+        "WAR Sausage Toppin": (
+			"GRAB+SJUMP+SLAM | GRAB+CLIMB+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+BOUNCE+SLAM | GRAB+BOUNCE+CRUSH | GRAB+BOUNCE+TORN | GRAB+SJUMP+SLAM | GRAB+SJUMP+CRUSH | GRAB+SJUMP+TORN", 
+			"GRAB+CRUSH | GRAB+SJUMP | GRAB+BOUNCE | GRAB+SLAM | UPPER+CRUSH | UPPER+SJUMP | UPPER+BOUNCE | UPPER+SLAM"
+		),
+        "WAR Pineapple Toppin": (
+			"GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+CRUSH | GRAB+SJUMP+TORN", 
+			"GRAB+SJUMP | UPPER+SJUMP | GRAB+SLAM | UPPER+SLAM | GRAB+CRUSH | UPPER+CRUSH"
+		),
+        "WAR Secret 1": (
+			"GRAB+SJUMP+SLAM | GRAB+CLIMB+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+BOUNCE+SLAM | GRAB+BOUNCE+CRUSH | GRAB+BOUNCE+TORN | GRAB+SJUMP+SLAM | GRAB+SJUMP+CRUSH | GRAB+SJUMP+TORN", 
+			"GRAB+CRUSH | GRAB+SJUMP | GRAB+BOUNCE | GRAB+SLAM | UPPER+CRUSH | UPPER+SJUMP | UPPER+BOUNCE | UPPER+SLAM"
+		),
+        "WAR Secret 2": (
+			"GRAB+SJUMP+SLAM | GRAB+CLIMB+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+BOUNCE+SLAM | GRAB+BOUNCE+CRUSH | GRAB+BOUNCE+TORN | GRAB+SJUMP+SLAM | GRAB+SJUMP+CRUSH | GRAB+SJUMP+TORN", 
+			"GRAB+CRUSH | GRAB+SJUMP | GRAB+BOUNCE | GRAB+SLAM | UPPER+CRUSH | UPPER+SJUMP | UPPER+BOUNCE | UPPER+SLAM"
+		),
+        "WAR Secret 3": (
+			"GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+CRUSH | GRAB+SJUMP+TORN", 
+			"GRAB+CRUSH | GRAB+SJUMP | GRAB+BOUNCE | GRAB+SLAM | UPPER+CRUSH | UPPER+SJUMP | UPPER+BOUNCE | UPPER+SLAM"
+		),
+        "WAR Treasure": (
+			"GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+CRUSH | GRAB+SJUMP+TORN", 
+			"GRAB+CRUSH | GRAB+SJUMP | GRAB+BOUNCE | GRAB+SLAM | UPPER+CRUSH | UPPER+SJUMP | UPPER+BOUNCE | UPPER+SLAM"
+		),
+        "Chef Task: Trip to the Warzone": (
+			"GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM+MACH4 | UPPER+SLAM+MACH4", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+CRUSH | GRAB+SJUMP+TORN", 
+			"GRAB+SJUMP | UPPER+SJUMP | GRAB+CRUSH | UPPER+CRUSH"
+		),
+        "Chef Task: Sharpshooter": (
+			"GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+CRUSH | GRAB+SJUMP+TORN", 
+			"GRAB+SJUMP | UPPER+SJUMP | GRAB+CRUSH | UPPER+CRUSH"
+		),
+        "Chef Task: Decorated Veteran": (
+			"GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+CRUSH | GRAB+SJUMP+TORN", 
+			"GRAB+SJUMP | UPPER+SJUMP | GRAB+SLAM | UPPER+SLAM | GRAB+CRUSH | UPPER+CRUSH"
+		),
+        "WAR S Rank": (
+			"GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+CRUSH | GRAB+SJUMP+TORN", 
+			"GRAB+SJUMP | UPPER+SJUMP | GRAB+CRUSH | UPPER+CRUSH"
+		),
+
+    #Crumbling Tower of Pizza
+        "The Crumbling Tower of Pizza Complete": (
+			"SLAM+SJUMP+CLIMB", 
+			"GRAB+SLAM+SJUMP | GRAB+SLAM+CLIMB", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | GRAB+SJUMP+CRUSH", 
+			"SJUMP+GRAB+SLAM | SJUMP+GRAB+TORN | SJUMP+GRAB+BOUNCE | CRUSH+GRAB"
+		),
+        "The Crumbling Tower of Pizza S Rank": (
+			"SLAM+SJUMP+CLIMB", 
+			"GRAB+SLAM+SJUMP | GRAB+SLAM+CLIMB", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | GRAB+SJUMP+CRUSH", 
+			"SJUMP+GRAB+SLAM | SJUMP+GRAB+TORN | SJUMP+GRAB+BOUNCE | CRUSH+GRAB"
+		),
+        "The Crumbling Tower of Pizza P Rank": (
+			"SLAM+SJUMP+CLIMB", 
+			"GRAB+SLAM+SJUMP | GRAB+SLAM+CLIMB", 
+			"GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | GRAB+SJUMP+CRUSH", 
+			"SJUMP+GRAB+SLAM | SJUMP+GRAB+TORN | SJUMP+GRAB+BOUNCE | CRUSH+GRAB"
+		),
+
+    #Pepperman
+        "Pepperman Defeated": (
+			"GRAB", 
+			"GRAB", 
+			"BOMB | GRAB", 
+			"BOMB | GRAB"
+		),
+        "Chef Task: The Critic": (
+			"GRAB", 
+			"GRAB", 
+			"BOMB | GRAB", 
+			"BOMB | GRAB"
+		),
+        "Pepperman S Rank": (
+			"GRAB", 
+			"GRAB", 
+			"BOMB | GRAB", 
+			"BOMB | GRAB"
+		),
+        "Pepperman P Rank": (
+			"GRAB", 
+			"GRAB", 
+			"BOMB | GRAB", 
+			"BOMB | GRAB"
+		),
+
+    #Vigilante
+        "The Vigilante Defeated": (
+			"GRAB", 
+			"GRAB", 
+			"BOMB", 
+			"BOMB"
+		),
+        "Chef Task: The Ugly": (
+			"GRAB", 
+			"GRAB", 
+			"BOMB", 
+			"BOMB"
+		),
+        "The Vigilante S Rank": (
+			"GRAB", 
+			"GRAB", 
+			"BOMB", 
+			"BOMB"
+		),
+        "The Vigilante P Rank": (
+			"GRAB", 
+			"GRAB", 
+			"BOMB", 
+			"BOMB"
+		),
+
+    #Noise
+        "The Noise Defeated": (
+			"GRAB | UPPER", 
+			"NONE", 
+			"BOMB | GRAB", 
+			"NONE"
+		),
+        "Chef Task: Denoise": (
+			"GRAB | UPPER", 
+			"NONE", 
+			"BOMB | GRAB", 
+			"NONE"
+		),
+        "The Noise S Rank": (
+			"GRAB | UPPER", 
+			"NONE", 
+			"BOMB | GRAB", 
+			"NONE"
+		),
+        "The Noise P Rank": (
+			"GRAB | UPPER", 
+			"NONE", 
+			"BOMB | GRAB", 
+			"NONE"
+		),
+
+    #Fake Pep
+        "Fake Peppino Defeated": (
+			"GRAB | UPPER", 
+			"NONE", 
+			"BOMB | GRAB", 
+			"NONE"
+		),
+        "Chef Task: Faker": (
+			"GRAB | UPPER", 
+			"NONE", 
+			"BOMB | GRAB", 
+			"NONE"
+		),
+        "Fake Peppino S Rank": (
+			"GRAB | UPPER", 
+			"NONE", 
+			"BOMB | GRAB", 
+			"NONE"
+		),
+        "Fake Peppino P Rank": (
+			"GRAB | UPPER", 
+			"NONE", 
+			"BOMB | GRAB", 
+			"NONE"
+		),
+
+    #Pizzaface
+        "Pizzaface Defeated": (
+			"GRAB", 
+			"GRAB", 
+			"BOMB", 
+			"BOMB", 
+			"BOMB"
+		),
+        "Chef Task: Face Off": (
+			"GRAB", 
+			"GRAB", 
+			"BOMB", 
+			"BOMB", 
+			"BOMB"
+		),
+
+    #Tutorial
+        "Tutorial Complete": (
+			"SLAM+CLIMB+SJUMP+GRAB", 
+			"SLAM+SJUMP+GRAB | SLAM+CLIMB+GRAB", 
+			"SJUMP+SLAM | SJUMP+CRUSH | SJUMP+TORN", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+BOUNCE | CRUSH"
+		),
+        "Tutorial Complete in under 2 minutes": (
+			"SLAM+CLIMB+SJUMP+GRAB", 
+			"SLAM+SJUMP+GRAB | SLAM+CLIMB+GRAB", 
+			"SJUMP+SLAM | SJUMP+CRUSH | SJUMP+TORN", 
+			"SJUMP+SLAM | SJUMP+TORN | SJUMP+BOUNCE | CRUSH"
+		),
+        "Tutorial Mushroom Toppin": (
+			"SLAM", 
+			"SLAM", 
+			"NONE", 
+			"NONE"
+		),
+        "Tutorial Cheese Toppin": (
+			"SLAM+CLIMB", 
+			"SLAM+SJUMP+GRAB | SLAM+CLIMB", 
+			"NONE", 
+			"NONE"
+		),
+        "Tutorial Tomato Toppin": (
+			"SLAM+CLIMB", 
+			"SLAM+SJUMP+GRAB | SLAM+CLIMB", 
+			"NONE", 
+			"NONE"
+		),
+        "Tutorial Sausage Toppin": (
+			"SLAM+CLIMB+SJUMP", 
+			"SLAM+SJUMP+GRAB | SLAM+CLIMB", 
+			"NONE", 
+			"NONE"
+		),
+        "Tutorial Pineapple Toppin": (
+			"SLAM+CLIMB+SJUMP+GRAB", 
+			"SLAM+SJUMP+GRAB | SLAM+CLIMB+GRAB", 
+			"NONE", 
+			"NONE"
+		),
+
+    #misc
+        "Snotty Murdered": (
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+
+    #for swap mode
+        "The Doise Defeated": (
+			"GRAB | UPPER", 
+			"NONE", 
+			"BOMB | GRAB", 
+			"NONE"
+		),
+        "Chef Task: Denoise": (
+			"GRAB | UPPER", 
+			"NONE", 
+			"BOMB | GRAB", 
+			"NONE"
+		),
+        "The Doise S Rank": (
+			"GRAB | UPPER", 
+			"NONE", 
+			"BOMB | GRAB", 
+			"NONE"
+		),
+        "The Doise P Rank": (
+			"GRAB | UPPER", 
+			"NONE", 
+			"BOMB | GRAB", 
+			"NONE"
+		),
+
+    #pumpkins
+        "John Gutter Pumpkin": (
+			"SJUMP | CLIMB | UPPER", 
+			"SJUMP | CLIMB | UPPER | GRAB", 
+			"SJUMP | BOUNCE | UPPER | CRUSH", 
+			"SJUMP | BOUNCE | UPPER | GRAB | CRUSH"
+		),
+        "Pizzascape Pumpkin": (
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+BOUNCE | GRAB+UPPER", 
+			"GRAB+SJUMP | GRAB+BOUNCE | GRAB+CRUSH | UPPER"
+		),
+        "Ancient Cheese Pumpkin": (
+			"GRAB+SLAM+CLIMB | GRAB+SLAM+SJUMP", 
+			"UPPER+SLAM+CLIMB | UPPER+SLAM+SJUMP | GRAB+CLIMB+SLAM | GRAB+SJUMP+SLAM", 
+			"GRAB+SJUMP+SLAM | GRAB+UPPER+SLAM | GRAB+BOUNCE+SLAM | GRAB+SJUMP+TORN | GRAB+UPPER+TORN | GRAB+BOUNCE+TORN | GRAB+SJUMP+CRUSH | GRAB+UPPER+CRUSH | GRAB+BOUNCE+CRUSH", 
+			"GRAB+BOUNCE+SLAM | GRAB+BOUNCE+TORN | GRAB+BOUNCE+CRUSH | GRAB+SJUMP+CRUSH | GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | UPPER+SLAM | UPPER+TORN | UPPER+CRUSH"
+		),
+        "Bloodsauce Dungeon Pumpkin": (
+			"SLAM", 
+			"SLAM", 
+			"SLAM | CRUSH | BOUNCE | TORN", 
+			"SLAM | CRUSH | BOUNCE | TORN"
+		),
+        "Oregano Desert Pumpkin": (
+			"CLIMB", 
+			"UPPER+GRAB | SJUMP+GRAB | CLIMB", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Wasteyard Pumpkin": (
+			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB | UPPER", 
+			"SJUMP | UPPER | CRUSH | BOUNCE", 
+			"SJUMP | UPPER | CRUSH | BOUNCE"
+		),
+        "Fun Farm Pumpkin": (
+			"SLAM+CLIMB", 
+			"SLAM+UPPER+GRAB | SLAM+SJUMP | SLAM+CLIMB", 
+			"BOUNCE+SLAM | UPPER+SLAM | SJUMP+SLAM | BOUNCE+TORN | UPPER+TORN | SJUMP+TORN | CRUSH", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Fastfood Saloon Pumpkin": (
+			"SJUMP+GRAB+CLIMB", 
+			"GRAB+SJUMP | GRAB+CLIMB", 
+			"SJUMP+GRAB", 
+			"SJUMP+GRAB | UPPER+GRAB | CRUSH+GRAB | BOUNCE+GRAB"
+		),
+        "Crust Cove Pumpkin": (
+			"CLIMB+SLAM+SJUMP", 
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+TORN | SJUMP+SLAM | SJUMP+BOUNCE | SJUMP+CRUSH", 
+			"CRUSH | SJUMP+TORN | SJUMP+SLAM | SJUMP+BOUNCE"
+		),
+        "Gnome Forest Pumpkin": (
+			"SLAM+DJUMP+SPIN | SLAM+DJUMP+KICK", 
+			"SLAM+DJUMP", 
+			"CRUSH", 
+			"CRUSH | SJUMP+GRAB+SLAM | BOUNCE+GRAB+SLAM | UPPER+GRAB+SLAM"
+		),
+        "Deep-Dish 9 Pumpkin": (
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | SLAM+CLIMB", 
+			"SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP | SLAM+BOUNCE | TORN+BOUNCE | CRUSH+BOUNCE | SLAM+UPPER | TORN+UPPER | CRUSH+UPPER", 
+			"SLAM | CRUSH | BOUNCE | TORN"
+		),
+        "GOLF Pumpkin": (
+			"GRAB+CLIMB | GRAB+SJUMP | GRAB+UPPER", 
+			"NONE", 
+			"GRAB+BOUNCE | GRAB+UPPER | GRAB+SJUMP | GRAB+CRUSH", 
+			"NONE"
+		),
+        "The Pig City Pumpkin": (
+			"SLAM+DJUMP", 
+			"SLAM+DJUMP", 
+			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
+			"CRUSH | SLAM"
+		),
+        "Peppibot Factory Pumpkin": (
+			"SJUMP+CLIMB | SJUMP+UPPER", 
+			"SJUMP+UPPER | CLIMB+GRAB | CLIMB+UPPER", 
+			"SJUMP", 
+			"SJUMP | CRUSH | UPPER"
+		),
+        "Oh Shit! Pumpkin": (
+			"SLAM+CLIMB", 
+			"SLAM+CLIMB", 
+			"SLAM+BOUNCE | TORN+BOUNCE | SLAM+SJUMP | TORN+SJUMP | SLAM+UPPER | TORN+UPPER | CRUSH+SJUMP | CRUSH+BOUNCE | CRUSH+UPPER", 
+			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+		),
+        "Freezerator Pumpkin": (
+			"CLIMB+SLAM+SJUMP", 
+			"SJUMP+SLAM | CLIMB+SLAM", 
+			"NONE", 
+			"NONE"
+		),
+        "Pizzascare Pumpkin": (
+			"SJUMP | CLIMB", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Don't Make A Sound Pumpkin": (
+			"CLIMB", 
+			"SJUMP | CLIMB", 
+			"SJUMP", 
+			"SJUMP | CRUSH | UPPER | BOUNCE"
+		),
+        "WAR Pumpkin": (
+			"GRAB+SJUMP+SLAM | GRAB+CLIMB+SLAM", 
+			"GRAB+SJUMP | GRAB+CLIMB | UPPER+SJUMP | UPPER+CLIMB | GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+BOUNCE | GRAB+SJUMP", 
+			"GRAB+CRUSH | GRAB+SJUMP | GRAB+BOUNCE | GRAB+SLAM | UPPER+CRUSH | UPPER+SJUMP | UPPER+BOUNCE | UPPER+SLAM"
+		),
+        "The Crumbling Tower of Pizza Pumpkin": (
+			"GRAB+SLAM", 
+			"GRAB+SLAM | UPPER+SLAM", 
+			"GRAB+SLAM | GRAB+TORN | GRAB+CRUSH", 
+			"GRAB+SLAM | GRAB+TORN | GRAB+CRUSH | GRAB+BOUNCE | UPPER+SLAM | UPPER+TORN | UPPER+CRUSH | UPPER+BOUNCE"
+		),
+        "Tricky Treat Main Path Pumpkin 1": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Tricky Treat Main Path Pumpkin 2": (
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
+		),
+        "Tricky Treat Main Path Pumpkin 3": (
+			"UPPER | CLIMB | SJUMP", 
+			"UPPER | CLIMB | SJUMP", 
+			"UPPER | BOUNCE | SJUMP | CRUSH", 
+			"UPPER | BOUNCE | SJUMP | CRUSH"
+		),
+        "Tricky Treat Main Path Pumpkin 4": (
+			"CLIMB", 
+			"CLIMB", 
+			"BOUNCE | SJUMP", 
+			"BOUNCE | SJUMP | CRUSH"
+		),
+        "Tricky Treat Main Path Pumpkin 5": (
+			"CLIMB", 
+			"CLIMB", 
+			"BOUNCE+UPPER | SJUMP", 
+			"BOUNCE+UPPER | SJUMP | CRUSH"
+		),
+        "Tricky Treat Side Path Pumpkin 1": (
+			"UPPER | CLIMB | SJUMP", 
+			"UPPER | CLIMB | SJUMP", 
+			"UPPER | BOUNCE | SJUMP | CRUSH", 
+			"UPPER | BOUNCE | SJUMP | CRUSH"
+		),
+        "Tricky Treat Side Path Pumpkin 2": (
+			"CLIMB | SJUMP", 
+			"CLIMB | SJUMP", 
+			"UPPER | BOUNCE | SJUMP | CRUSH", 
+			"UPPER | BOUNCE | SJUMP | CRUSH"
+		),
+        "Tricky Treat Side Path Pumpkin 3": (
+			"UPPER | CLIMB | SJUMP", 
+			"UPPER | CLIMB | SJUMP", 
+			"UPPER | BOUNCE | SJUMP | CRUSH", 
+			"UPPER | BOUNCE | SJUMP | CRUSH"
+		),
+        "Tricky Treat Side Path Pumpkin 4": (
+			"CLIMB | SJUMP", 
+			"CLIMB | SJUMP", 
+			"UPPER | BOUNCE | SJUMP", 
+			"UPPER | BOUNCE | SJUMP | CRUSH"
+		),
+        "Tricky Treat Side Path Pumpkin 5": (
+			"CLIMB", 
+			"CLIMB", 
+			"BOUNCE | SJUMP", 
+			"BOUNCE | SJUMP | CRUSH"
+		),
+        "Chef Task: Tricksy": (
+			"CLIMB", 
+			"CLIMB", 
+			"BOUNCE+UPPER | SJUMP", 
+			"BOUNCE+UPPER | SJUMP | CRUSH"
+		),
+    }
+
     peppino_level_access_rules = {
         "John Gutter": "NONE",
         "Pizzascape": "NONE",
