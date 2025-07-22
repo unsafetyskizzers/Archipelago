@@ -171,19 +171,28 @@ class PizzaTowerWorld(World):
         pep_moves = get_item_from_category("Moves Peppino")
         noise_moves = get_item_from_category("Moves Noise")
         shared_moves = get_item_from_category("Moves Shared")
+        transfos = get_item_from_category("Transformations")
         if self.options.do_move_rando:
             for move in self.options.move_rando_list:
                 if self.options.character != 1 and (move in pep_moves or move in shared_moves):
                     pizza_itempool.append(self.create_item(move))
                 elif self.options.character != 0 and (move in noise_moves or move in shared_moves):
                     pizza_itempool.append(self.create_item(move))
-        
+        if self.options.do_transfo_rando:
+            for transfo in self.options.transfo_rando_list:
+                if self.options.character != 1 or transfo != "Revolver":
+                    pizza_itempool.append(self.create_item(transfo))
         total_moves = shared_moves + pep_moves + noise_moves
         self.starting_moves = 0
+        self.starting_transfos = 0
         for i in range(len(total_moves)):
             self.starting_moves = self.starting_moves << 1
             if total_moves[i] not in self.options.move_rando_list or not self.options.do_move_rando:
                 self.starting_moves |= 1
+        for i in range(len(transfos)):
+            self.starting_transfos = self.starting_transfos << 1
+            if transfos[i] not in self.options.transfo_rando_list or not self.options.do_transfo_rando:
+                self.starting_transfos |= 1
         
         #add keys
         if not self.options.open_world:
@@ -284,6 +293,7 @@ class PizzaTowerWorld(World):
             "character": int(self.options.character.value),
             "death_link": bool(self.options.death_link),
             "starting_moves": int(self.starting_moves),
+            "starting_transfos": int(self.starting_transfos),
             "treasure_checks": bool(self.options.treasure_checks),
             "srank_checks": bool(self.options.srank_checks),
             "prank_checks": bool(self.options.prank_checks),

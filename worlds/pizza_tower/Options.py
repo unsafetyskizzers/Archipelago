@@ -208,13 +208,13 @@ class LogicDifficulty(Choice):
 
 class RandomizeMoves(DefaultOnToggle):
     """
-    Determines whether your moves will even be randomized. If disabled, only Toppins, Boss Keys, and filler will appear in the item pool.
+    Determines whether your moves will be randomized. If disabled, only Toppins, Boss Keys, and filler will appear in the item pool.
     """
     display_name = "Randomize Moves"
 
 class MovesToRandomize(OptionSet):
     """
-    Any move indicated here will be shuffled into the item pool. Any move not indicated here will be useable from the start.
+    If "Randomize Moves" is enabled, any move indicated here will be shuffled into the item pool, and any move not indicated here will be useable from the start.
     """
     display_name = "Randomize These Moves"
     default = [
@@ -234,6 +234,34 @@ class MovesToRandomize(OptionSet):
         "Tornado",
         "Crusher",
         "Bomb"
+    ]
+
+class RandomizeTransfos(Toggle):
+    """
+    Determines whether any level-specific Transformations will be shuffled into the item pool.
+    """
+    display_name = "Randomize Transformations"
+
+class TransfosToRandomize(OptionSet):
+    """
+    If "Randomize Transformations" is enabled, any Transformation indicated here will be shuffled into the item pool, and any not indicated here will be useable from the start.
+    """
+    display_name = "Randomize These Transformations"
+    default = [
+        "Ball",
+        "Knight",
+        "Firemouth",
+        "Ghost",
+        "Mort",
+        "Weenie",
+        "Barrel",
+        "Anti-Grav Bubble",
+        "Rocket",
+        "Pizzabox",
+        "Sticky Cheese",
+        "Satan's Choice",
+        "Shotgun",
+        "Revolver"
     ]
 
 class ClothingFiller(Toggle):
@@ -376,6 +404,8 @@ class PTOptions(PerGameCommonOptions):
     difficulty: LogicDifficulty
     do_move_rando: RandomizeMoves
     move_rando_list: MovesToRandomize
+    do_transfo_rando: RandomizeTransfos
+    transfo_rando_list: TransfosToRandomize
     death_link: DeathLink
     clothing_filler: ClothingFiller
     shuffle_lap2: ShuffleLap2

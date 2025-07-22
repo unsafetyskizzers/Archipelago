@@ -54,7 +54,7 @@ pt_items = {
     "Cross Buff":               ("Filler", 130, ItemClassification.filler),
     "Pizza Shield":             ("Filler", 131, ItemClassification.filler),
 
-    #transfo items; may get used someday but not right now
+    #transfo items;     get used                 right now
     "Ball":                     ("Transformation", 132, ItemClassification.progression),
     "Knight":                   ("Transformation", 133, ItemClassification.progression),
     "Firemouth":                ("Transformation", 134, ItemClassification.progression),
