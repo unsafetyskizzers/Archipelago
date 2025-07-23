@@ -62,7 +62,7 @@ pt_items = {
     "Mort":                     ("Transformation", 136, ItemClassification.progression),
     "Weenie":                   ("Transformation", 137, ItemClassification.progression),
     "Barrel":                   ("Transformation", 138, ItemClassification.progression),
-    "Anti-Grav Bubble":         ("Transformation", 139, ItemClassification.progression),
+    "Olive Bubble":         ("Transformation", 139, ItemClassification.progression),
     "Rocket":                   ("Transformation", 140, ItemClassification.progression),
     "Pizzabox":                 ("Transformation", 141, ItemClassification.progression),
     "Sticky Cheese":            ("Transformation", 142, ItemClassification.progression),

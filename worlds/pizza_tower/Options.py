@@ -255,7 +255,7 @@ class TransfosToRandomize(OptionSet):
         "Mort",
         "Weenie",
         "Barrel",
-        "Anti-Grav Bubble",
+        "Olive Bubble",
         "Rocket",
         "Pizzabox",
         "Sticky Cheese",

@@ -61,7 +61,7 @@ rule_moves = {
     "MORT": "Mort",
     "WEEN": "Weenie",
     "BARR": "Barrel",
-    "BUBB": "Anti-Grav Bubble",
+    "BUBB": "Olive Bubble",
     "ROCKET": "Rocket",
     "BOX": "Pizzabox",
     "STICKY": "Sticky Cheese",
