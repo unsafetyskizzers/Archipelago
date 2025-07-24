@@ -2214,7 +2214,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 		),
     }
 
-    access_rules_dict = { #tuples in this format: (pep, noise)
+    hub_rules_dict = { #tuples in this format: (pep, noise)
         #levels
         "John Gutter": ("NONE", "NONE"),
         "Pizzascape": ("NONE", "NONE"),
@@ -2280,16 +2280,16 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
     else:
         secrets_map = world.secret_map
 
-    def interpret_rule(rule_chk: str, access_rule: bool):
+    def interpret_rule(rule_chk: str, hub_rule: bool):
         if options.character != 2:
             rule_index = options.difficulty + (options.character * 2)
-            if access_rule:
-                rule_str = access_rules_dict[rule_chk][options.character]
+            if hub_rule:
+                rule_str = hub_rules_dict[rule_chk][options.character]
             else:
                 rule_str = rules_dict[rule_chk][rule_index]
         else:
-            if access_rule:
-                rule_str = access_rules_dict[rule_chk][0] + " | " + access_rules_dict[rule_chk][1]
+            if hub_rule:
+                rule_str = hub_rules_dict[rule_chk][0] + " | " + hub_rules_dict[rule_chk][1]
             else:
                 if rule_chk in pt_swap_rules:
                     rule_str = pt_swap_rules[rule_chk]
@@ -2301,7 +2301,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
             return (lambda state: True)
         for rule in rules:
             tokens = rule.split("+")      
-            itemsets.append([rule_moves[move] for move in tokens if ((rule_moves[move] in options.move_rando_list and options.do_move_rando) or ("LAP2" in move and options.shuffle_lap2))])
+            itemsets.append([rule_moves[move] for move in tokens if ((rule_moves[move] in options.move_rando_list and options.do_move_rando) or ("LAP2" in move and options.shuffle_lap2) or (rule_moves[move] in options.transfo_rando_list and options.do_transfo_rando))])
         return lambda state: rule_from_itemset(state, itemsets)
 
     def rule_from_itemset(state: CollectionState, itemsets):
