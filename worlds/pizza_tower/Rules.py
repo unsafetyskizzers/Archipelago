@@ -2300,8 +2300,8 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         if "NONE" in rules:
             return (lambda state: True)
         for rule in rules:
-            tokens = rule.split("+")      
-            itemsets.append([rule_moves[move] for move in tokens if ((rule_moves[move] in options.move_rando_list and options.do_move_rando) or ("LAP2" in move and options.shuffle_lap2) or (rule_moves[move] in options.transfo_rando_list and options.do_transfo_rando))])
+            tokens = rule.split("+")
+            itemsets.append([rule_moves[move] for move in tokens])
         return lambda state: rule_from_itemset(state, itemsets)
 
     def rule_from_itemset(state: CollectionState, itemsets):
