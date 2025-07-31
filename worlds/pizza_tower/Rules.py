@@ -1720,6 +1720,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Don't Make A Sound S Rank": (
 			"CLIMB+SLAM+GRAB+SHOTGUN+TAUNT", 
 			"CLIMB+GRAB+SHOTGUN+SLAM+TAUNT | CLIMB+UPPER+SHOTGUN+SLAM+TAUNT", 
+            "SJUMP+SLAM+GRAB+SHOTGUN+TAUNT", 
 			"SJUMP+GRAB+SHOTGUN+SLAM+TAUNT | SJUMP+UPPER+SHOTGUN+SLAM+TAUNT | SJUMP+GRAB+SHOTGUN+TORN+TAUNT | SJUMP+UPPER+SHOTGUN+TORN+TAUNT | CRUSH+GRAB+SHOTGUN+TAUNT | CRUSH+UPPER+SHOTGUN+TAUNT | BOUNCE+GRAB+SHOTGUN+TAUNT | BOUNCE+UPPER+SHOTGUN+TAUNT"
 		),
 
@@ -2301,7 +2302,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
             return (lambda state: True)
         for rule in rules:
             tokens = rule.split("+")      
-            itemsets.append([rule_moves[move] for move in tokens if ((rule_moves[move] in options.move_rando_list and options.do_move_rando) or ("LAP2" in move and options.shuffle_lap2) or (rule_moves[move] in options.transfo_rando_list and options.do_transfo_rando))])
+            itemsets.append([rule_moves[move] for move in tokens if ((rule_moves[move] in options.move_rando_list and options.do_move_rando) or (("LAP2" in move and options.shuffle_lap2) or (rule_moves[move] in options.transfo_rando_list and options.do_transfo_rando)))])
         return lambda state: rule_from_itemset(state, itemsets)
 
     def rule_from_itemset(state: CollectionState, itemsets):

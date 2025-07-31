@@ -199,7 +199,7 @@ class LogicDifficulty(Choice):
 
     Normal: Stricter logic for new players or those looking for a quick, simple run. The randomizer will never expect you to do anything too technical or creative.
 
-    Expert: Relaxed logic for those looking for a challenge. The randomizer may expect you to use obscure mechanics or perform precise tricks.
+    Expert: Relaxed logic for those looking for a challenge. The randomizer may expect you to know obscure mechanics, perform precise tricks, or use glitches or other unintended behavior.
     """
     display_name = "Difficulty"
     option_Normal = 0
