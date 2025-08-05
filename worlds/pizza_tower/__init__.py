@@ -286,5 +286,6 @@ class PizzaTowerWorld(World):
             "secret_checks": bool(self.options.secret_checks),
             "shuffle_lap2": bool(self.options.shuffle_lap2),
             "pumpkin_checks": bool(self.options.pumpkin_checks),
-            "pumpkin_count": floor(self.pumpkin_number * (self.options.tricky_treat_cost / 100))
+            "pumpkin_count": floor(self.pumpkin_number * (self.options.tricky_treat_cost / 100)),
+            "ring_link": bool(self.options.ring_link)
         }

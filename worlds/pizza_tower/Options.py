@@ -333,6 +333,13 @@ class TrickyTreatDoor(Range):
     range_end = 100
     default = 67
 
+class RingLink(Toggle):
+    """
+    Enable ring link, receiving a ring link while in a stage will deduct points.
+    Getting hit will send a ring link to other players.
+    """
+    display_name = "Ring Link"
+
 pt_option_groups = [
     OptionGroup("General Options", [
         CharacterToPlay,
@@ -407,6 +414,7 @@ class PTOptions(PerGameCommonOptions):
     do_transfo_rando: RandomizeTransfos
     transfo_rando_list: TransfosToRandomize
     death_link: DeathLink
+    ring_link: RingLink
     clothing_filler: ClothingFiller
     shuffle_lap2: ShuffleLap2
     trap_weights: TrapWeights
