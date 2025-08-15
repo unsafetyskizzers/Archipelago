@@ -6,7 +6,7 @@ from .Options import PTOptions, pt_option_groups, pt_option_presets
 from .Regions import create_regions
 from .Rules import set_rules
 from math import floor
-from typing import Any
+from typing import Any, TextIO
 
 def internal_from_external(name: str):
     aliases = {
@@ -102,6 +102,7 @@ class PizzaTowerWorld(World):
     options_dataclass = PTOptions
     options: PTOptions
     webworld = PizzaTowerWebWorld
+    apworld_version = (1, 2, 0)
 
     toppin_number: int
     pumpkin_number: int
@@ -262,6 +263,10 @@ class PizzaTowerWorld(World):
                 weighted_filler.append(filler)
         
         return self.random.choice(weighted_filler)
+    
+    def write_spoiler_header(self, spoiler_handle: TextIO):
+        apversion_string = str(self.apworld_version[0]) + "." + str(self.apworld_version[1]) + "." + str(self.apworld_version[2])
+        spoiler_handle.write('{:<32} {:0}'.format("APWorld Version: ", apversion_string))
 
     def fill_slot_data(self):
         return {
@@ -286,5 +291,6 @@ class PizzaTowerWorld(World):
             "secret_checks": bool(self.options.secret_checks),
             "shuffle_lap2": bool(self.options.shuffle_lap2),
             "pumpkin_checks": bool(self.options.pumpkin_checks),
-            "pumpkin_count": floor(self.pumpkin_number * (self.options.tricky_treat_cost / 100))
+            "pumpkin_count": floor(self.pumpkin_number * (self.options.tricky_treat_cost / 100)),
+            "apworld_version": tuple(self.apworld_version) #please double check this. i have no idea if this is the proper way to pass a tuple into slot data
         }
