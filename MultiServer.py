@@ -2016,8 +2016,7 @@ async def process_client_cmd(ctx: Context, client: Client, args: dict):
                     await ctx.send_encoded_msgs(bounceclient, msg)
         elif cmd == "Ping":
             args["cmd"] = "Pong"
-            msg = ctx.dumper([args])
-            await ctx.send_msgs(client, msg)
+            await ctx.send_msgs(client, [args])
         elif cmd == "Get":
             if "keys" not in args or type(args["keys"]) != list:
                 await ctx.send_msgs(client, [{'cmd': 'InvalidPacket', "type": "arguments",
@@ -2560,7 +2559,7 @@ async def main(args: argparse.Namespace):
 
     ssl_context = load_server_cert(args.cert, args.cert_key) if args.cert else None
 
-    ctx.server = websockets.serve(functools.partial(server, ctx=ctx), host=ctx.host, port=ctx.port, ssl=ssl_context)
+    ctx.server = websockets.serve(functools.partial(server, ctx=ctx), host=ctx.host, port=ctx.port, ssl=ssl_context, ping_interval=40)
     ip = args.host if args.host else Utils.get_public_ipv4()
     logging.info('Hosting game at %s:%d (%s)' % (ip, ctx.port,
                                                  'No password' if not ctx.password else 'Password: %s' % ctx.password))
