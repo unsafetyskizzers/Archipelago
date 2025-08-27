@@ -13,12 +13,6 @@ DEBUG = True
 # THIS CODE IS LARGELY TAKEN FROM THE HAT IN TIME APWORLD! THANKS COOKIECAT FOR THE POINTERS! -whimsiemi
 
 # to-do list: handle printjsons via the proxy (to make datapackages redundant), clean up things a bit and find a way to properly disconnect proxy client to stop weird shenanigans across different worlds/slots
-
-class PTJSONToTextParser(JSONtoTextParser):
-    def _handle_color(self, node: JSONMessagePart):
-        return self._handle_text(node)  # No colors for the in-game text
-
-
 class PTCommandProcessor(ClientCommandProcessor):
     def _cmd_pt(self):
         """Check PT Connection State"""
@@ -34,7 +28,6 @@ class PTContext(CommonContext):
         super().__init__(server_address, password)
         self.proxy = None
         self.proxy_task = None
-        self.gamejsontotext = PTJSONToTextParser(self)
         self.autoreconnect_task = None
         self.endpoint = None
         self.items_handling = 0b111
@@ -42,8 +35,10 @@ class PTContext(CommonContext):
         self.connected_msg = None
         self.game_connected = False
         self.awaiting_info = False
+        self.just_collected = None
         self.full_inventory: List[Any] = []
         self.server_msgs: List[Any] = []
+        self.connected = False
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -103,6 +98,7 @@ class PTContext(CommonContext):
                 self.server_msgs.append(self.room_info)
                 self.update_items()
                 self.awaiting_info = False
+            self.connected = True
         elif cmd == "ReceivedItems":
             #if index is 0 its the receiveditems packet sent on connect which contains all collected items thus far
             if args["index"] == 0:
@@ -110,7 +106,25 @@ class PTContext(CommonContext):
             for item in args["items"]:
                 self.full_inventory.append(item)
             self.server_msgs.append(encode([args]))
-        #for now just send over all received data from the server in full we can make adjustments later if needed
+        #adjusted printjson packet, only sends over assembled text message and the type
+        elif cmd == "PrintJSON":
+            txtmsg = ""
+            if args.get("type") == "Collect":
+                txtmsg = f"{self.player_names[args["slot"]]} collected all of their items!"
+                self.just_collected = args["slot"]
+            if (args.get("type") == "ItemSend" and self.slot_concerns_self(args["item"].player) 
+                and args["item"].player != self.just_collected and not self.slot_concerns_self(args["receiving"])):
+                item_name = self.item_names.lookup_in_game(args["item"].item, self.slot_info[args["receiving"]].game)
+                txtmsg = f"Found {self.player_names[args["receiving"]]}'s {item_name}!"
+            if args.get("type") == "Goal":
+                txtmsg = f"{self.player_names[args["slot"]]} reached their goal!"
+            if txtmsg:
+                self.server_msgs.append(encode([{
+                    "cmd": cmd,
+                    "type": args.get("type"),
+                    "text": txtmsg
+                }]))
+        #send over all other received data from the server in full
         else:
             self.server_msgs.append(encode([args]))
 
@@ -131,13 +145,16 @@ async def proxy(websocket, path: str = "/", ctx: PTContext = None):
     ctx.endpoint = Endpoint(websocket)
     try:
         await on_client_connected(ctx)
-
+        if ctx.is_connected() == False:
+            ctx.connected = False
         if ctx.is_proxy_connected():
             async for data in websocket:
                 if DEBUG:
                     logger.info(f"Incoming message: {data}")
-             
-                await parse_game_packets(ctx, data)
+                
+                #connected is only set to true if we've actually received the initial connection data from the server
+                if ctx.connected:
+                    await parse_game_packets(ctx, data)
     except Exception as e:
         if not isinstance(e, websockets.WebSocketException):
             logger.exception(e)
@@ -146,8 +163,15 @@ async def proxy(websocket, path: str = "/", ctx: PTContext = None):
 
 async def parse_game_packets(ctx: PTContext, data):
     for msg in decode(data):
+        if msg["cmd"] == "ClientPing":
+            # Ensure that the client is still connected to the text client using a special packet
+            text = encode([{"cmd": "ClientPong"}])
+            await ctx.send_msgs_proxy(text)
+        #dont send further packets if not connected with server yet
+        elif not ctx.connected:
+            break
         #connection with server is handled by proxy client already, just send back the important data
-        if msg["cmd"] == "Connect":
+        elif msg["cmd"] == "Connect":
             # Proxy is connecting, make sure it is valid
             if msg["game"] != "Pizza Tower":
                 logger.info("Aborting proxy connection: game is not Pizza Tower")
@@ -157,11 +181,6 @@ async def parse_game_packets(ctx: PTContext, data):
             if ctx.connected_msg and ctx.is_connected():
                 await ctx.send_msgs_proxy(ctx.connected_msg)
                 ctx.update_items()
-        elif msg["cmd"] == "ClientPing":
-            # Ensure that the client is still connected to the text client using a special packet
-            text = encode([{"cmd": "ClientPong"}])
-            await ctx.send_msgs_proxy(text)
-
         elif not ctx.is_proxy_connected():
             break
         #send over any packets received from the game client to the server
