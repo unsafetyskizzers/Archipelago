@@ -151,10 +151,7 @@ async def proxy(websocket, path: str = "/", ctx: PTContext = None):
             async for data in websocket:
                 if DEBUG:
                     logger.info(f"Incoming message: {data}")
-                
-                #connected is only set to true if we've actually received the initial connection data from the server
-                if ctx.connected:
-                    await parse_game_packets(ctx, data)
+                await parse_game_packets(ctx, data)
     except Exception as e:
         if not isinstance(e, websockets.WebSocketException):
             logger.exception(e)
@@ -168,6 +165,7 @@ async def parse_game_packets(ctx: PTContext, data):
             text = encode([{"cmd": "ClientPong"}])
             await ctx.send_msgs_proxy(text)
         #dont send further packets if not connected with server yet
+        #connected is only set to true if we've actually received the initial connection data from the server
         elif not ctx.connected:
             break
         #connection with server is handled by proxy client already, just send back the important data
