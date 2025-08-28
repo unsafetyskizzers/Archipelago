@@ -8,7 +8,7 @@ from NetUtils import decode, encode, JSONtoTextParser, JSONMessagePart, NetworkI
 from MultiServer import Endpoint
 from CommonClient import CommonContext, gui_enabled, ClientCommandProcessor, logger, get_base_parser
 
-DEBUG = True
+DEBUG = False
 
 # THIS CODE IS LARGELY TAKEN FROM THE HAT IN TIME APWORLD! THANKS COOKIECAT FOR THE POINTERS! -whimsiemi
 

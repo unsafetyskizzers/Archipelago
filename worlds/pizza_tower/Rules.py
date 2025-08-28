@@ -1606,32 +1606,32 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"NONE"
 		),
         "Freezerator Secret 3": (
-			"CLIMB+SLAM+SJUMP", 
-			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SATAN+CLIMB+SLAM+SJUMP", 
+			"SATAN+SJUMP+SLAM | SATAN+CLIMB+SLAM", 
 			"NONE", 
 			"NONE"
 		),
         "Freezerator Treasure": (
-			"CLIMB+SLAM+SJUMP", 
-			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SATAN+CLIMB+SLAM+SJUMP", 
+			"SATAN+SJUMP+SLAM | SATAN+CLIMB+SLAM", 
 			"NONE", 
 			"NONE"
 		),
         "Chef Task: Ice Climber": (
-			"CLIMB+SLAM+SJUMP", 
-			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SATAN+CLIMB+SLAM+SJUMP", 
+			"SATAN+SJUMP+SLAM | SATAN+CLIMB+SLAM", 
 			"NONE", 
 			"NONE"
 		),
         "Chef Task: Season's Greetings": (
-			"CLIMB+SLAM+SJUMP+GRAB+STAUNT", 
-			"SJUMP+SLAM+STAUNT | CLIMB+SLAM+STAUNT", 
+			"SATAN+CLIMB+SLAM+SJUMP+GRAB+STAUNT", 
+			"SATAN+SJUMP+SLAM+STAUNT | SATAN+CLIMB+SLAM+STAUNT", 
 			"GRAB | STAUNT", 
 			"STAUNT | GRAB"
 		),
         "Chef Task: Frozen Nuggets": (
-			"CLIMB+SLAM+SJUMP", 
-			"SJUMP+SLAM | CLIMB+SLAM", 
+			"SATAN+CLIMB+SLAM+SJUMP", 
+			"SATAN+SJUMP+SLAM | SATAN+CLIMB+SLAM", 
 			"NONE", 
 			"NONE"
 		),
