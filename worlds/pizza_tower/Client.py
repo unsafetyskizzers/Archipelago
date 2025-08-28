@@ -223,7 +223,7 @@ def launch(*launch_args: str):
         ctx = PTContext(args.connect, args.password)
         logger.info("Starting Pizza Tower proxy server")
         ctx.proxy = websockets.serve(functools.partial(proxy, ctx=ctx),
-                                     host="localhost", port=11311, ping_timeout=999999, ping_interval=999999)
+                                     host="localhost", port=12312, ping_timeout=999999, ping_interval=999999)
         ctx.proxy_task = asyncio.create_task(proxy_loop(ctx), name="ProxyLoop")
 
         if gui_enabled:
