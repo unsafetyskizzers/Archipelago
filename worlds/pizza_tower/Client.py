@@ -39,6 +39,7 @@ class PTContext(CommonContext):
         self.full_inventory: List[Any] = []
         self.server_msgs: List[Any] = []
         self.connected = False
+        self.authenticated = False
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -99,6 +100,7 @@ class PTContext(CommonContext):
                 self.update_items()
                 self.awaiting_info = False
             self.connected = True
+            self.authenticated = True
         elif cmd == "ReceivedItems":
             #if index is 0 its the receiveditems packet sent on connect which contains all collected items thus far
             if args["index"] == 0:
@@ -149,6 +151,10 @@ async def proxy(websocket, path: str = "/", ctx: PTContext = None):
             async for data in websocket:
                 if DEBUG:
                     logger.info(f"Incoming message: {data}")
+                if not ctx.is_connected() and ctx.authenticated:
+                    text = encode([{"cmd": "ProxyDisconnect"}])
+                    await ctx.send_msgs_proxy(text)
+                    ctx.authenticated = False
                 await parse_game_packets(ctx, data)
     except Exception as e:
         if not isinstance(e, websockets.WebSocketException):
@@ -189,6 +195,8 @@ async def on_client_connected(ctx: PTContext):
         await ctx.send_msgs_proxy(ctx.room_info)
     else:
         ctx.awaiting_info = True
+        text = encode([{"cmd": "ClientPong"}])
+        await ctx.send_msgs_proxy(text)
 
 
 async def proxy_loop(ctx: PTContext):
