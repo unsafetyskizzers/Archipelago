@@ -7,6 +7,16 @@ from .Regions import create_regions
 from .Rules import set_rules
 from math import floor
 from typing import Any, TextIO
+from worlds.LauncherComponents import Component, components, icon_paths, launch as launch_component, Type
+
+def launch_client(*args: str):
+    from .Client import launch
+    launch_component(launch, name="PTClient", args=args)
+
+
+components.append(Component("Pizza Tower Client", "PTClient", func=launch_client, component_type=Type.CLIENT, icon="pizza"))
+
+icon_paths["pizza"] = f"ap:{__name__}/pizza.png"
 
 def internal_from_external(name: str):
     aliases = {

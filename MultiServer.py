@@ -2014,7 +2014,7 @@ async def process_client_cmd(ctx: Context, client: Client, args: dict):
                                                          set(bounceclient.tags) & tags or
                                                          bounceclient.slot in slots):
                     await ctx.send_encoded_msgs(bounceclient, msg)
-
+        
         elif cmd == "Get":
             if "keys" not in args or type(args["keys"]) != list:
                 await ctx.send_msgs(client, [{'cmd': 'InvalidPacket', "type": "arguments",
