@@ -117,7 +117,7 @@ def level_gate_rando(world: World, is_noise: bool, logic_type: int) -> list[str]
     rando_level_order = []
 
     #place two levels from ok_start_levels at the beginning of the rando level order
-    if world.options.fairly_random:
+    if world.options.fairly_random or (world.options.do_transfo_rando and world.options.do_move_rando):
         for i in range(2):
             rando_level = ok_start_levels[world.random.randrange(len(ok_start_levels) - 1)]
             rando_level_order.append(rando_level)
