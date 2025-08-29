@@ -317,5 +317,6 @@ class PizzaTowerWorld(World):
             "shuffle_lap2": bool(self.options.shuffle_lap2),
             "pumpkin_checks": bool(self.options.pumpkin_checks),
             "pumpkin_count": floor(self.pumpkin_number * (self.options.tricky_treat_cost / 100)),
+            "ring_link": bool(self.options.ring_link),
             "apworld_version": tuple(self.apworld_version) #please double check this. i have no idea if this is the proper way to pass a tuple into slot data
         }

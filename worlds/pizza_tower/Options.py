@@ -333,6 +333,13 @@ class TrickyTreatDoor(Range):
     range_end = 100
     default = 67
 
+class RingLink(Toggle):
+    """
+    Links your in-level point gain/loss with other players.
+    Point gain is only linked when coming from pizza toppings, pizzasonas, clocks and bells.
+    """
+    display_name = "Ring Link"
+
 pt_option_groups = [
     OptionGroup("General Options", [
         CharacterToPlay,
@@ -407,6 +414,7 @@ class PTOptions(PerGameCommonOptions):
     do_transfo_rando: RandomizeTransfos
     transfo_rando_list: TransfosToRandomize
     death_link: DeathLink
+    ring_link: RingLink
     clothing_filler: ClothingFiller
     shuffle_lap2: ShuffleLap2
     trap_weights: TrapWeights
