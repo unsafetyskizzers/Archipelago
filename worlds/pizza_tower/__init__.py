@@ -8,6 +8,7 @@ from .Rules import set_rules
 from math import floor
 from typing import Any, TextIO
 from worlds.LauncherComponents import Component, components, icon_paths, launch as launch_component, Type
+from random import choice
 
 def launch_client(*args: str):
     from .Client import launch
@@ -136,6 +137,20 @@ class PizzaTowerWorld(World):
             #"rando_secrets": {internal_from_external(sec): internal_from_external(self.secret_map[sec]) for sec in self.secret_map},
 
     def generate_early(self):
+        if self.options.do_move_rando and self.options.do_transfo_rando:
+            if self.options.character != 0:
+                early_item_list = ["Superjump", "Wallbounce"]
+            else:
+                early_item_list = ["Superjump", "Wallclimb"]
+            early_item_name = choice(early_item_list)
+            self.multiworld.local_early_items[self.player][early_item_name] = 1
+            if self.options.character != 0:
+                early_item_list_1 = ["Bodyslam", "Crusher"]
+                early_item_name_1 = choice(early_item_list_1)
+            else:
+                early_item_name_1 = "Bodyslam"
+            self.multiworld.local_early_items[self.player][early_item_name_1] = 1
+
         re_gen_passthrough = getattr(self.multiworld,"re_gen_passthrough",{})
         if re_gen_passthrough and self.game in re_gen_passthrough:
             slot_data = re_gen_passthrough[self.game]
