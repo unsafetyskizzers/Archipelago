@@ -380,6 +380,8 @@ pt_option_groups = [
         RandomizeSecrets,
         RandomizeMoves,
         MovesToRandomize,
+        RandomizeTransfos,
+        TransfosToRandomize,
         FairlyRandom
     ])
 ]

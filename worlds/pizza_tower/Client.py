@@ -111,15 +111,22 @@ class PTContext(CommonContext):
         #adjusted printjson packet, only sends over assembled text message and the type
         elif cmd == "PrintJSON":
             txtmsg = ""
+            #filter out curly brackets bc pizza tower doesnt like those
+            player_slot_name = self.player_names[args.get("slot", "")]
+            player_receiving_name = self.player_names[args.get("receiving", "")]
+            for char in ["{", "}"]:
+                player_slot_name = player_slot_name.replace(char, "")
+                player_receiving_name = player_receiving_name.replace(char, "")
+            
             if args.get("type") == "Collect":
-                txtmsg = f"{self.player_names[args["slot"]]} collected all of their items!"
+                txtmsg = f"{player_slot_name} collected all of their items!"
                 self.just_collected = args["slot"]
             if (args.get("type") == "ItemSend" and self.slot_concerns_self(args["item"].player) 
                 and args["item"].player != self.just_collected and not self.slot_concerns_self(args["receiving"])):
                 item_name = self.item_names.lookup_in_game(args["item"].item, self.slot_info[args["receiving"]].game)
-                txtmsg = f"Found {self.player_names[args["receiving"]]}'s {item_name}!"
+                txtmsg = f"Found {player_receiving_name}'s {item_name}!"
             if args.get("type") == "Goal":
-                txtmsg = f"{self.player_names[args["slot"]]} reached their goal!"
+                txtmsg = f"{player_slot_name} reached their goal!"
             if txtmsg:
                 self.server_msgs.append(encode([{
                     "cmd": cmd,
