@@ -40,6 +40,13 @@ class PTContext(CommonContext):
         self.server_msgs: List[Any] = []
         self.connected = False
         self.authenticated = False
+        self.relevant_packets = [
+            "RoomUpdate",
+            "ConnectionRefused",
+            "Bounced",
+            "ClientPong",
+            "ProxyDisconnect"
+        ]
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -91,7 +98,11 @@ class PTContext(CommonContext):
         if cmd == "RoomInfo":
             #prepare roominfo packet to send to game client when it connects to our proxy
             self.seed_name = args["seed_name"]
-            self.room_info = encode([args])
+            self.room_info = encode([{
+                "cmd": "RoomInfo", 
+                "seed_name": args["seed_name"], 
+                "tags": args["tags"]
+                }])
         elif cmd == "Connected":
             #same as roominfo except with the connected packet
             self.connected_msg = encode([args])
@@ -112,8 +123,12 @@ class PTContext(CommonContext):
         elif cmd == "PrintJSON":
             txtmsg = ""
             #filter out curly brackets bc pizza tower doesnt like those
-            player_slot_name = self.player_names[args.get("slot", "")]
-            player_receiving_name = self.player_names[args.get("receiving", "")]
+            player_slot_name = ""
+            player_receiving_name = ""
+            if args.get("slot"):
+                player_slot_name = self.player_names[args.get("slot")]
+            if args.get("receiving"):
+                player_receiving_name = self.player_names[args.get("receiving")]
             for char in ["{", "}"]:
                 player_slot_name = player_slot_name.replace(char, "")
                 player_receiving_name = player_receiving_name.replace(char, "")
@@ -133,8 +148,8 @@ class PTContext(CommonContext):
                     "type": args.get("type"),
                     "text": txtmsg
                 }]))
-        #send over all other received data from the server in full
-        else:
+        #send over all other relevant received data from the server in full
+        elif cmd in self.relevant_packets:
             self.server_msgs.append(encode([args]))
 
     def run_gui(self):
