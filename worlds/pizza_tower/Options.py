@@ -309,7 +309,7 @@ class TrapWeights(OptionCounter):
 
 class PumpkinChecks(Toggle):
     """
-    Adds the game's 30 pumpkins to the pool as locations
+    Adds the game's 30 pumpkins to the pool as locations.
     """
     display_name = "Pumpkin Checks"
 
@@ -339,6 +339,12 @@ class RingLink(Toggle):
     Point gain is only linked when coming from pizza toppings, pizzasonas, clocks and bells.
     """
     display_name = "Ring Link"
+
+class RandomizeMusic(Toggle):
+    """
+    Determines whether in-game music should be randomized.
+    """
+    display_name = "Randomize Music"
 
 pt_option_groups = [
     OptionGroup("General Options", [
@@ -424,6 +430,7 @@ class PTOptions(PerGameCommonOptions):
     pumpkin_checks: PumpkinChecks
     pumpkin_count: PumpkinCount
     tricky_treat_cost: TrickyTreatDoor
+    randomize_music: RandomizeMusic
 
 #presets - feel free to suggest more
 

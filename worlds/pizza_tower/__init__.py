@@ -319,6 +319,7 @@ class PizzaTowerWorld(World):
             "pumpkin_count": floor(self.pumpkin_number * (self.options.tricky_treat_cost / 100)),
             "ring_link": bool(self.options.ring_link),
             "do_move_rando": bool(self.options.do_move_rando),
-            "do_move_rando": bool(self.options.do_transfo_rando),
-            "apworld_version": tuple(self.apworld_version) #please double check this. i have no idea if this is the proper way to pass a tuple into slot data
+            "do_transfo_rando": bool(self.options.do_transfo_rando),
+            "apworld_version": tuple(self.apworld_version), #please double check this. i have no idea if this is the proper way to pass a tuple into slot data
+            "randomize_music": bool(self.options.randomize_music)
         }
