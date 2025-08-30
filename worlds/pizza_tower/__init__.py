@@ -307,19 +307,19 @@ class PizzaTowerWorld(World):
             "bonus_ladders": int(self.options.bonus_ladders),
             "character": int(self.options.character.value),
             "death_link": bool(self.options.death_link),
-            "treasure_checks": bool(self.options.treasure_checks),
-            "srank_checks": bool(self.options.srank_checks),
-            "prank_checks": bool(self.options.prank_checks),
-            "cheftask_checks": bool(self.options.cheftask_checks),
-            "difficulty": bool(self.options.difficulty),
+            "treasure_checks": bool(self.options.treasure_checks), #for poptracker
+            "srank_checks": bool(self.options.srank_checks), #for poptracker
+            "prank_checks": bool(self.options.prank_checks), #for poptracker
+            "cheftask_checks": bool(self.options.cheftask_checks), #for poptracker
+            "difficulty": bool(self.options.difficulty), #for poptracker
             "palette_filler": bool(self.options.clothing_filler),
-            "secret_checks": bool(self.options.secret_checks),
+            "secret_checks": bool(self.options.secret_checks), #for poptracker
             "shuffle_lap2": bool(self.options.shuffle_lap2),
-            "pumpkin_checks": bool(self.options.pumpkin_checks),
+            "pumpkin_checks": bool(self.options.pumpkin_checks), #for poptracker
             "pumpkin_count": floor(self.pumpkin_number * (self.options.tricky_treat_cost / 100)),
             "ring_link": bool(self.options.ring_link),
-            "do_move_rando": bool(self.options.do_move_rando),
-            "do_transfo_rando": bool(self.options.do_transfo_rando),
+            "do_move_rando": bool(self.options.do_move_rando), #for poptracker
+            "do_transfo_rando": bool(self.options.do_transfo_rando), #for poptracker
             "apworld_version": tuple(self.apworld_version), #please double check this. i have no idea if this is the proper way to pass a tuple into slot data
             "randomize_music": bool(self.options.randomize_music)
         }
