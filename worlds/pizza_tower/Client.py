@@ -135,7 +135,8 @@ class PTContext(CommonContext):
             
             if args.get("type") == "Collect":
                 txtmsg = f"{player_slot_name} collected all of their items!"
-                self.just_collected = args["slot"]
+                if args["slot"] > 0:
+                    self.just_collected = args["slot"]
             if (args.get("type") == "ItemSend" and self.slot_concerns_self(args["item"].player) 
                 and args["item"].player != self.just_collected and not self.slot_concerns_self(args["receiving"])):
                 item_name = self.item_names.lookup_in_game(args["item"].item, self.slot_info[args["receiving"]].game)
