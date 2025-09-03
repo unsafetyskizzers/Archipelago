@@ -252,7 +252,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Chef Task: Let's Make This Quick": (
 			"CLIMB+SJUMP+MACH4+SLAM", 
 			"SJUMP | CLIMB", 
-			"SJUMP+MACH4+SLAM | SJUMP+MACH4 + CRUSH", 
+			"SJUMP+MACH4+SLAM | SJUMP+MACH4+CRUSH", 
 			"SJUMP | UPPER | CRUSH | BOUNCE"
 		),
         "John Gutter S Rank": (
