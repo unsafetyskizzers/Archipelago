@@ -239,6 +239,7 @@ class MovesToRandomize(OptionSet):
 class RandomizeTransfos(Toggle):
     """
     Determines whether any level-specific Transformations will be shuffled into the item pool.
+    Enabling this settings in combination with moveset randomization will place 2 movement abilities at the beginning of your world to prevent issues due to a restrictive start.
     """
     display_name = "Randomize Transformations"
 
