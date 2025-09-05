@@ -247,19 +247,23 @@ class PizzaTowerWorld(World):
                 pizza_itempool.append(self.create_item(clothing))
 
         #add traps
-        one_percent_trap = (locations_to_fill - len(pizza_itempool)) * (int(self.options.trap_percentage) / 100) / 100
-        total_trapweights = 0
-        for trapweight in self.options.trap_weights:
-            total_trapweights += self.options.trap_weights[trapweight]
-        trapweight_mult = 100 / total_trapweights
-        for trap in get_item_from_category("Trap"):
-            get_trapweight = trap
-            if (trap == "Oktoberfest!" and self.options.jumpscare) or (trap == "Jumpscare" and not self.options.jumpscare):
-                continue
-            if trap == "Jumpscare":
-                get_trapweight = "Oktoberfest!"
-            for i in range(floor(one_percent_trap * (self.options.trap_weights[get_trapweight] * trapweight_mult))):
-                pizza_itempool.append(self.create_item(trap))
+        if self.options.trap_percentage > 0:
+            one_percent_trap = (locations_to_fill - len(pizza_itempool)) * (int(self.options.trap_percentage) / 100) / 100
+            total_trapweights = 0
+            for trapweight in self.options.trap_weights:
+                total_trapweights += self.options.trap_weights[trapweight]
+            if total_trapweights > 0:
+                trapweight_mult = 100 / total_trapweights
+                for trap in get_item_from_category("Trap"):
+                    get_trapweight = trap
+                    if (trap == "Oktoberfest!" and self.options.jumpscare) or (trap == "Jumpscare" and not self.options.jumpscare):
+                        continue
+                    if trap == "Jumpscare":
+                        get_trapweight = "Oktoberfest!"
+                    for i in range(floor(one_percent_trap * (self.options.trap_weights[get_trapweight] * trapweight_mult))):
+                        pizza_itempool.append(self.create_item(trap))
+            else:
+                raise Exception("ERROR: Traps are enabled, but all trap weights are zero")
         
         #add filler
         one_percent_filler = (locations_to_fill - len(pizza_itempool)) / 100
