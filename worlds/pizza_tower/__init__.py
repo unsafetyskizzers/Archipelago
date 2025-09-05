@@ -19,6 +19,38 @@ components.append(Component("Pizza Tower Client", "PTClient", func=launch_client
 
 icon_paths["pizza"] = f"ap:{__name__}/pizza.png"
 
+levels_to_floors = {
+    "John Gutter": "Floor 1 Tower Lobby",
+    "Pizzascape": "Floor 1 Tower Lobby",
+    "Ancient Cheese": "Floor 1 Tower Lobby",
+    "Bloodsauce Dungeon": "Floor 1 Tower Lobby",
+    "Oregano Desert": "Floor 2 Western District",
+    "Wasteyard": "Floor 2 Western District",
+    "Fun Farm": "Floor 2 Western District",
+    "Fastfood Saloon": "Floor 2 Western District",
+    "Crust Cove": "Floor 3 Vacation Resort",
+    "Gnome Forest": "Floor 3 Vacation Resort",
+    "Deep-Dish 9": "Floor 3 Vacation Resort",
+    "GOLF": "Floor 3 Vacation Resort",
+    "The Pig City": "Floor 4 Slum",
+    "Peppibot Factory": "Floor 4 Slum",
+    "Oh Shit!": "Floor 4 Slum",
+    "Freezerator": "Floor 4 Slum",
+    "Pizzascare": "Floor 5 Staff Only",
+    "Don't Make A Sound": "Floor 5 Staff Only",
+    "WAR": "Floor 5 Staff Only"
+}
+
+bosses_to_floors = {
+    "Pepperman": "Floor 1 Tower Lobby",
+    "The Vigilante": "Floor 2 Western District",
+    "The Noise": "Floor 3 Vacation Resort",
+    "The Doise": "Floor 3 Vacation Resort",
+    "Fake Peppino": "Floor 4 Slum"
+}
+
+
+
 def internal_from_external(name: str):
     aliases = {
         "John Gutter": "entrance",
@@ -296,6 +328,25 @@ class PizzaTowerWorld(World):
     def write_spoiler_header(self, spoiler_handle: TextIO):
         apversion_string = str(self.apworld_version[0]) + "." + str(self.apworld_version[1]) + "." + str(self.apworld_version[2])
         spoiler_handle.write('{:<32} {:0}'.format("APWorld Version: ", apversion_string))
+
+    def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
+        if self.topology_present:
+            ex_hint_info = dict()
+            for location in self.multiworld.get_locations(self.player):
+                if location.parent_region.name in levels_to_floors:
+                    ex_hint_info.update({location.address: levels_to_floors[self.level_map[location.parent_region.name]]})
+                elif location.parent_region.name in bosses_to_floors:
+                    ex_hint_info.update({location.address: bosses_to_floors[self.boss_map[location.parent_region.name]]})
+                elif location.parent_region.name == "The Crumbling Tower of Pizza":
+                    ex_hint_info.update({location.address: "Floor 5 Staff Only"})
+                elif location.parent_region.name == "Tricky Treat":
+                    ex_hint_info.update({location.address: "Floor 1 Tower Lobby"})
+                elif location.parent_region.name == "Pizzaface":
+                    ex_hint_info.update({location.address: "Floor 5 Staff Only"})
+                else:
+                    ex_hint_info.update({location.address: location.parent_region.name})
+            hint_data[self.player] = ex_hint_info
+
 
     def fill_slot_data(self):
         return {
