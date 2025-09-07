@@ -1350,7 +1350,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Chef Task: Pan Fried": (
 			"SLAM+SJUMP", 
 			"SLAM+SJUMP | SLAM+CLIMB", 
-			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
+			"SJUMP+SLAM | CRUSH | UPPER+SLAM", 
 			"CRUSH | SLAM+SJUMP | SLAM+UPPER | SLAM+BOUNCE"
 		),
         "Chef Task: Strike!": (
