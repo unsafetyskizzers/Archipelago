@@ -175,13 +175,13 @@ class PizzaTowerWorld(World):
             else:
                 early_item_list = ["Superjump", "Wallclimb"]
             early_item_name = choice(early_item_list)
-            self.multiworld.local_early_items[self.player][early_item_name] = 1
+            self.multiworld.early_items[self.player][early_item_name] = 1
             if self.options.character != 0:
                 early_item_list_1 = ["Bodyslam", "Crusher"]
                 early_item_name_1 = choice(early_item_list_1)
             else:
                 early_item_name_1 = "Bodyslam"
-            self.multiworld.local_early_items[self.player][early_item_name_1] = 1
+            self.multiworld.early_items[self.player][early_item_name_1] = 1
 
         re_gen_passthrough = getattr(self.multiworld,"re_gen_passthrough",{})
         if re_gen_passthrough and self.game in re_gen_passthrough:
