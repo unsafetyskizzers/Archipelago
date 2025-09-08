@@ -216,7 +216,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "John Gutter Secret 1": (
             "SJUMP+SLAM | CLIMB+SLAM | UPPER+SLAM", 
             "SJUMP | CLIMB | UPPER | GRAB | SLAM", 
-            "SJUMP | BOUNCE | CRUSH | UPPER", 
+            "SJUMP+SLAM | CRUSH | UPPER+SLAM", 
             "SJUMP | UPPER | CRUSH | BOUNCE | GRAB | SLAM"
         ),
         "John Gutter Secret 2": (
