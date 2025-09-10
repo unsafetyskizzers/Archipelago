@@ -710,13 +710,13 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
 		),
         "Chef Task: Ghosted": (
-			"SJUMP+GHOST | CLIMB+GHOST", 
+			"CLIMB+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
 		),
         "Wasteyard S Rank": (
-			"SJUMP+GHOST | CLIMB+GHOST", 
+			"CLIMB+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST", 
 			"SJUMP+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"

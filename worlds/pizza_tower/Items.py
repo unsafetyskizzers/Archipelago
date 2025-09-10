@@ -39,7 +39,7 @@ pt_items: dict[str, PTItemData] = {
     "Double Jump":              PTItemData("Moves Peppino", 114, ItemClassification.progression),
     "Rat Kick":                 PTItemData("Moves Peppino", 115, ItemClassification.progression),
     #"Wall Jump": (116, ItemClassification.progression),
-    "Spin Attack":              PTItemData("Moves Peppino", 117, ItemClassification.useful),
+    "Spin Attack":              PTItemData("Moves Peppino", 117, ItemClassification.progression),
 
     "Wallbounce":               PTItemData("Moves Noise", 118, ItemClassification.progression),
     "Tornado":                  PTItemData("Moves Noise", 119, ItemClassification.progression),
