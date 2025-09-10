@@ -262,9 +262,9 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"SJUMP | UPPER | CRUSH | BOUNCE"
 		),
 		"John Gutter Pumpkin": (
-			"SJUMP | CLIMB | UPPER", 
+			"SLAM+SJUMP | SLAM+CLIMB | SLAM+UPPER", 
 			"SJUMP | CLIMB | UPPER | GRAB", 
-			"SJUMP | BOUNCE | UPPER | CRUSH", 
+			"SLAM+SJUMP | SLAM+BOUNCE | SLAM+UPPER | CRUSH", 
 			"SJUMP | BOUNCE | UPPER | GRAB | CRUSH"
 		),
 
