@@ -947,7 +947,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"CLIMB+SLAM+BARR", 
 			"SLAM+CLIMB+BARR | SLAM+SJUMP+UPPER+BARR", 
 			"SJUMP+SLAM+BARR | SJUMP+CRUSH+BARR | SJUMP+TORN+BARR", 
-			"CRUSH+BARR| SJUMP+TORN+BARR | SJUMP+SLAM+BARR | SJUMP+BOUNCE+BARR"
+			"CRUSH+BARR | SJUMP+TORN+BARR | SJUMP+SLAM+BARR | SJUMP+BOUNCE+BARR"
 		),
         "Crust Cove Secret 1": (
 			"SJUMP+BARR | CLIMB+BARR", 
