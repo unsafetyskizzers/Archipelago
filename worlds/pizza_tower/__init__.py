@@ -8,7 +8,6 @@ from .Rules import set_rules
 from math import floor
 from typing import Any, TextIO
 from worlds.LauncherComponents import Component, components, icon_paths, launch as launch_component, Type
-from random import choice
 
 def launch_client(*args: str):
     from .Client import launch
@@ -174,11 +173,11 @@ class PizzaTowerWorld(World):
                 early_item_list = ["Superjump", "Wallbounce"]
             else:
                 early_item_list = ["Superjump", "Wallclimb"]
-            early_item_name = choice(early_item_list)
+            early_item_name = self.random.choice(early_item_list)
             self.multiworld.early_items[self.player][early_item_name] = 1
             if self.options.character != 0:
                 early_item_list_1 = ["Bodyslam", "Crusher"]
-                early_item_name_1 = choice(early_item_list_1)
+                early_item_name_1 = self.random.choice(early_item_list_1)
             else:
                 early_item_name_1 = "Bodyslam"
             self.multiworld.early_items[self.player][early_item_name_1] = 1
