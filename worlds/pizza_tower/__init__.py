@@ -332,11 +332,13 @@ class PizzaTowerWorld(World):
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
         if self.topology_present:
             ex_hint_info = dict()
+            level_map_inv = {value: key for key, value in self.level_map.items()}
+            boss_map_inv = {value: key for key, value in self.boss_map.items()}
             for location in self.multiworld.get_locations(self.player):
                 if location.parent_region.name in levels_to_floors:
-                    ex_hint_info.update({location.address: levels_to_floors[self.level_map[location.parent_region.name]]})
+                    ex_hint_info.update({location.address: levels_to_floors[level_map_inv[location.parent_region.name]]})
                 elif location.parent_region.name in bosses_to_floors:
-                    ex_hint_info.update({location.address: bosses_to_floors[self.boss_map[location.parent_region.name]]})
+                    ex_hint_info.update({location.address: bosses_to_floors[boss_map_inv[location.parent_region.name]]})
                 elif location.parent_region.name == "The Crumbling Tower of Pizza":
                     ex_hint_info.update({location.address: "Floor 5 Staff Only"})
                 elif location.parent_region.name == "Tricky Treat":
