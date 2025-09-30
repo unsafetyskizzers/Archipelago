@@ -162,10 +162,9 @@ class PizzaTowerWorld(World):
     @staticmethod
     def interpret_slot_data(slot_data: dict[str, Any]) -> dict[str, Any]: #UT support function that causes a re-generation
         return slot_data #we don't need to do any modification to the slot data, so just return it
-
-            #"rando_levels": {internal_from_external(level): internal_from_external(self.level_map[level]) for level in self.level_map},
-            #"rando_bosses": {internal_from_external(boss): internal_from_external(self.boss_map[boss]) for boss in self.boss_map},
-            #"rando_secrets": {internal_from_external(sec): internal_from_external(self.secret_map[sec]) for sec in self.secret_map},
+    
+    #Tell universal tracker we don't need a YAML
+    ut_can_gen_without_yaml = True
 
     def generate_early(self):
         if self.options.do_move_rando and self.options.do_transfo_rando:
@@ -181,19 +180,39 @@ class PizzaTowerWorld(World):
             else:
                 early_item_name_1 = "Bodyslam"
             self.multiworld.early_items[self.player][early_item_name_1] = 1
+        
+        self.level_map = {}
+        self.boss_map = {}
+        self.secret_map = {}
 
+        #Support for universal tracker
         re_gen_passthrough = getattr(self.multiworld,"re_gen_passthrough",{})
         if re_gen_passthrough and self.game in re_gen_passthrough:
             slot_data = re_gen_passthrough[self.game]
             self.level_map = {external_from_internal(level): external_from_internal(slot_data["rando_levels"][level]) for level in slot_data["rando_levels"]}
             self.boss_map = {external_from_internal(boss): external_from_internal(slot_data["rando_bosses"][boss]) for boss in slot_data["rando_bosses"]}
             self.secret_map = {external_from_internal(sec): external_from_internal(slot_data["rando_secrets"][sec]) for sec in slot_data["rando_secrets"]}
+            self.options.character = slot_data["character"]
+            self.options.difficulty = slot_data["difficulty"]
+            self.options.floor_1_cost = slot_data["floor_1_toppins"]
+            self.options.floor_2_cost = slot_data["floor_2_toppins"]
+            self.options.floor_3_cost = slot_data["floor_3_toppins"]
+            self.options.floor_4_cost = slot_data["floor_4_toppins"]
+            self.options.floor_5_cost = slot_data["floor_5_toppins"]
+            self.options.open_world = slot_data["open_world"]
+            self.options.bonus_ladders = slot_data["bonus_ladders"]
+            self.options.treasure_checks = slot_data["treasure_checks"]
+            self.options.srank_checks = slot_data["srank_checks"]
+            self.options.prank_checks = slot_data["prank_checks"]
+            self.options.cheftask_checks = slot_data["cheftask_checks"]
+            self.options.secret_checks = slot_data["secret_checks"]
+            self.options.shuffle_lap2 = slot_data["shuffle_lap2"]
+            self.options.pumpkin_checks = slot_data["pumpkin_checks"]
+            self.options.pumpkin_count = slot_data["pumpkin_count"]
+            self.options.do_move_rando = slot_data["do_move_rando"]
+            self.options.do_transfo_rando = slot_data["do_transfo_rando"]
             if self.options.character != 0:
                 self.boss_map = {(k if k != "The Noise" else "The Doise"):(v if v != "The Noise" else "The Doise") for k,v in self.boss_map.items()}
-        else:
-            self.level_map = {}
-            self.boss_map = {}
-            self.secret_map = {}
 
     def create_item(self, name: str) -> PTItem:
         return PTItem(name, pt_items[name].classification, pt_items[name].id, self.player)
@@ -376,6 +395,6 @@ class PizzaTowerWorld(World):
             "ring_link": bool(self.options.ring_link),
             "do_move_rando": bool(self.options.do_move_rando), #for poptracker
             "do_transfo_rando": bool(self.options.do_transfo_rando), #for poptracker
-            "apworld_version": tuple(self.apworld_version), #please double check this. i have no idea if this is the proper way to pass a tuple into slot data
+            "apworld_version": tuple(self.apworld_version),
             "randomize_music": bool(self.options.randomize_music)
         }

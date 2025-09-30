@@ -163,6 +163,11 @@ def secret_rando(world: World, options: PTOptions) -> list[str]:
         secrets_queue[39] = "Peppibot Factory Secret 1"
     return secrets_queue
 
+def get_item_perc_amount(multiworld: MultiWorld, items: int, perc: int) -> int:
+	if getattr(multiworld,"re_gen_passthrough",{}):
+		return perc
+	return floor(items * (perc / 100))
+
 def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins: int, pumpkins: int):
     bosses_list = [ #pizzaface is handled separately because he does not give a rank
         "Pepperman",
@@ -2377,9 +2382,6 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
                     location.progress_type = LocationProgressType.EXCLUDED
             set_rule(location, interpret_rule(location.name, False))
 
-    def get_toppin_prop(perc: int) -> int:
-        return floor(toppins * (perc / 100))
-
     #access rules for floors
     for i in range(4): 
         if options.bonus_ladders < (i+1):
@@ -2406,15 +2408,15 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         #if options.character != 0 and "Crusher" in options.move_rando_list and options.do_move_rando: add_rule(multiworld.get_entrance("Floor 5 Staff Only to Pizzaface", world.player), lambda state: state.has("Crusher", world.player))
 
     #toppin requirements for bosses
-    add_rule(multiworld.get_entrance("Floor 1 Tower Lobby to " + bosses_map["Pepperman"], world.player), lambda state: state.has("Toppin", world.player, get_toppin_prop(options.floor_1_cost)))
-    add_rule(multiworld.get_entrance("Floor 2 Western District to " + bosses_map["The Vigilante"], world.player), lambda state: state.has("Toppin", world.player, get_toppin_prop(options.floor_2_cost)))
-    add_rule(multiworld.get_entrance("Floor 3 Vacation Resort to " + bosses_map[bosses_list[2]], world.player), lambda state: state.has("Toppin", world.player, get_toppin_prop(options.floor_3_cost))) #the noise or the doise, depending on character played
-    add_rule(multiworld.get_entrance("Floor 4 Slum to " + bosses_map["Fake Peppino"], world.player), lambda state: state.has("Toppin", world.player, get_toppin_prop(options.floor_4_cost)))
-    add_rule(multiworld.get_entrance("Floor 5 Staff Only to Pizzaface", world.player), lambda state: state.has("Toppin", world.player, get_toppin_prop(options.floor_5_cost)))
+    add_rule(multiworld.get_entrance("Floor 1 Tower Lobby to " + bosses_map["Pepperman"], world.player), lambda state: state.has("Toppin", world.player, get_item_perc_amount(multiworld, toppins, options.floor_1_cost)))
+    add_rule(multiworld.get_entrance("Floor 2 Western District to " + bosses_map["The Vigilante"], world.player), lambda state: state.has("Toppin", world.player, get_item_perc_amount(multiworld, toppins, options.floor_2_cost)))
+    add_rule(multiworld.get_entrance("Floor 3 Vacation Resort to " + bosses_map[bosses_list[2]], world.player), lambda state: state.has("Toppin", world.player, get_item_perc_amount(multiworld, toppins, options.floor_3_cost))) #the noise or the doise, depending on character played
+    add_rule(multiworld.get_entrance("Floor 4 Slum to " + bosses_map["Fake Peppino"], world.player), lambda state: state.has("Toppin", world.player, get_item_perc_amount(multiworld, toppins, options.floor_4_cost)))
+    add_rule(multiworld.get_entrance("Floor 5 Staff Only to Pizzaface", world.player), lambda state: state.has("Toppin", world.player, get_item_perc_amount(multiworld, toppins, options.floor_5_cost)))
 
     #pumpkin requirement for tricky treat
     if options.pumpkin_checks:
-        add_rule(multiworld.get_entrance("Floor 1 Tower Lobby to Tricky Treat", world.player), lambda state: state.has("Pumpkin", world.player, floor(pumpkins * (options.tricky_treat_cost / 100))))
+        add_rule(multiworld.get_entrance("Floor 1 Tower Lobby to Tricky Treat", world.player), lambda state: state.has("Pumpkin", world.player, get_item_perc_amount(multiworld, pumpkins, options.tricky_treat_cost)))
 
     #boss key requirements for floors
     if not options.open_world:
