@@ -144,7 +144,7 @@ class PizzaTowerWorld(World):
     options_dataclass = PTOptions
     options: PTOptions
     webworld = PizzaTowerWebWorld
-    apworld_version = (1, 2, 4)
+    apworld_version = (1, 2, 5)
 
     toppin_number: int
     pumpkin_number: int

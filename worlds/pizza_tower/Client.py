@@ -7,17 +7,24 @@ from typing import List, Any, Iterable
 from NetUtils import decode, encode, JSONtoTextParser, JSONMessagePart, NetworkItem, NetworkPlayer
 from MultiServer import Endpoint
 from CommonClient import CommonContext, gui_enabled, ClientCommandProcessor, logger, get_base_parser
+from Utils import async_start
 
 DEBUG = False
 
-# THIS CODE IS LARGELY TAKEN FROM THE HAT IN TIME APWORLD! THANKS COOKIECAT FOR THE POINTERS! -whimsiemi
-
-# to-do list: handle printjsons via the proxy (to make datapackages redundant), clean up things a bit and find a way to properly disconnect proxy client to stop weird shenanigans across different worlds/slots
+# This code is largely based on the Hat in Time Client! Special thanks to Cookiecat for the pointers!
 class PTCommandProcessor(ClientCommandProcessor):
     def _cmd_pt(self):
         """Check PT Connection State"""
         if isinstance(self.ctx, PTContext):
             logger.info(f"PT Status: {self.ctx.get_pt_status()}")
+    def _cmd_deathlink(self):
+        """Toggles Deathlink"""
+        if isinstance(self.ctx, PTContext):
+            async_start(self.ctx.toggle_tag("DeathLink"))
+    def _cmd_ringlink(self):
+        """Toggles Ringlink"""
+        if isinstance(self.ctx, PTContext):
+            async_start(self.ctx.toggle_tag("RingLink"))
 
 
 class PTContext(CommonContext):
@@ -31,8 +38,8 @@ class PTContext(CommonContext):
         self.autoreconnect_task = None
         self.endpoint = None
         self.items_handling = 0b111
-        self.room_info = None
-        self.connected_msg = None
+        self.room_info: dict = {}
+        self.connected_msg: dict = {}
         self.game_connected = False
         self.awaiting_info = False
         self.just_collected = None
@@ -104,12 +111,20 @@ class PTContext(CommonContext):
                 "tags": args["tags"]
                 }])
         elif cmd == "Connected":
+            #update tags
+            if args["slot_data"]["death_link"]:
+                self.tags.add("DeathLink")
+            if args["slot_data"]["ring_link"]:
+                self.tags.add("RingLink")
+            async_start(self.update_tags())
             #same as roominfo except with the connected packet
             self.connected_msg = encode([args])
             if self.awaiting_info:
+                self.room_info["tags"] = self.tags
                 self.server_msgs.append(self.room_info)
                 self.update_items()
                 self.awaiting_info = False
+            #set as connected
             self.connected = True
             self.authenticated = True
         elif cmd == "ReceivedItems":
@@ -164,7 +179,22 @@ class PTContext(CommonContext):
 
         self.ui = PTManager(self)
         self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
-
+    
+    async def toggle_tag(self, tag: str):
+        if self.connected:
+            if tag in self.tags:
+                self.tags -= {tag}
+                logger.info(f"Removed Tag: {tag}")
+            else:
+                self.tags.add(tag)
+                logger.info(f"Added Tag: {tag}")
+            await self.update_tags()
+        else:
+            logger.info(f"Couldn't change tag, not yet connected to Archipelago server!")
+    
+    async def update_tags(self):
+        await self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}])
+        await self.send_msgs_proxy(encode([{"cmd": "UpdateTags", "tags": self.tags}]))
 
 async def proxy(websocket, path: str = "/", ctx: PTContext = None):
     ctx.endpoint = Endpoint(websocket)
