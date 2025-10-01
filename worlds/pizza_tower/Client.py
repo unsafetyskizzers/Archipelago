@@ -112,9 +112,9 @@ class PTContext(CommonContext):
                 }])
         elif cmd == "Connected":
             #update tags
-            if args["slot_data"]["death_link"]:
+            if args["slot_data"].get("death_link", False):
                 self.tags.add("DeathLink")
-            if args["slot_data"]["ring_link"]:
+            if args["slot_data"].get("ring_link", False):
                 self.tags.add("RingLink")
             async_start(self.update_tags())
             #same as roominfo except with the connected packet
