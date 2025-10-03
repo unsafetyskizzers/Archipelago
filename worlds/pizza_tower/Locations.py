@@ -573,8 +573,8 @@ level_achievements = {
     "Oh Shit!": {"Chef Task: Penny Pincher", "Chef Task: Can't Fool Me", "Chef Task: Food Clan"},
     "Freezerator": {"Chef Task: Frozen Nuggets", "Chef Task: Season's Greetings", "Chef Task: Ice Climber"},
     "Pizzascare": {"Chef Task: Haunted Playground", "Chef Task: Skullsplitter", "Chef Task: Cross To Bare"},
-    "Don't Make A Sound": {"Chef Task: And This... Is My Gun-On-A-Stick!", "Chef Task: Jumpspared", "Chef Task: Let Them Sleep"},
-    "WAR": {"Chef Task: Decorated Veteran", "Chef Task: Sharpshooter", "Chef Task: Trip To The Warzone"}
+    "Don't Make A Sound": {"Chef Task: And This... Is My Gun On A Stick!", "Chef Task: Jumpspared", "Chef Task: Let Them Sleep"},
+    "WAR": {"Chef Task: Decorated Veteran", "Chef Task: Sharpshooter", "Chef Task: Trip to the Warzone"}
 }
 
 boss_names = [
