@@ -146,8 +146,8 @@ class PizzaTowerWorld(World):
     webworld = PizzaTowerWebWorld
     apworld_version = (1, 2, 5)
 
-    toppin_number: int
-    pumpkin_number: int
+    toppin_number: int = 0
+    pumpkin_number: int = 0
 
     level_map: dict[str, str]
     boss_map: dict[str, str]
@@ -275,7 +275,6 @@ class PizzaTowerWorld(World):
             self.toppin_number = i+1
 
         #add pumpkins, if we can
-        self.pumpkin_number = 0
         if self.options.pumpkin_checks:
             for i in range(self.options.pumpkin_count):
                 if locations_to_fill <= len(pizza_itempool):
