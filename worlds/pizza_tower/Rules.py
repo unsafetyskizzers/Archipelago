@@ -2365,7 +2365,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
                 for i in range(4):
                     lvls_on_floor.append(levels_map[levels_list[floor_first_lvl_index + i]])
             else:
-                floor_first_lvl_index = (floors_list.index(location.parent_region.name) * 3)
+                floor_first_lvl_index = (floors_list.index(location.parent_region.name) * 4)
                 for i in range(3):
                     lvls_on_floor.append(levels_map[levels_list[floor_first_lvl_index + i]])
             add_s_ranked_task_rule(lvls_on_floor, location)
