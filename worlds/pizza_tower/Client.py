@@ -116,13 +116,13 @@ class PTContext(CommonContext):
                 self.tags.add("DeathLink")
             if args["slot_data"].get("ring_link", False):
                 self.tags.add("RingLink")
+            update_room_info: dict = decode(self.room_info)[0]
+            update_room_info.update({"tags": self.tags})
+            self.room_info = encode([update_room_info])
             async_start(self.update_tags())
             #same as roominfo except with the connected packet
             self.connected_msg = encode([args])
             if self.awaiting_info:
-                update_room_info: dict = decode(self.room_info)[0]
-                update_room_info.update({"tags": self.tags})
-                self.room_info = encode([update_room_info])
                 self.server_msgs.append(self.room_info)
                 self.update_items()
                 self.awaiting_info = False
