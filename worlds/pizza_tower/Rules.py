@@ -1071,9 +1071,9 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"CRUSH"
 		),
         "Chef Task: Bee Nice": (
+			"TAUNT", 
 			"TAUNT | STAUNT", 
-			"TAUNT | STAUNT", 
-			"TAUNT | STAUNT", 
+			"TAUNT", 
 			"TAUNT | STAUNT"
 		),
         "Chef Task: Bullseye": (
