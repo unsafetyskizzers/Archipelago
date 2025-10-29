@@ -1,6 +1,7 @@
 from BaseClasses import Region, MultiWorld
 from .Locations import PTLocation, pt_locations
 from .Options import PTOptions
+from .Rules import PTChars
 
 def create_regions(player: int, world: MultiWorld, options: PTOptions):
     floors_list = [
@@ -49,7 +50,7 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions):
         "Fake Peppino"
     ]
 
-    if options.character != 0:
+    if options.character != PTChars.PEPPINO:
         bosses_list[2] = "The Doise"
 
     bosses_checks = [
@@ -194,7 +195,7 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions):
         bosses_checks.append("P Rank")
     if options.pumpkin_checks:
         levels_checks.append("Pumpkin")
-    if options.character == 0:
+    if options.character == PTChars.PEPPINO:
         tutorial_checks += [
             "Mushroom Toppin",
             "Cheese Toppin",
@@ -202,14 +203,14 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions):
             "Sausage Toppin",
             "Pineapple Toppin",
         ]
-    elif options.character == 2:
+    elif options.character == PTChars.SWAP:
         tutorial_checks = []
 
     #create regions and add locations
     for flr in floors_list:
         tower_regions.append(Region(flr, player, world, flr))
 
-    if options.character != 2:
+    if options.character != PTChars.SWAP:
         region_tut = Region("Tutorial", player, world, None)
         for chk in tutorial_checks:
             check_name = "Tutorial " + chk

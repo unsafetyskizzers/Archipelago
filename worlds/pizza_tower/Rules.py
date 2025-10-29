@@ -5,6 +5,12 @@ from ..generic.Rules import set_rule, add_rule
 from math import floor
 from typing import Callable
 from BaseClasses import LocationProgressType, Location, Entrance, CollectionState
+from enum import IntEnum
+
+class PTChars(IntEnum):
+    PEPPINO = 0
+    NOISE = 1
+    SWAP = 2
 
 levels_list = [ #ctop handled separately
     "John Gutter",
@@ -137,7 +143,7 @@ def boss_gate_rando(world: World, is_noise: bool) -> list[str]:
         "The Noise",
         "Fake Peppino"
     ]
-    if world.options.character != 0:
+    if world.options.character != PTChars.PEPPINO:
         boss_queue[2] = "The Doise"
     world.random.shuffle(boss_queue)
     if world.options.fairly_random and world.options.difficulty > 0:
@@ -175,7 +181,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "The Noise",
         "Fake Peppino"
     ]
-    if options.character != 0:
+    if options.character != PTChars.PEPPINO:
         bosses_list[2] = "The Doise"
 
 
@@ -2261,7 +2267,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
     secrets_list = get_secrets_list() 
     if not world.level_map:
         if options.randomize_levels:
-            levels_map = dict(zip(levels_list, level_gate_rando(world, options.character != 0, options.difficulty)))
+            levels_map = dict(zip(levels_list, level_gate_rando(world, options.character != PTChars.PEPPINO, options.difficulty)))
         else:
             levels_map = dict(zip(levels_list, levels_list))
         world.level_map = levels_map
@@ -2270,7 +2276,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 
     if not world.boss_map:
         if options.randomize_bosses:
-            bosses_map = dict(zip(bosses_list, boss_gate_rando(world, options.character != 0)))
+            bosses_map = dict(zip(bosses_list, boss_gate_rando(world, options.character != PTChars.PEPPINO)))
         else:
             bosses_map = dict(zip(bosses_list, bosses_list))
         world.boss_map = bosses_map
@@ -2287,7 +2293,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         secrets_map = world.secret_map
 
     def interpret_rule(rule_chk: str, hub_rule: bool):
-        if options.character != 2:
+        if options.character != PTChars.SWAP:
             rule_index = options.difficulty + (options.character * 2)
             if hub_rule:
                 rule_str = hub_rules_dict[rule_chk][options.character]
@@ -2335,7 +2341,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
     
     multiworld.get_region("Floor 5 Staff Only", world.player).connect(multiworld.get_region("Pizzaface", world.player), "Floor 5 Staff Only to Pizzaface")
     multiworld.get_region("Pizzaface", world.player).connect(multiworld.get_region("The Crumbling Tower of Pizza", world.player), "Pizzaface to The Crumbling Tower of Pizza")
-    if options.character != 2:
+    if options.character != PTChars.SWAP:
         multiworld.get_region("Floor 1 Tower Lobby", world.player).connect(multiworld.get_region("Tutorial", world.player), "Floor 1 Tower Lobby to Tutorial")
     if options.pumpkin_checks:
         multiworld.get_region("Floor 1 Tower Lobby", world.player).connect(multiworld.get_region("Tricky Treat", world.player), "Floor 1 Tower Lobby to Tricky Treat")
