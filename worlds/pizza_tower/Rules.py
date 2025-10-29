@@ -165,7 +165,7 @@ def secret_rando(world: World, options: PTOptions) -> list[str]:
 
 def get_item_perc_amount(multiworld: MultiWorld, items: int, perc: int) -> int:
 	if getattr(multiworld,"re_gen_passthrough",{}):
-		return perc
+		return items
 	return floor(items * (perc / 100))
 
 def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins: int, pumpkins: int):
@@ -2048,15 +2048,15 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 		),
         "Fake Peppino S Rank": (
 			"GRAB | UPPER", 
-			"NONE", 
+			"GRAB | UPPER | BODYSLAM", 
 			"BOMB | GRAB", 
-			"NONE"
+			"BOMB | GRAB | BODYSLAM | TORN | CRUSH"
 		),
         "Fake Peppino P Rank": (
 			"GRAB | UPPER", 
-			"NONE", 
+			"GRAB | UPPER | BODYSLAM", 
 			"BOMB | GRAB", 
-			"NONE"
+			"BOMB | GRAB | BODYSLAM | TORN | CRUSH"
 		),
 
     #Pizzaface
