@@ -4,7 +4,7 @@ from .Items import PTItem, pt_items, get_item_from_category, pt_item_groups
 from .Locations import PTLocation, pt_locations, pt_location_groups
 from .Options import PTOptions, pt_option_groups, pt_option_presets
 from .Regions import create_regions
-from .Rules import set_rules
+from .Rules import set_rules, PTChars
 from math import floor
 from typing import Any, TextIO
 from worlds.LauncherComponents import Component, components, icon_paths, launch as launch_component, Type
@@ -168,13 +168,13 @@ class PizzaTowerWorld(World):
 
     def generate_early(self):
         if self.options.do_move_rando and self.options.do_transfo_rando:
-            if self.options.character != 0:
+            if self.options.character != PTChars.PEPPINO:
                 early_item_list = ["Superjump", "Wallbounce"]
             else:
                 early_item_list = ["Superjump", "Wallclimb"]
             early_item_name = self.random.choice(early_item_list)
             self.multiworld.early_items[self.player][early_item_name] = 1
-            if self.options.character != 0:
+            if self.options.character != PTChars.PEPPINO:
                 early_item_list_1 = ["Bodyslam", "Crusher"]
                 early_item_name_1 = self.random.choice(early_item_list_1)
             else:
@@ -211,7 +211,7 @@ class PizzaTowerWorld(World):
             self.options.pumpkin_count = slot_data["pumpkin_count"]
             self.options.do_move_rando = slot_data["do_move_rando"]
             self.options.do_transfo_rando = slot_data["do_transfo_rando"]
-            if self.options.character != 0:
+            if self.options.character != PTChars.PEPPINO:
                 self.boss_map = {(k if k != "The Noise" else "The Doise"):(v if v != "The Noise" else "The Doise") for k,v in self.boss_map.items()}
 
     def create_item(self, name: str) -> PTItem:
@@ -233,9 +233,9 @@ class PizzaTowerWorld(World):
         
         #add moves based on selected character
         total_moves = get_item_from_category("Moves Shared")
-        if self.options.character != 1:
+        if self.options.character != PTChars.NOISE:
             total_moves += get_item_from_category("Moves Peppino")
-        if self.options.character != 0:
+        if self.options.character != PTChars.PEPPINO:
             total_moves += get_item_from_category("Moves Noise")
         
         for move in total_moves:
@@ -246,7 +246,7 @@ class PizzaTowerWorld(World):
         
         #add transformations, Noise doesn't use a Revolver
         transformations = get_item_from_category("Transformation")
-        if self.options.character == 1:
+        if self.options.character == PTChars.NOISE:
             transformations.remove("Revolver")
 
         for transfo in transformations:
@@ -262,7 +262,7 @@ class PizzaTowerWorld(World):
             else:
                 self.multiworld.get_location("Pepperman Defeated", self.player).place_locked_item(self.create_item("Boss Key"))
                 self.multiworld.get_location("The Vigilante Defeated", self.player).place_locked_item(self.create_item("Boss Key"))
-                if self.options.character == 0: self.multiworld.get_location("The Noise Defeated", self.player).place_locked_item(self.create_item("Boss Key"))
+                if self.options.character == PTChars.PEPPINO: self.multiworld.get_location("The Noise Defeated", self.player).place_locked_item(self.create_item("Boss Key"))
                 else: self.multiworld.get_location("The Doise Defeated", self.player).place_locked_item(self.create_item("Boss Key"))
                 self.multiworld.get_location("Fake Peppino Defeated", self.player).place_locked_item(self.create_item("Boss Key"))
                 locations_to_fill -= 4 #manually placed 4 items
@@ -285,9 +285,9 @@ class PizzaTowerWorld(World):
         #add clothes, if there's room
         if self.options.clothing_filler:
             total_clothes = get_item_from_category("Clothes Shared")
-            if self.options.character != 1:
+            if self.options.character != PTChars.NOISE:
                 total_clothes += get_item_from_category("Clothes Peppino")
-            if self.options.character != 0:
+            if self.options.character != PTChars.PEPPINO:
                 total_clothes += get_item_from_category("Clothes Noise")
             
             for clothing in total_clothes:

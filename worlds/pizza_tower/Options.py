@@ -87,6 +87,8 @@ class PRankChecks(Toggle):
 class ChefTaskChecks(Toggle):
     """
     Adds the game's 72 Chef Tasks (achievements) to the pool as locations.
+
+    If Pumpkin Checks are enabled, this will also add the 2 pumpkin-related Chef Tasks as checks.
     """
     display_name = "Chef Tasks Award Checks"
 
