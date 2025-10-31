@@ -2054,15 +2054,15 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 		),
         "Fake Peppino S Rank": (
 			"GRAB | UPPER", 
-			"GRAB | UPPER | BODYSLAM", 
+			"GRAB | UPPER | SLAM", 
 			"BOMB | GRAB", 
-			"BOMB | GRAB | BODYSLAM | TORN | CRUSH"
+			"BOMB | GRAB | SLAM | TORN | CRUSH"
 		),
         "Fake Peppino P Rank": (
 			"GRAB | UPPER", 
-			"GRAB | UPPER | BODYSLAM", 
+			"GRAB | UPPER | SLAM", 
 			"BOMB | GRAB", 
-			"BOMB | GRAB | BODYSLAM | TORN | CRUSH"
+			"BOMB | GRAB | SLAM | TORN | CRUSH"
 		),
 
     #Pizzaface
