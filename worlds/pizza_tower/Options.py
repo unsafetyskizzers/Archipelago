@@ -163,28 +163,6 @@ class TrapPercentage(Range):
     range_end = 100
     default = 10
 
-class EnabledTraps(OptionSet):
-    """
-    A trap sent to you can be any of these.
-    """
-    display_name = "Enabled Traps"
-    verify_item_name = True
-    default = [
-        "Clown Trap",
-        "Timer Trap",
-        "Pizzaface",
-        "Granny Trap",
-        "Oktoberfest!"
-    ]
-
-class Jumpscare(Toggle):
-    """
-    Replace the Oktoberfest trap with a jumpscare. Not for the faint of heart!
-
-    Does not change the functionality of the trap.
-    """
-    display_name = "Replace Oktoberfest with Jumpscare"
-
 class FairlyRandom(DefaultOnToggle):
     """
     On: The first two levels will have at least two accessible locations each, and the first boss will not require a grab to defeat.
@@ -304,6 +282,7 @@ class TrapWeights(OptionCounter):
         "Clown Trap": 20,
         "Fake Santa Trap": 20,
         "Oktoberfest!": 20,
+        "Jumpscare": 0,
         "Granny Trap": 20,
         "Timer Trap": 10,
         "Ghost Trap": 10,
@@ -380,8 +359,7 @@ pt_option_groups = [
         TrapPercentage,
         ClothingFiller,
         FillerWeights,
-        TrapWeights,
-        Jumpscare
+        TrapWeights
     ]),
     OptionGroup("Randomization Options", [
         RandomizeLevels,
@@ -416,8 +394,6 @@ class PTOptions(PerGameCommonOptions):
     open_world: OpenWorld
     bonus_ladders: BonusLadders
     trap_percentage: TrapPercentage
-    #enabled_traps: EnabledTraps # not implemented
-    jumpscare: Jumpscare
     fairly_random: FairlyRandom
     difficulty: LogicDifficulty
     do_move_rando: RandomizeMoves
