@@ -394,5 +394,7 @@ class PizzaTowerWorld(World):
             "do_move_rando": bool(self.options.do_move_rando), #for poptracker
             "do_transfo_rando": bool(self.options.do_transfo_rando), #for poptracker
             "apworld_version": tuple(self.apworld_version),
-            "randomize_music": bool(self.options.randomize_music)
+            "randomize_music": bool(self.options.randomize_music),
+            "completion_goal": int(self.options.completion_goal),
+            "snotty_floor": int(self.options.snotty_floor)
         }
