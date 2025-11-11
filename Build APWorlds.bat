@@ -1,0 +1,1 @@
+start python %cd%\Launcher.py "Build APWorlds"
