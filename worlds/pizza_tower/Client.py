@@ -2,12 +2,18 @@ import asyncio
 import Utils
 import websockets
 import functools
-from copy import deepcopy
 from typing import List, Any, Iterable
-from NetUtils import decode, encode, JSONtoTextParser, JSONMessagePart, NetworkItem, NetworkPlayer
+from NetUtils import decode, encode
 from MultiServer import Endpoint
-from CommonClient import CommonContext, gui_enabled, ClientCommandProcessor, logger, get_base_parser
+from kvui import GameManager
 from Utils import async_start
+tracker_loaded = False
+try:
+    from worlds.tracker.TrackerClient import TrackerGameContext as SuperContext, gui_enabled, ClientCommandProcessor, logger, get_base_parser # type: ignore
+    tracker_loaded = True
+except:
+    from CommonClient import CommonContext as SuperContext, gui_enabled, ClientCommandProcessor, logger, get_base_parser
+    print("Couldn't find Universal Tracker!")
 
 DEBUG = False
 
@@ -27,9 +33,10 @@ class PTCommandProcessor(ClientCommandProcessor):
             async_start(self.ctx.toggle_tag("RingLink"))
 
 
-class PTContext(CommonContext):
+class PTContext(SuperContext):
     command_processor = PTCommandProcessor
     game = "Pizza Tower"
+    tags = {"AP"}
 
     def __init__(self, server_address, password):
         super().__init__(server_address, password)
@@ -102,6 +109,7 @@ class PTContext(CommonContext):
         self.server_msgs.append(encode([{"cmd": "ReceivedItems", "index": 0, "items": self.full_inventory}]))
 
     def on_package(self, cmd: str, args: dict):
+        super().on_package(cmd, args)
         if cmd == "RoomInfo":
             #prepare roominfo packet to send to game client when it connects to our proxy
             self.seed_name = args["seed_name"]
@@ -169,18 +177,14 @@ class PTContext(CommonContext):
         #send over all other relevant received data from the server in full
         elif cmd in self.relevant_packets:
             self.server_msgs.append(encode([args]))
-
-    def run_gui(self):
-        from kvui import GameManager
-
-        class PTManager(GameManager):
-            logging_pairs = [
-                ("Client", "Archipelago")
-            ]
-            base_title = "Archipelago Pizza Tower Client"
-
-        self.ui = PTManager(self)
-        self.ui_task = asyncio.create_task(self.ui.async_run(), name="UI")
+    
+    def make_gui(self) -> type[GameManager]:
+        ui = super().make_gui()
+        ui.base_title = "Archipelago Pizza Tower Client"
+        ui.logging_pairs = [
+            ("Client", "Archipelago")
+        ]
+        return ui
     
     async def toggle_tag(self, tag: str):
         if self.connected:
@@ -283,6 +287,8 @@ def launch(*launch_args: str):
 
         if gui_enabled:
             ctx.run_gui()
+        if tracker_loaded:
+            ctx.run_generator()
         ctx.run_cli()
 
         await ctx.proxy

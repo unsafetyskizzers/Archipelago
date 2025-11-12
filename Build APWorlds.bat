@@ -1,1 +1,1 @@
-start python %cd%\Launcher.py "Build APWorlds"
+start python %cd%\Launcher.py "Build APWorlds" -- "Pizza Tower"
