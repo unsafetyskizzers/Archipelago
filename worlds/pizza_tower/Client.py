@@ -13,7 +13,6 @@ try:
     tracker_loaded = True
 except:
     from CommonClient import CommonContext as SuperContext, gui_enabled, ClientCommandProcessor, logger, get_base_parser
-    print("Couldn't find Universal Tracker!")
 
 DEBUG = False
 

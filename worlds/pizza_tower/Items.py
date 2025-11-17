@@ -19,10 +19,10 @@ def get_item_from_category(category: str) -> list:
 
 
 pt_items: dict[str, PTItemData] = {
-    "Toppin":                   PTItemData("Progression", 101, ItemClassification.progression_skip_balancing),
+    "Toppin":                   PTItemData("Progression", 101, ItemClassification.progression_deprioritized_skip_balancing),
     "Boss Key":                 PTItemData("Progression", 102, ItemClassification.progression),
     "Lap 2 Portals":            PTItemData("Progression", 149, ItemClassification.progression),
-    "Pumpkin":                  PTItemData("Progression", 150, ItemClassification.progression_skip_balancing),
+    "Pumpkin":                  PTItemData("Progression", 150, ItemClassification.progression_deprioritized_skip_balancing),
 
     "Mach 4":                   PTItemData("Moves Shared", 103, ItemClassification.progression),
     "Uppercut":                 PTItemData("Moves Shared", 104, ItemClassification.progression),
