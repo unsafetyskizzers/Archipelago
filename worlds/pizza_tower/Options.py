@@ -328,25 +328,6 @@ class RandomizeMusic(Toggle):
     """
     display_name = "Randomize Music"
 
-class CompletionGoal(Choice):
-    """
-    Determines when your game is considered complete.
-    """
-    display_name = "Completion Goal"
-    option_The_Crumbling_Tower_of_Pizza = 0
-    option_Kill_Snotty = 1
-    # option_Secrets_of_the_World = 2
-    default = 0
-
-class SnottyFloor(Range):
-    """
-    Determines which floor Snotty will be found on.
-    """
-    display_name = "Snotty's Home Floor"
-    range_start = 1
-    range_end = 5
-    default = 4
-
 pt_option_groups = [
     OptionGroup("General Options", [
         CharacterToPlay,
@@ -429,8 +410,6 @@ class PTOptions(PerGameCommonOptions):
     pumpkin_count: PumpkinCount
     tricky_treat_cost: TrickyTreatDoor
     randomize_music: RandomizeMusic
-    completion_goal: CompletionGoal
-    snotty_floor: SnottyFloor
 
 #presets - feel free to suggest more
 
