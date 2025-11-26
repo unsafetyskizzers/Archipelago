@@ -1422,7 +1422,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 		),
         "Peppibot Factory Secret 1": (
 			"SJUMP", 
-			"SJUMP | CLIMB", 
+			"SJUMP | CLIMB+GRAB | CLIMB+UPPER", 
 			"SJUMP", 
 			"SJUMP | CRUSH | UPPER"
 		),
