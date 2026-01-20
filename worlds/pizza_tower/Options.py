@@ -328,6 +328,27 @@ class RandomizeMusic(Toggle):
     """
     display_name = "Randomize Music"
 
+class CompletionGoal(Choice):
+    """
+    Determines your goal in this run.
+    CTOP: Defeat Pizzaface and complete the Crumbling Tower of Pizza.
+    Snotty: Kill Snotty.
+    """
+    display_name = "Goal"
+    option_CTOP = 0
+    option_Snotty = 1
+    alias_TCTOP = 0
+    default = 0
+
+class SnottyHome(Range):
+    """
+    Determines which floor Snotty will show up on.
+    """
+    display_name = "Snotty's Home Floor"
+    range_start = 1
+    range_end = 5
+    default = 4
+
 pt_option_groups = [
     OptionGroup("General Options", [
         CharacterToPlay,
@@ -410,6 +431,8 @@ class PTOptions(PerGameCommonOptions):
     pumpkin_count: PumpkinCount
     tricky_treat_cost: TrickyTreatDoor
     randomize_music: RandomizeMusic
+    completion_goal: CompletionGoal
+    snotty_home: SnottyHome
 
 #presets - feel free to suggest more
 
