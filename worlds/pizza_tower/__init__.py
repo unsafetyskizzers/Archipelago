@@ -331,7 +331,10 @@ class PizzaTowerWorld(World):
 
     def set_rules(self):
         set_rules(self.multiworld, self, self.options, self.toppin_number, self.pumpkin_number)
-        self.multiworld.completion_condition[self.player] = lambda state: state.can_reach("The Crumbling Tower of Pizza Complete", "Location", self.player)
+        if self.options.completion_goal == 0:
+            self.multiworld.completion_condition[self.player] = lambda state: state.can_reach("The Crumbling Tower of Pizza Complete", "Location", self.player)
+        else:
+            self.multiworld.completion_condition[self.player] = lambda state: state.can_reach("Snotty Murdered", "Location", self.player)
 
     def get_filler_item_name(self) -> str:
         weighted_filler = []
@@ -394,5 +397,7 @@ class PizzaTowerWorld(World):
             "do_move_rando": bool(self.options.do_move_rando), #for poptracker
             "do_transfo_rando": bool(self.options.do_transfo_rando), #for poptracker
             "apworld_version": tuple(self.apworld_version),
-            "randomize_music": bool(self.options.randomize_music)
+            "randomize_music": bool(self.options.randomize_music),
+            "completion_goal": int(self.options.completion_goal),
+            "snotty_home": int(self.options.snotty_home)
         }
