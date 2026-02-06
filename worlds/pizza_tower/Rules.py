@@ -819,8 +819,8 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"SJUMP+SLAM+MORT | SJUMP+TORN+MORT | BOUNCE+MORT | CRUSH+MORT | UPPER+SLAM+MORT | UPPER+TORN+MORT"
 		),
         "Fun Farm S Rank": (
-			"SLAM+CLIMB+MORT", 
-			"SLAM+UPPER+GRAB+MORT | SLAM+SJUMP+MORT | SLAM+CLIMB+MORT", 
+			"SLAM+CLIMB+GRAB+MORT | SLAM+CLIMB+SJUMP+MORT", 
+			"SLAM+UPPER+GRAB+MORT | SLAM+SJUMP+MORT | SLAM+CLIMB+MORT+GRAB", 
 			"BOUNCE+SLAM+MORT | UPPER+SLAM+MORT | SJUMP+SLAM+MORT | CRUSH+MORT", 
 			"CRUSH+MORT | SLAM+UPPER+MORT | SLAM+BOUNCE+MORT | SLAM+SJUMP+MORT"
 		),
@@ -1296,7 +1296,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"SLAM+DJUMP", 
 			"SLAM+DJUMP", 
 			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
-			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+			"SJUMP+SLAM | BOUNCE+SLAM | CRUSH | UPPER+SLAM"
 		),
         "The Pig City Mushroom Toppin": (
 			"NONE", 
@@ -1320,13 +1320,13 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"SLAM+DJUMP", 
 			"SLAM+DJUMP", 
 			"SJUMP+SLAM | BOUNCE+SLAM | SJUMP+CRUSH | BOUNCE+CRUSH", 
-			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+			"SJUMP+SLAM | BOUNCE+SLAM | CRUSH | UPPER+SLAM"
 		),
         "The Pig City Pineapple Toppin": (
 			"SLAM+DJUMP", 
 			"SLAM+DJUMP", 
 			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
-			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+			"SJUMP+SLAM | BOUNCE+SLAM | CRUSH | UPPER+SLAM"
 		),
         "The Pig City Secret 1": (
 			"NONE", 
@@ -1338,19 +1338,19 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"SLAM+DJUMP", 
 			"SLAM+DJUMP", 
 			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
-			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+			"SJUMP+SLAM | BOUNCE+SLAM | CRUSH | UPPER+SLAM"
 		),
         "The Pig City Secret 3": (
 			"SLAM+DJUMP", 
 			"SLAM+DJUMP", 
 			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
-			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+			"SJUMP+SLAM | BOUNCE+SLAM | CRUSH | UPPER+SLAM"
 		),
         "The Pig City Treasure": (
 			"SLAM+DJUMP", 
 			"SLAM+DJUMP", 
 			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
-			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+			"SJUMP+SLAM | BOUNCE+SLAM | CRUSH | UPPER+SLAM"
 		),
         "Chef Task: Say Oink!": (
 			"SLAM+DJUMP+TAUNT", 
@@ -1368,13 +1368,13 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"SLAM+DJUMP+KICK", 
 			"SLAM+DJUMP+KICK", 
 			"SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
-			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+			"SJUMP+SLAM | BOUNCE+SLAM | CRUSH | UPPER+SLAM"
 		),
         "The Pig City S Rank": (
 			"SJUMP+SLAM+DJUMP+SPIN | CLIMB+SLAM+DJUMP+SPIN | SJUMP+SLAM+DJUMP+KICK | CLIMB+SLAM+DJUMP+KICK", 
 			"SJUMP+SLAM+DJUMP | CLIMB+SLAM+DJUMP", 
 			"SJUMP+SLAM | SJUMP+CRUSH", 
-			"SJUMP+SLAM | SJUMP+TORN | BOUNCE | CRUSH | UPPER+SLAM | UPPER+TORN"
+			"SJUMP+SLAM | BOUNCE+SLAM | CRUSH | UPPER+SLAM"
 		),
         "The Pig City Pumpkin": (
 			"SLAM+DJUMP", 
