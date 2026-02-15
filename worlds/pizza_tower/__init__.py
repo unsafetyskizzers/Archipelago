@@ -168,14 +168,16 @@ class PizzaTowerWorld(World):
 
     def generate_early(self):
         if self.options.do_move_rando and self.options.do_transfo_rando:
-            if self.options.character != PTChars.PEPPINO:
+            if self.options.character == PTChars.PEPPINO:
+                early_item_list = ["Superjump", "Wallclimb"]
+            elif self.options.character == PTChars.NOISE:
                 early_item_list = ["Superjump", "Wallbounce"]
             else:
-                early_item_list = ["Superjump", "Wallclimb"]
+                early_item_list = ["Superjump", "Wallclimb", "Wallbounce"]
             early_item_name = self.random.choice(early_item_list)
             self.multiworld.early_items[self.player][early_item_name] = 1
             if self.options.character != PTChars.PEPPINO:
-                early_item_list_1 = ["Bodyslam", "Crusher"]
+                early_item_list_1 = ["Bodyslam", "Crusher", "Tornado"]
                 early_item_name_1 = self.random.choice(early_item_list_1)
             else:
                 early_item_name_1 = "Bodyslam"
