@@ -340,7 +340,7 @@ class CompletionGoal(Choice):
     alias_TCTOP = 0
     default = 0
 
-class SnottyHome(Range):
+class SnottyFloor(Range):
     """
     Determines which floor Snotty will show up on.
     """
@@ -432,7 +432,7 @@ class PTOptions(PerGameCommonOptions):
     tricky_treat_cost: TrickyTreatDoor
     randomize_music: RandomizeMusic
     completion_goal: CompletionGoal
-    snotty_home: SnottyHome
+    snotty_floor: SnottyFloor
 
 #presets - feel free to suggest more
 
