@@ -225,7 +225,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
             "SJUMP | UPPER | CRUSH | BOUNCE"
         ),
         "John Gutter Secret 1": (
-            "SJUMP+SLAM | CLIMB+SLAM | UPPER+SLAM", 
+            "SJUMP+SLAM | UPPER+SLAM", 
             "SJUMP | CLIMB | UPPER | GRAB | SLAM", 
             "SJUMP+SLAM | CRUSH | UPPER+SLAM", 
             "SJUMP | UPPER | CRUSH | BOUNCE | GRAB | SLAM"
@@ -341,7 +341,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"GRAB+SJUMP+KNIGHT | UPPER+KNIGHT | GRAB+BOUNCE+KNIGHT | GRAB+CRUSH+KNIGHT"
 		),
         "Chef Task: Shining Armor": (
-			"GRAB+KNIGHT", 
+			"GRAB+SJUMP+KNIGHT | GRAB+CLIMB+KNIGHT", 
 			"UPPER+KNIGHT | GRAB+KNIGHT", 
 			"GRAB+UPPER+KNIGHT | GRAB+SJUMP+KNIGHT | GRAB+BOUNCE+KNIGHT | GRAB+CRUSH+KNIGHT", 
 			"GRAB+KNIGHT | UPPER+KNIGHT"
@@ -558,7 +558,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
     #Oregano Desert
         "Oregano Desert Complete": (
 			"CLIMB+FIRE", 
-			"SJUMP+GRAB+FIRE | UPPER+GRAB+FIRE | CLIMB+FIRE", 
+			"UPPER+FIRE | SJUMP+GRAB+FIRE | SJUMP+SLAM+FIRE | CLIMB+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
 		),
@@ -570,25 +570,25 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 		),
         "Oregano Desert Cheese Toppin": (
 			"SJUMP+FIRE | CLIMB+FIRE", 
-			"UPPER+GRAB+FIRE | SJUMP+FIRE | CLIMB+FIRE", 
+			"UPPER+FIRE | SJUMP+FIRE | CLIMB+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE"
 		),
         "Oregano Desert Tomato Toppin": (
 			"CLIMB+FIRE", 
-			"UPPER+GRAB+FIRE | SJUMP+GRAB+FIRE | CLIMB+FIRE", 
+			"UPPER+FIRE | SJUMP+GRAB+FIRE | SJUMP+SLAM+FIRE | CLIMB+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE"
 		),
         "Oregano Desert Sausage Toppin": (
 			"CLIMB+FIRE", 
-			"UPPER+GRAB+FIRE | SJUMP+GRAB+FIRE | CLIMB+FIRE", 
+			"UPPER+FIRE | SJUMP+GRAB+FIRE | SJUMP+SLAM+FIRE | CLIMB+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE"
 		),
         "Oregano Desert Pineapple Toppin": (
 			"CLIMB+FIRE", 
-			"UPPER+GRAB+FIRE | SJUMP+GRAB+FIRE | CLIMB+FIRE", 
+			"UPPER+FIRE | SJUMP+GRAB+FIRE | SJUMP+SLAM+FIRE | CLIMB+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE"
 		),
@@ -600,19 +600,19 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 		),
         "Oregano Desert Secret 2": (
 			"CLIMB+FIRE", 
-			"UPPER+GRAB+FIRE | SJUMP+GRAB+FIRE | CLIMB+FIRE", 
+			"UPPER+FIRE | SJUMP+GRAB+FIRE | SJUMP+SLAM+FIRE | CLIMB+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE"
 		),
         "Oregano Desert Secret 3": (
 			"CLIMB+FIRE", 
-			"UPPER+GRAB+FIRE | SJUMP+GRAB+FIRE | CLIMB+FIRE", 
+			"UPPER+FIRE | SJUMP+GRAB+FIRE | SJUMP+SLAM+FIRE | CLIMB+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE"
 		),
         "Oregano Desert Treasure": (
 			"CLIMB+FIRE", 
-			"CLIMB+FIRE", 
+			"SJUMP+GRAB+FIRE | SJUMP+SLAM+FIRE | CLIMB+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE"
 		),
@@ -624,32 +624,32 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 		),
         "Chef Task: Unnecessary Violence": (
 			"CLIMB+FIRE", 
-			"CLIMB+FIRE", 
-			 "SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
+			"UPPER+FIRE | SJUMP+GRAB+FIRE | SJUMP+SLAM+FIRE | CLIMB+FIRE", 
+			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE"
 		),
         "Chef Task: Alien Cow": (
 			"CLIMB+FIRE", 
-			"UPPER+GRAB+FIRE | SJUMP+GRAB+FIRE | CLIMB+FIRE", 
+			"UPPER+FIRE | SJUMP+GRAB+FIRE | SJUMP+SLAM+FIRE | CLIMB+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE"
 		),
         "Oregano Desert S Rank": (
 			"CLIMB+FIRE", 
-			"SJUMP+GRAB+FIRE | CLIMB+FIRE", 
+			"SJUMP+GRAB+FIRE | SJUMP+SLAM+FIRE | CLIMB+FIRE", 
 			"BOUNCE+FIRE", 
 			"SJUMP+FIRE | BOUNCE+FIRE"
 		),
         "Oregano Desert Pumpkin": (
 			"CLIMB+FIRE", 
-			"UPPER+GRAB+FIRE | SJUMP+GRAB+FIRE | CLIMB+FIRE", 
+			"UPPER+FIRE | SJUMP+GRAB+FIRE | CLIMB+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
 			"SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE"
 		),
 
     #Wasteyard
         "Wasteyard Complete": (
-			"SJUMP+GHOST | CLIMB+GHOST", 
+			"SJUMP+GHOST | CLIMB+UPPER+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
@@ -673,14 +673,14 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
 		),
         "Wasteyard Sausage Toppin": (
-			"SJUMP+GHOST | CLIMB+GHOST", 
+			"SJUMP+GHOST | CLIMB+UPPER+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST | UPPER+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
 		),
         "Wasteyard Pineapple Toppin": (
+			"SJUMP+GHOST | CLIMB+UPPER+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST", 
-			"SJUMP+GHOST | CLIMB+GHOST | UPPER+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
 		),
@@ -691,49 +691,49 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"SJUMP | UPPER | CRUSH | BOUNCE"
 		),
         "Wasteyard Secret 2": (
-			"SJUMP+GHOST | CLIMB+GHOST", 
+			"SJUMP+GHOST | CLIMB+UPPER+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST | UPPER+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
 		),
         "Wasteyard Secret 3": (
-			"SJUMP+GHOST | CLIMB+GHOST", 
+			"SJUMP+GHOST | CLIMB+UPPER+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
 		),
         "Wasteyard Treasure": (
-			"SJUMP+GHOST | CLIMB+GHOST", 
+			"SJUMP+GHOST | CLIMB+UPPER+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
 		),
         "Chef Task: Alive and Well": (
-			"SJUMP+GHOST | CLIMB+GHOST", 
+			"SJUMP+GHOST | CLIMB+UPPER+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
 		),
         "Chef Task: Pretend Ghost": (
-			"SJUMP+GHOST | CLIMB+GHOST", 
+			"SJUMP+GHOST | CLIMB+UPPER+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
 		),
         "Chef Task: Ghosted": (
-			"CLIMB+GHOST", 
+			"CLIMB+UPPER+GHOST | CLIMB+SJUMP+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
 		),
         "Wasteyard S Rank": (
-			"CLIMB+GHOST", 
+			"CLIMB+UPPER+GHOST | CLIMB+SJUMP+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST", 
 			"SJUMP+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
 		),
 		"Wasteyard Pumpkin": (
-			"SJUMP+GHOST | CLIMB+GHOST", 
+			"SJUMP+GHOST | CLIMB+UPPER+GHOST", 
 			"SJUMP+GHOST | CLIMB+GHOST | UPPER+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST", 
 			"SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
@@ -1183,8 +1183,8 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Chef Task: Man Meteor": (
 			"SLAM+SJUMP+ROCKET+BUBB | SLAM+CLIMB+ROCKET+BUBB", 
 			"SLAM+SJUMP+ROCKET+BUBB | SLAM+CLIMB+ROCKET+BUBB", 
-			"SLAM+SJUMP+ROCKET+BUBB | SLAM+BOUNCE+ROCKET+BUBB | SLAM+UPPER+ROCKET+BUBB", 
-			"SJUMP+SLAM+ROCKET | SJUMP+TORN+ROCKET | SJUMP+BOUNCE+ROCKET | BUBB+SLAM+UPPER+ROCKET | BUBB+TORN+UPPER+ROCKET | BUBB+BOUNCE+ROCKET | CRUSH+ROCKET"
+			"SLAM+SJUMP+ROCKET+BUBB | SLAM+BOUNCE+SLAM+ROCKET+BUBB | SLAM+UPPER+ROCKET+BUBB", 
+			"SJUMP+SLAM+ROCKET | BUBB+SLAM+UPPER+ROCKET | BUBB+BOUNCE+SLAM+ROCKET | CRUSH+SLAM+ROCKET"
 		),
         "Deep-Dish 9 S Rank": (
 			"SLAM+CLIMB+ROCKET+BUBB", 
@@ -1273,10 +1273,10 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 			"BALL"
 		),
         "Chef Task: Nice Shot": (
-			"GRAB+CLIMB+BALL | GRAB+SJUMP+BALL | GRAB+UPPER+BALL", 
-			"BALL", 
-			"SJUMP+GRAB+BALL | CRUSH+GRAB+BALL | UPPER+GRAB+BALL | BOUNCE+GRAB+BALL", 
-			"BALL"
+			"NONE", 
+			"NONE", 
+			"NONE", 
+			"NONE"
 		),
         "GOLF S Rank": (
 			"GRAB+CLIMB+BALL | GRAB+SJUMP+BALL", 
@@ -1551,8 +1551,8 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Chef Task: Penny Pincher": (
 			"SLAM+CLIMB+SJUMP+STICKY", 
 			"SLAM+CLIMB+UPPER+STICKY | SLAM+CLIMB+SJUMP+STICKY", 
-			"SLAM+BOUNCE+STICKY | TORN+BOUNCE+STICKY | SLAM+SJUMP+STICKY | TORN+SJUMP+STICKY | SLAM+UPPER+STICKY | TORN+UPPER+STICKY | CRUSH+SJUMP+STICKY | CRUSH+BOUNCE+STICKY | CRUSH+UPPER+STICKY", 
-			"SJUMP+SLAM+STICKY | SJUMP+TORN+STICKY | BOUNCE+STICKY | CRUSH+STICKY | UPPER+SLAM+STICKY | UPPER+TORN+STICKY"
+			"SLAM+SJUMP+STICKY | TORN+SJUMP+STICKY | SLAM+UPPER+STICKY | TORN+UPPER+STICKY | CRUSH+SJUMP+STICKY | CRUSH+UPPER+STICKY", 
+			"SJUMP+SLAM+STICKY | SJUMP+TORN+STICKY | BOUNCE+SJUMP+STICKY | BOUNCE+UPPER+STICKY | CRUSH+STICKY | UPPER+SLAM+STICKY | UPPER+TORN+STICKY"
 		),
         "Oh Shit! S Rank": (
 			"SLAM+CLIMB+STICKY", 
@@ -1649,8 +1649,8 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Freezerator S Rank": (
 			"SATAN+CLIMB+SLAM+SJUMP", 
 			"SATAN+SJUMP+SLAM | SATAN+CLIMB+SLAM", 
-			"SLAM | CRUSH | TORN | BOUNCE", 
-			"SLAM | CRUSH | TORN | BOUNCE"
+			"SLAM+SJUMP | CRUSH+SJUMP | TORN+SJUMP | BOUNCE+SJUMP", 
+			"SLAM+SJUMP | CRUSH+BOUNCE | TORN+SJUMP | CRUSH+SJUMP | BOUNCE+SJUMP"
 		),
         "Freezerator Pumpkin": (
 			"CLIMB+SLAM+SJUMP", 
@@ -2245,8 +2245,8 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
         "Oh Shit!": ("NONE",  "NONE"),
         "Freezerator": ("SJUMP | CLIMB", "SJUMP | UPPER | CRUSH | BOUNCE"),
         "Pizzascare": ("SJUMP | CLIMB", "SJUMP | UPPER | CRUSH | BOUNCE"),
-        "Don't Make A Sound": ("SJUMP | CLIMB",  "SJUMP | UPPER | CRUSH | BOUNCE"),
-        "WAR": ("SJUMP", "SJUMP | CRUSH"),
+        "Don't Make A Sound": ("SJUMP | CLIMB",  "SJUMP | BOUNCE"),
+        "WAR": ("SJUMP", "SJUMP"),
         #bosses
         "Pepperman": ("NONE", "NONE"),
         "The Vigilante": ("NONE", "NONE"),
