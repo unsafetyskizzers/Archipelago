@@ -140,11 +140,11 @@ class PizzaTowerWorld(World):
     Wario Land 4-inspired platformer!
     """
     game = "Pizza Tower"
+    web = PizzaTowerWebWorld()
     topology_present = True
+
     options_dataclass = PTOptions
     options: PTOptions
-    webworld = PizzaTowerWebWorld
-    apworld_version = (1, 2, 5)
 
     toppin_number: int = 0
     pumpkin_number: int = 0
@@ -213,6 +213,8 @@ class PizzaTowerWorld(World):
             self.options.pumpkin_count = slot_data["pumpkin_count"]
             self.options.do_move_rando = slot_data["do_move_rando"]
             self.options.do_transfo_rando = slot_data["do_transfo_rando"]
+            self.options.completion_goal = slot_data["completion_goal"]
+            self.options.snotty_floor = slot_data["snotty_floor"]
             if self.options.character != PTChars.PEPPINO:
                 self.boss_map = {(k if k != "The Noise" else "The Doise"):(v if v != "The Noise" else "The Doise") for k,v in self.boss_map.items()}
 
@@ -398,7 +400,7 @@ class PizzaTowerWorld(World):
             "ring_link": bool(self.options.ring_link),
             "do_move_rando": bool(self.options.do_move_rando), #for poptracker
             "do_transfo_rando": bool(self.options.do_transfo_rando), #for poptracker
-            "apworld_version": tuple(self.apworld_version),
+            "apworld_version": list(self.world_version),
             "randomize_music": bool(self.options.randomize_music),
             "completion_goal": int(self.options.completion_goal),
             "snotty_floor": int(self.options.snotty_floor)

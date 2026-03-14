@@ -353,8 +353,10 @@ pt_option_groups = [
     OptionGroup("General Options", [
         CharacterToPlay,
         LogicDifficulty,
+        CompletionGoal,
         OpenWorld,
-        BonusLadders
+        BonusLadders,
+        SnottyFloor
     ]),
     OptionGroup("Boss Options", [
         ToppinCount,
@@ -390,7 +392,12 @@ pt_option_groups = [
         MovesToRandomize,
         RandomizeTransfos,
         TransfosToRandomize,
+        RandomizeMusic,
         FairlyRandom
+    ]),
+    OptionGroup("Miscellaneous Options", [
+        DeathLink,
+        RingLink
     ])
 ]
 
