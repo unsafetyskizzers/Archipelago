@@ -349,7 +349,7 @@ class PizzaTowerWorld(World):
         return self.random.choice(weighted_filler)
     
     def write_spoiler_header(self, spoiler_handle: TextIO):
-        apversion_string = str(self.apworld_version[0]) + "." + str(self.apworld_version[1]) + "." + str(self.apworld_version[2])
+        apversion_string = str(self.world_version[0]) + "." + str(self.world_version[1]) + "." + str(self.world_version[2])
         spoiler_handle.write('{:<32} {:0}'.format("APWorld Version: ", apversion_string))
 
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
