@@ -61,6 +61,7 @@ class PTContext(SuperContext):
             "ProxyDisconnect"
         ]
         self.message_queue = []
+        self.is_processing_outgoing_messages = False
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
