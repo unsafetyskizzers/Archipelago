@@ -349,6 +349,12 @@ class SnottyFloor(Range):
     range_end = 5
     default = 4
 
+class RandomizeEnemies(Choice):
+    """
+    Determines whether an enemy is replaced with a random other enemy.
+    """
+    display_name = "Randomize Enemies"
+
 pt_option_groups = [
     OptionGroup("General Options", [
         CharacterToPlay,
@@ -393,6 +399,7 @@ pt_option_groups = [
         RandomizeTransfos,
         TransfosToRandomize,
         RandomizeMusic,
+        RandomizeEnemies,
         FairlyRandom
     ]),
     OptionGroup("Miscellaneous Options", [
@@ -440,6 +447,7 @@ class PTOptions(PerGameCommonOptions):
     randomize_music: RandomizeMusic
     completion_goal: CompletionGoal
     snotty_floor: SnottyFloor
+    randomize_enemies: RandomizeEnemies
 
 #presets - feel free to suggest more
 

@@ -403,5 +403,6 @@ class PizzaTowerWorld(World):
             "apworld_version": list(self.world_version),
             "randomize_music": bool(self.options.randomize_music),
             "completion_goal": int(self.options.completion_goal),
-            "snotty_floor": int(self.options.snotty_floor)
+            "snotty_floor": int(self.options.snotty_floor),
+            "randomize_enemies": bool(self.options.randomize_enemies)
         }
