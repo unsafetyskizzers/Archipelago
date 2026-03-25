@@ -362,7 +362,9 @@ pt_option_groups = [
         CompletionGoal,
         OpenWorld,
         BonusLadders,
-        SnottyFloor
+        SnottyFloor,
+        DeathLink,
+        RingLink
     ]),
     OptionGroup("Boss Options", [
         ToppinCount,
@@ -381,8 +383,7 @@ pt_option_groups = [
         ChefTaskChecks,
         PumpkinChecks,
         PumpkinCount,
-        TrickyTreatDoor,
-        ShuffleLap2
+        TrickyTreatDoor
     ]),
     OptionGroup("Filler and Traps", [
         TrapPercentage,
@@ -398,13 +399,10 @@ pt_option_groups = [
         MovesToRandomize,
         RandomizeTransfos,
         TransfosToRandomize,
+        ShuffleLap2,
         RandomizeMusic,
         RandomizeEnemies,
         FairlyRandom
-    ]),
-    OptionGroup("Miscellaneous Options", [
-        DeathLink,
-        RingLink
     ])
 ]
 
