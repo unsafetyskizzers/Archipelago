@@ -349,7 +349,7 @@ class SnottyFloor(Range):
     range_end = 5
     default = 4
 
-class RandomizeEnemies(Choice):
+class RandomizeEnemies(Toggle):
     """
     Determines whether an enemy is replaced with a random other enemy.
     """
