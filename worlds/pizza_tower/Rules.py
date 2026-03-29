@@ -2336,9 +2336,14 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
 
     #connect regions
     multiworld.get_region("Menu", world.player).connect(multiworld.get_region("Floor 1 Tower Lobby", world.player), "Menu to Floor 1 Tower Lobby")
-    for i in range(4):
-        multiworld.get_region(floors_list[i], world.player).connect(multiworld.get_region(floors_list[i+1], world.player), floors_list[i] + " to " + floors_list[i+1])
     
+    floors = 4
+    if options.completion_goal == options.completion_goal.option_Snotty:
+        floors = options.snotty_floor - 1
+    
+    for i in range(floors):
+        multiworld.get_region(floors_list[i], world.player).connect(multiworld.get_region(floors_list[i+1], world.player), floors_list[i] + " to " + floors_list[i+1])
+
     multiworld.get_region("Floor 5 Staff Only", world.player).connect(multiworld.get_region("Pizzaface", world.player), "Floor 5 Staff Only to Pizzaface")
     multiworld.get_region("Pizzaface", world.player).connect(multiworld.get_region("The Crumbling Tower of Pizza", world.player), "Pizzaface to The Crumbling Tower of Pizza")
     if options.character != PTChars.SWAP:
@@ -2389,7 +2394,7 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
             set_rule(location, interpret_rule(location.name, False))
 
     #access rules for floors
-    for i in range(4): 
+    for i in range(floors): 
         if options.bonus_ladders < (i+1):
             set_rule(multiworld.get_entrance(floors_list[i] + " to " + floors_list[i+1], world.player), interpret_rule(floors_list[i], True))
 
