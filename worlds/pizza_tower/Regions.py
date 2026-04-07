@@ -1,39 +1,9 @@
 from BaseClasses import Region, MultiWorld
 from .Locations import PTLocation, pt_locations
 from .Options import PTOptions
-from .Rules import PTChars
+from . import PTChars
 
-def create_regions(player: int, world: MultiWorld, options: PTOptions):
-    floors_list = [
-        "Floor 1 Tower Lobby",
-        "Floor 2 Western District",
-        "Floor 3 Vacation Resort",
-        "Floor 4 Slum",
-        "Floor 5 Staff Only"
-    ]
-
-    levels_list = [ #ctop handled separately
-        "John Gutter",
-        "Pizzascape",
-        "Ancient Cheese",
-        "Bloodsauce Dungeon",
-        "Oregano Desert",
-        "Wasteyard",
-        "Fun Farm",
-        "Fastfood Saloon",
-        "Crust Cove",
-        "Gnome Forest",
-        "Deep-Dish 9",
-        "GOLF",
-        "The Pig City",
-        "Peppibot Factory",
-        "Oh Shit!",
-        "Freezerator",
-        "Pizzascare",
-        "Don't Make A Sound",
-        "WAR"
-    ]
-
+def create_regions(player: int, world: MultiWorld, options: PTOptions, levels_map: dict, bosses_map: dict, floors_list: list):
     levels_checks = [
         "Mushroom Toppin",
         "Cheese Toppin",
@@ -41,13 +11,6 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions):
         "Sausage Toppin",
         "Pineapple Toppin",
         "Complete"
-    ]
-
-    bosses_list = [ #pizzaface is handled separately because he does not give a rank
-        "Pepperman",
-        "The Vigilante",
-        "The Noise",
-        "Fake Peppino"
     ]
 
     if options.character != PTChars.PEPPINO:
@@ -230,28 +193,30 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions):
     for boss in bosses_list:
         check_region = Region(boss, player, world, None)
         for chk in bosses_checks:
-            check_name = boss + " " + chk
+            if boss != "Pizzaface" or (boss == "Pizzaface" and chk == "Defeated"):
+                check_name = boss + " " + chk
             new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
             check_region.locations.append(new_location)
         tower_regions.append(check_region)
 
     #odd regions
-    region_pface = Region("Pizzaface", player, world, None)
-    region_ctop = Region("The Crumbling Tower of Pizza", player, world, None)
+    if options.completion_goal == options.completion_goal.option_CTOP:
+        region_ctop = Region("The Crumbling Tower of Pizza", player, world, None)
 
-    #odd locations
-    region_pface.locations.append(PTLocation(player, "Pizzaface Defeated", 219, region_pface))
-
-    region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza Complete", 214, region_ctop))
-    if options.srank_checks:
-        region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza S Rank", 247, region_ctop))
-    if options.prank_checks:
-        region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza P Rank", 328, region_ctop))
+        region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza Complete", 214, region_ctop))
+        if options.srank_checks:
+            region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza S Rank", 247, region_ctop))
+        if options.prank_checks:
+            region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza P Rank", 328, region_ctop))
+    
     tower_regions[options.snotty_floor].locations.append(PTLocation(player, "Snotty Murdered", 220, tower_regions[options.snotty_floor]))
 
     if options.pumpkin_checks:
         region_trickytreat = Region("Tricky Treat", player, world, None)
-        region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza Pumpkin", 446, region_ctop))
+
+        if options.completion_goal == options.completion_goal.option_CTOP:
+            region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza Pumpkin", 446, region_ctop))
+
         for i in range(5):
             loc = f"Tricky Treat Main Path Pumpkin {i+1}"
             region_trickytreat.locations.append(PTLocation(player, loc, pt_locations[loc], region_trickytreat))
@@ -267,26 +232,23 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions):
     #weird naming here. cheftask_checks is the option bool, cheftasks_checks is the list of task names
     if options.cheftask_checks:
         level_offset = 7 - (options.character // 2) #no tutorial in swap mode so the offset is different
-        for i in range(19):
+        for i in range(len(levels_list)):
             region_curr = tower_regions[i+level_offset]
             for ii in range(3):
                 task_index = (i * 3) + ii
                 task_name = cheftasks_checks[task_index]
                 new_location = PTLocation(player, task_name, pt_locations[task_name], region_curr)
                 region_curr.locations.append(new_location)
-        for i in range(4):
+        for i in range(len(bosses_list)):
             task_name = cheftasks_checks[i + 67]
             boss_offset = 26 - (options.character // 2)
             new_location = PTLocation(player, task_name, pt_locations[task_name], tower_regions[boss_offset+i])
             tower_regions[boss_offset+i].locations.append(new_location)
-        loc_pface_task = PTLocation(player, "Chef Task: Face Off", 404, region_pface)
-        region_pface.locations.append(loc_pface_task)
-        for i in range(5):
+        for i in range(len(floors_list)):
             curr_floor = tower_regions[i+1]
             curr_floor.locations.append(PTLocation(player, "Chef Task: S Ranked #" + str(i + 1), pt_locations["Chef Task: S Ranked #" + str(i + 1)], curr_floor))
             curr_floor.locations.append(PTLocation(player, "Chef Task: P Ranked #" + str(i + 1), pt_locations["Chef Task: P Ranked #" + str(i + 1)], curr_floor))
 
-    tower_regions.append(region_pface)
     tower_regions.append(region_ctop)
 
     world.regions += tower_regions

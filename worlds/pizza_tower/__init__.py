@@ -4,10 +4,11 @@ from .Items import PTItem, pt_items, get_item_from_category, pt_item_groups
 from .Locations import PTLocation, pt_locations, pt_location_groups
 from .Options import PTOptions, pt_option_groups, pt_option_presets
 from .Regions import create_regions
-from .Rules import set_rules, PTChars
+from .Rules import set_rules
 from math import floor
 from typing import Any, TextIO
 from worlds.LauncherComponents import Component, components, icon_paths, launch as launch_component, Type
+from enum import IntEnum
 
 def launch_client(*args: str):
     from .Client import launch
@@ -48,6 +49,23 @@ bosses_to_floors = {
     "Fake Peppino": "Floor 4 Slum"
 }
 
+levels_list = list(levels_to_floors.keys())
+
+bosses_list = [ #pizzaface is handled separately because he does not give a rank
+    "Pepperman",
+    "The Vigilante",
+    "The Noise",
+    "Fake Peppino",
+    "Pizzaface"
+]
+
+floors_list = [
+    "Floor 1 Tower Lobby",
+    "Floor 2 Western District",
+    "Floor 3 Vacation Resort",
+    "Floor 4 Slum",
+    "Floor 5 Staff Only"
+]
 
 
 def internal_from_external(name: str):
@@ -119,6 +137,11 @@ def external_from_internal(name: str):
         return aliases[name.replace("3", "")] + " Secret 3"
     return aliases[name]
 
+class PTChars(IntEnum):
+    PEPPINO = 0
+    NOISE = 1
+    SWAP = 2
+
 class PizzaTowerWebWorld(WebWorld):
     theme = "stone"
     option_groups = pt_option_groups
@@ -165,6 +188,57 @@ class PizzaTowerWorld(World):
     
     #Tell universal tracker we don't need a YAML
     ut_can_gen_without_yaml = True
+
+    def level_gate_rando(self, is_noise: bool, logic_type: int) -> list[str]:
+        #replace john gutter and pizzascape with any of these levels
+        ok_start_levels = [ 
+            "Pizzascape",
+            "Ancient Cheese",
+            "Bloodsauce Dungeon",
+            "The Pig City",
+            "Don't Make A Sound"
+        ]
+
+        if is_noise:
+            ok_start_levels.append("Freezerator")
+        if logic_type > 0:
+            ok_start_levels.append("Wasteyard")
+            ok_start_levels.append("GOLF")
+
+        #copies of level and boss lists to be shuffled
+        level_queue = levels_list.copy()
+
+        rando_level_order = []
+
+        #place two levels from ok_start_levels at the beginning of the rando level order
+        if self.options.fairly_random or (self.options.do_transfo_rando and self.options.do_move_rando):
+            for i in range(2):
+                rando_level = ok_start_levels[self.random.randrange(len(ok_start_levels) - 1)]
+                rando_level_order.append(rando_level)
+                ok_start_levels.remove(rando_level)
+                level_queue.remove(rando_level)
+        
+        #don't care where the leftover levels go
+        self.random.shuffle(level_queue)
+        #if playing with snotty goal don't add levels that are on the same floor or further
+        if self.options.completion_goal == self.options.completion_goal.option_Snotty:
+            for i in range((self.options.snotty_floor.value * 4) - 4):
+                rando_level_order.append(level_queue.pop())
+        else:
+            rando_level_order += level_queue
+
+        return rando_level_order
+
+    def boss_gate_rando(self) -> list[str]:
+        boss_queue = bosses_list.copy()
+
+        if self.options.character != PTChars.PEPPINO:
+            boss_queue[2] = "The Doise"
+        self.random.shuffle(boss_queue)
+        if self.options.fairly_random and self.options.difficulty > 0:
+            while boss_queue[0] == "The Vigilante" or boss_queue[0] == "Pepperman": #floor 1 boss should not be vigi or pepperman
+                self.random.shuffle(boss_queue)
+        return boss_queue
 
     def generate_early(self):
         if self.options.do_move_rando and self.options.do_transfo_rando:
@@ -217,12 +291,36 @@ class PizzaTowerWorld(World):
             self.options.snotty_floor = slot_data["snotty_floor"]
             if self.options.character != PTChars.PEPPINO:
                 self.boss_map = {(k if k != "The Noise" else "The Doise"):(v if v != "The Noise" else "The Doise") for k,v in self.boss_map.items()}
+        
+        #slice floor list if snotty goal
+        if self.options.completion_goal == self.options.completion_goal.option_Snotty:
+            floors_list = floors_list[0 : self.options.snotty_floor.value-1]
+
+        #create randomized level entrances
+        if not self.level_map:
+            if self.options.randomize_levels:
+                levels_map = dict(zip(levels_list, self.level_gate_rando(self, self.options.character != PTChars.PEPPINO, self.options.difficulty)))
+            else:
+                levels_map = dict(zip(levels_list, levels_list))
+            self.level_map = levels_map
+        else:
+            levels_map = self.level_map
+        
+        #create randomized boss entrances
+        if not self.boss_map:
+            if self.options.randomize_bosses:
+                bosses_map = dict(zip(bosses_list, self.boss_gate_rando(self)))
+            else:
+                bosses_map = dict(zip(bosses_list, bosses_list))
+            self.boss_map = bosses_map
+        else:
+            bosses_map = self.boss_map
 
     def create_item(self, name: str) -> PTItem:
         return PTItem(name, pt_items[name].classification, pt_items[name].id, self.player)
 
     def create_regions(self):
-        create_regions(self.player, self.multiworld, self.options)
+        create_regions(self.player, self.multiworld, self.options, floors_list)
 
     def create_items(self):
         pizza_itempool = []
@@ -334,7 +432,7 @@ class PizzaTowerWorld(World):
         self.multiworld.itempool += pizza_itempool
 
     def set_rules(self):
-        set_rules(self.multiworld, self, self.options, self.toppin_number, self.pumpkin_number)
+        set_rules(self.multiworld, self, self.options, self.toppin_number, self.pumpkin_number, self.level_map, self.boss_map)
         if self.options.completion_goal == 0:
             self.multiworld.completion_condition[self.player] = lambda state: state.can_reach("The Crumbling Tower of Pizza Complete", "Location", self.player)
         else:

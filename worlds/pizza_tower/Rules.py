@@ -5,42 +5,7 @@ from ..generic.Rules import set_rule, add_rule
 from math import floor
 from typing import Callable
 from BaseClasses import LocationProgressType, Location, Entrance, CollectionState
-from enum import IntEnum
-
-class PTChars(IntEnum):
-    PEPPINO = 0
-    NOISE = 1
-    SWAP = 2
-
-levels_list = [ #ctop handled separately
-    "John Gutter",
-    "Pizzascape",
-    "Ancient Cheese",
-    "Bloodsauce Dungeon",
-    "Oregano Desert",
-    "Wasteyard",
-    "Fun Farm",
-    "Fastfood Saloon",
-    "Crust Cove",
-    "Gnome Forest",
-    "Deep-Dish 9",
-    "GOLF",
-    "The Pig City",
-    "Peppibot Factory",
-    "Oh Shit!",
-    "Freezerator",
-    "Pizzascare",
-    "Don't Make A Sound",
-    "WAR"
-]
-
-floors_list = [
-    "Floor 1 Tower Lobby",
-    "Floor 2 Western District",
-    "Floor 3 Vacation Resort",
-    "Floor 4 Slum",
-    "Floor 5 Staff Only"
-]
+from . import levels_list, bosses_list, floors_list, PTChars
 
 rule_moves = {
     "GRAB": "Grab",
@@ -82,75 +47,6 @@ lap1_levels = [
     "Freezerator"
 ]
 
-def level_gate_rando(world: World, is_noise: bool, logic_type: int) -> list[str]:
-    #replace john gutter and pizzascape with any of these levels
-    ok_start_levels = [ 
-        "Pizzascape",
-        "Ancient Cheese",
-        "Bloodsauce Dungeon",
-        "The Pig City",
-        "Don't Make A Sound"
-    ]
-    if is_noise:
-        ok_start_levels.append("Freezerator")
-    if logic_type > 0:
-        ok_start_levels.append("Wasteyard")
-        ok_start_levels.append("GOLF")
-
-    #copies of level and boss lists to be shuffled
-    level_queue = [
-        "John Gutter",
-        "Pizzascape",
-        "Ancient Cheese",
-        "Bloodsauce Dungeon",
-        "Oregano Desert",
-        "Wasteyard",
-        "Fun Farm",
-        "Fastfood Saloon",
-        "Crust Cove",
-        "Gnome Forest",
-        "Deep-Dish 9",
-        "GOLF",
-        "The Pig City",
-        "Peppibot Factory",
-        "Oh Shit!",
-        "Freezerator",
-        "Pizzascare",
-        "Don't Make A Sound",
-        "WAR"
-    ]
-
-    rando_level_order = []
-
-    #place two levels from ok_start_levels at the beginning of the rando level order
-    if world.options.fairly_random or (world.options.do_transfo_rando and world.options.do_move_rando):
-        for i in range(2):
-            rando_level = ok_start_levels[world.random.randrange(len(ok_start_levels) - 1)]
-            rando_level_order.append(rando_level)
-            ok_start_levels.remove(rando_level)
-            level_queue.remove(rando_level)
-    
-    #don't care where the leftover levels go
-    world.random.shuffle(level_queue)
-    rando_level_order += level_queue
-
-    return rando_level_order
-
-def boss_gate_rando(world: World, is_noise: bool) -> list[str]:
-    boss_queue = [
-        "Pepperman",
-        "The Vigilante",
-        "The Noise",
-        "Fake Peppino"
-    ]
-    if world.options.character != PTChars.PEPPINO:
-        boss_queue[2] = "The Doise"
-    world.random.shuffle(boss_queue)
-    if world.options.fairly_random and world.options.difficulty > 0:
-        while boss_queue[0] == "The Vigilante" or boss_queue[0] == "Pepperman": #floor 1 boss should not be vigi or pepperman
-            world.random.shuffle(boss_queue)
-    return boss_queue
-
 def get_secrets_list() -> list[str]:
     secrets_list = []
     for lvl in levels_list:
@@ -174,17 +70,9 @@ def get_item_perc_amount(multiworld: MultiWorld, items: int, perc: int) -> int:
 		return items
 	return floor(items * (perc / 100))
 
-def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins: int, pumpkins: int):
-    bosses_list = [ #pizzaface is handled separately because he does not give a rank
-        "Pepperman",
-        "The Vigilante",
-        "The Noise",
-        "Fake Peppino"
-    ]
+def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins: int, pumpkins: int, levels_map, bosses_map):
     if options.character != PTChars.PEPPINO:
         bosses_list[2] = "The Doise"
-
-
 
     rules_dict = { #tuples in this format: (pep easy, pep hard, noise easy, noise hard)
         #John Gutter
@@ -2265,23 +2153,6 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
     }
 
     secrets_list = get_secrets_list() 
-    if not world.level_map:
-        if options.randomize_levels:
-            levels_map = dict(zip(levels_list, level_gate_rando(world, options.character != PTChars.PEPPINO, options.difficulty)))
-        else:
-            levels_map = dict(zip(levels_list, levels_list))
-        world.level_map = levels_map
-    else:
-        levels_map = world.level_map
-
-    if not world.boss_map:
-        if options.randomize_bosses:
-            bosses_map = dict(zip(bosses_list, boss_gate_rando(world, options.character != PTChars.PEPPINO)))
-        else:
-            bosses_map = dict(zip(bosses_list, bosses_list))
-        world.boss_map = bosses_map
-    else:
-        bosses_map = world.boss_map
 
     if not world.secret_map:
         if options.randomize_secrets:
@@ -2337,22 +2208,23 @@ def set_rules(multiworld: MultiWorld, world: World, options: PTOptions, toppins:
     #connect regions
     multiworld.get_region("Menu", world.player).connect(multiworld.get_region("Floor 1 Tower Lobby", world.player), "Menu to Floor 1 Tower Lobby")
     
-    floors = 4
-    if options.completion_goal == options.completion_goal.option_Snotty:
-        floors = options.snotty_floor - 1
+    floors = len(floors_list)
     
     for i in range(floors):
         multiworld.get_region(floors_list[i], world.player).connect(multiworld.get_region(floors_list[i+1], world.player), floors_list[i] + " to " + floors_list[i+1])
-
-    multiworld.get_region("Floor 5 Staff Only", world.player).connect(multiworld.get_region("Pizzaface", world.player), "Floor 5 Staff Only to Pizzaface")
-    multiworld.get_region("Pizzaface", world.player).connect(multiworld.get_region("The Crumbling Tower of Pizza", world.player), "Pizzaface to The Crumbling Tower of Pizza")
+    
+    if options.completion_goal == options.completion_goal.option_CTOP:
+        multiworld.get_region("Floor 5 Staff Only", world.player).connect(multiworld.get_region("Pizzaface", world.player), "Floor 5 Staff Only to Pizzaface")
+        multiworld.get_region("Pizzaface", world.player).connect(multiworld.get_region("The Crumbling Tower of Pizza", world.player), "Pizzaface to The Crumbling Tower of Pizza")
+    
     if options.character != PTChars.SWAP:
         multiworld.get_region("Floor 1 Tower Lobby", world.player).connect(multiworld.get_region("Tutorial", world.player), "Floor 1 Tower Lobby to Tutorial")
     if options.pumpkin_checks:
         multiworld.get_region("Floor 1 Tower Lobby", world.player).connect(multiworld.get_region("Tricky Treat", world.player), "Floor 1 Tower Lobby to Tricky Treat")
 
-    for i in range(4):
-        for ii in range(4):
+    for i in range(floors):
+        lvl_amount = 4 if floors != 4 else 3
+        for ii in range(lvl_amount):
             level_name = levels_map[levels_list[(4*i)+ii]]
             multiworld.get_region(floors_list[i], world.player).connect(multiworld.get_region(level_name, world.player), floors_list[i] + " to " + level_name)
         multiworld.get_region(floors_list[i], world.player).connect(multiworld.get_region(bosses_map[bosses_list[i]], world.player), floors_list[i] + " to " + bosses_map[bosses_list[i]])
