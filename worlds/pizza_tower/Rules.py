@@ -2295,7 +2295,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     for i in range(floors):
         if(options.completion_goal.option_Snotty and i == options.snotty_floor - 1):
             break
-        add_rule(multiworld.get_entrance(world.floors_list[i]+" to "+world.boss_map[world.bosses_list[i]], world.player), lambda state, i = i: state.has("Toppin", world.player, get_item_perc_amount(multiworld, toppins, toppin_cost_list[i])))
+        add_rule(multiworld.get_entrance(world.floors_list[i]+" to "+world.boss_map[world.bosses_list[i]], world.player), lambda state, required_toppins = toppin_cost_list[i]: state.has("Toppin", world.player, get_item_perc_amount(multiworld, toppins, required_toppins)))
 
     #pumpkin requirement for tricky treat
     if options.pumpkin_checks:
@@ -2304,7 +2304,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     #boss key requirements for floors
     if not options.open_world:
         for floor_index in range(floors - 1):
-            add_rule(multiworld.get_entrance(world.floors_list[floor_index]+" to "+world.floors_list[floor_index+1], world.player), lambda state, boss_keys = floor_index: state.has("Boss Key", world.player, floor_index + boss_keys))
+            add_rule(multiworld.get_entrance(world.floors_list[floor_index]+" to "+world.floors_list[floor_index+1], world.player), lambda state, boss_keys = floor_index+1: state.has("Boss Key", world.player, boss_keys))
     
     from Utils import visualize_regions
     visualize_regions(world.get_region("Menu"), "pizzatower_regions.puml")
