@@ -3,7 +3,7 @@ from .Locations import PTLocation, pt_locations
 from .Options import PTOptions
 from . import PTChars
 
-def create_regions(player: int, world: MultiWorld, options: PTOptions, levels_map: dict, bosses_map: dict, floors_list: list):
+def create_regions(player: int, world: MultiWorld, options: PTOptions, level_map: dict, boss_map: dict, floors_list: list):
     levels_checks = [
         "Mushroom Toppin",
         "Cheese Toppin",
@@ -12,9 +12,6 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, levels_ma
         "Pineapple Toppin",
         "Complete"
     ]
-
-    if options.character != PTChars.PEPPINO:
-        bosses_list[2] = "The Doise"
 
     bosses_checks = [
         "Defeated"
@@ -25,121 +22,133 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, levels_ma
         "Complete in under 2 minutes"
     ]
 
-    cheftasks_checks = [
-        #John Gutter
-        "Chef Task: John Gutted",
-        "Chef Task: Primate Rage",
-        "Chef Task: Let's Make This Quick",
-
-        #Pizzascape
-        "Chef Task: Shining Armor",
-        "Chef Task: Spoonknight",
-        "Chef Task: Spherical",
-
-        #Ancient Cheese
-        "Chef Task: Thrill Seeker",
-        "Chef Task: Volleybomb",
-        "Chef Task: Delicacy",
-
-        #Bloodsauce Dungeon
-        "Chef Task: Eruption Man",
-        "Chef Task: Very Very Hot Sauce",
-        "Chef Task: Unsliced Pizzaman",
-
-        #Oregano Desert
-        "Chef Task: Peppino's Rain Dance",
-        "Chef Task: Unnecessary Violence",
-        "Chef Task: Alien Cow",
-
-        #Wasteyard
-        "Chef Task: Alive and Well",
-        "Chef Task: Pretend Ghost",
-        "Chef Task: Ghosted",
-
-        #Fun Farm
-        "Chef Task: Good Egg",
-        "Chef Task: No One Is Safe",
-        "Chef Task: Cube Menace",
-
-        #Fastfood Saloon
-        "Chef Task: Royal Flush",
-        "Chef Task: Non-Alcoholic",
-        "Chef Task: Already Pressed",
-
-        #Crust Cove
-        "Chef Task: Demolition Expert",
-        "Chef Task: Blowback",
-        "Chef Task: X",
-
-        #Gnome Forest
-        "Chef Task: Bee Nice",
-        "Chef Task: Bullseye",
-        "Chef Task: Lumberjack",
-
-        #Deep-Dish 9
-        "Chef Task: Blast 'Em Asteroids",
-        "Chef Task: Turbo Tunnel",
-        "Chef Task: Man Meteor",
-
-        #GOLF
-        "Chef Task: Primo Golfer",
-        "Chef Task: Helpful Burger",
-        "Chef Task: Nice Shot",
-
-        #The Pig City
-        "Chef Task: Say Oink!",
-        "Chef Task: Pan Fried",
-        "Chef Task: Strike!",
-
-        #Peppibot Factory
-        "Chef Task: There Can Be Only One",
-        "Chef Task: Whoop This!",
-        "Chef Task: Unflattening",
-
-        #Oh Shit!
-        "Chef Task: Food Clan",
-        "Chef Task: Can't Fool Me",
-        "Chef Task: Penny Pincher",
-
-        #Freezerator
-        "Chef Task: Ice Climber",
-        "Chef Task: Season's Greetings",
-        "Chef Task: Frozen Nuggets",
-
-        #Pizzascare
-        "Chef Task: Haunted Playground",
-        "Chef Task: Skullsplitter",
-        "Chef Task: Cross To Bare",
-
-        #Don't Make A Sound
-        "Chef Task: Let Them Sleep",
-        "Chef Task: Jumpspared",
-        "Chef Task: And This... Is My Gun On A Stick!",
-
-        #WAR
-        "Chef Task: Trip to the Warzone",
-        "Chef Task: Sharpshooter",
-        "Chef Task: Decorated Veteran",
-
-        #Floor Tasks
-        "Chef Task: S Ranked #1",
-        "Chef Task: P Ranked #1",
-        "Chef Task: S Ranked #2",
-        "Chef Task: P Ranked #2",
-        "Chef Task: S Ranked #3",
-        "Chef Task: P Ranked #3",
-        "Chef Task: S Ranked #4",
-        "Chef Task: P Ranked #4",
-        "Chef Task: S Ranked #5",
-        "Chef Task: P Ranked #5",
-
-        #Boss Tasks
-        "Chef Task: The Critic",
-        "Chef Task: The Ugly",
-        "Chef Task: Denoise",
-        "Chef Task: Faker",
-        "Chef Task: Face-Off"
-    ]
+    cheftasks_checks = {
+        "John Gutter": [
+            "Chef Task: John Gutted",
+            "Chef Task: Primate Rage",
+            "Chef Task: Let's Make This Quick"
+        ],
+        "Pizzascape": [
+            "Chef Task: Shining Armor",
+            "Chef Task: Spoonknight",
+            "Chef Task: Spherical"
+        ],
+        "Ancient Cheese": [
+            "Chef Task: Thrill Seeker",
+            "Chef Task: Volleybomb",
+            "Chef Task: Delicacy",
+        ],
+        "Bloodsauce Dungeon": [
+            "Chef Task: Eruption Man",
+            "Chef Task: Very Very Hot Sauce",
+            "Chef Task: Unsliced Pizzaman"
+        ],
+        "Oregano Desert": [
+            "Chef Task: Peppino's Rain Dance",
+            "Chef Task: Unnecessary Violence",
+            "Chef Task: Alien Cow"
+        ],
+        "Wasteyard": [
+            "Chef Task: Alive and Well",
+            "Chef Task: Pretend Ghost",
+            "Chef Task: Ghosted"
+        ],
+        "Fun Farm": [
+            "Chef Task: Good Egg",
+            "Chef Task: No One Is Safe",
+            "Chef Task: Cube Menace"
+        ],
+        "Fastfood Saloon": [
+            "Chef Task: Royal Flush",
+            "Chef Task: Non-Alcoholic",
+            "Chef Task: Already Pressed"
+        ],
+        "Crust Cove": [
+            "Chef Task: Demolition Expert",
+            "Chef Task: Blowback",
+            "Chef Task: X"
+        ],
+        "Gnome Forest": [
+            "Chef Task: Bee Nice",
+            "Chef Task: Bullseye",
+            "Chef Task: Lumberjack"
+        ],
+        "Deep-Dish 9": [
+            "Chef Task: Blast 'Em Asteroids",
+            "Chef Task: Turbo Tunnel",
+            "Chef Task: Man Meteor"
+        ],
+        "GOLF": [
+            "Chef Task: Primo Golfer",
+            "Chef Task: Helpful Burger",
+            "Chef Task: Nice Shot"
+        ],
+        "The Pig City": [
+            "Chef Task: Say Oink!",
+            "Chef Task: Pan Fried",
+            "Chef Task: Strike!"
+        ],
+        "Peppibot Factory": [
+            "Chef Task: There Can Be Only One",
+            "Chef Task: Whoop This!",
+            "Chef Task: Unflattening"
+        ],
+        "Oh Shit!": [
+            "Chef Task: Food Clan",
+            "Chef Task: Can't Fool Me",
+            "Chef Task: Penny Pincher"
+        ],
+        "Freezerator": [
+            "Chef Task: Ice Climber",
+            "Chef Task: Season's Greetings",
+            "Chef Task: Frozen Nuggets"
+        ],
+        "Pizzascare": [
+            "Chef Task: Haunted Playground",
+            "Chef Task: Skullsplitter",
+            "Chef Task: Cross To Bare",
+        ],
+        "Don't Make A Sound": [
+            "Chef Task: Let Them Sleep",
+            "Chef Task: Jumpspared",
+            "Chef Task: And This... Is My Gun On A Stick!",
+        ],
+        "WAR": [
+            "Chef Task: Trip to the Warzone",
+            "Chef Task: Sharpshooter",
+            "Chef Task: Decorated Veteran",
+        ],
+        "Pepperman": [
+            "Chef Task: The Critic"
+        ],
+        "The Vigilante": [
+            "Chef Task: The Ugly"
+        ],
+        "The Noise": [
+            "Chef Task: Denoise"
+        ],
+        "The Doise": [
+            "Chef Task: Denoise"
+        ],
+        "Fake Peppino": [
+            "Chef Task: Faker"
+        ],
+        "Pizzaface": [
+            "Chef Task: Face Off"
+        ],
+        "Floor Tasks": [
+            "Chef Task: S Ranked #1",
+            "Chef Task: P Ranked #1",
+            "Chef Task: S Ranked #2",
+            "Chef Task: P Ranked #2",
+            "Chef Task: S Ranked #3",
+            "Chef Task: P Ranked #3",
+            "Chef Task: S Ranked #4",
+            "Chef Task: P Ranked #4",
+            "Chef Task: S Ranked #5",
+            "Chef Task: P Ranked #5",
+        ]
+    }
 
     tower_regions: list[Region] = []
 
@@ -170,8 +179,16 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, levels_ma
         tutorial_checks = []
 
     #create regions and add locations
+    floor_index = 1
     for flr in floors_list:
-        tower_regions.append(Region(flr, player, world, flr))
+        floor_region = Region(flr, player, world, flr)
+        #add s/p ranked chef tasks for each floor, if 
+        if options.cheftask_checks:
+            if options.completion_goal != options.completion_goal.option_Snotty or (options.completion_goal == options.completion_goal.option_Snotty and floor_index != (options.snotty_floor.value)):
+                floor_region.locations.append(PTLocation(player, "Chef Task: S Ranked #" + str(floor_index), pt_locations["Chef Task: S Ranked #" + str(floor_index)], floor_region))
+                floor_region.locations.append(PTLocation(player, "Chef Task: P Ranked #" + str(floor_index), pt_locations["Chef Task: P Ranked #" + str(floor_index)], floor_region))
+        tower_regions.append(floor_region)
+        floor_index += 1
 
     if options.character != PTChars.SWAP:
         region_tut = Region("Tutorial", player, world, None)
@@ -181,22 +198,27 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, levels_ma
             region_tut.locations.append(new_location)
         tower_regions.append(region_tut)
 
-    for lvl in levels_list:
+    for lvl in level_map.values():
         check_region = Region(lvl, player, world, None)
         for chk in levels_checks:
             check_name = lvl + " " + chk
             new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
             check_region.locations.append(new_location)
+        if options.cheftask_checks:
+            add_cheftasks(lvl, player, check_region, cheftasks_checks)
 
         tower_regions.append(check_region)
 
-    for boss in bosses_list:
+    for boss in boss_map.values():
         check_region = Region(boss, player, world, None)
         for chk in bosses_checks:
             if boss != "Pizzaface" or (boss == "Pizzaface" and chk == "Defeated"):
                 check_name = boss + " " + chk
             new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
             check_region.locations.append(new_location)
+        if options.cheftask_checks:
+            add_cheftasks(boss, player, check_region, cheftasks_checks)
+        
         tower_regions.append(check_region)
 
     #odd regions
@@ -208,6 +230,8 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, levels_ma
             region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza S Rank", 247, region_ctop))
         if options.prank_checks:
             region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza P Rank", 328, region_ctop))
+        
+        tower_regions.append(region_ctop)
     
     tower_regions[options.snotty_floor].locations.append(PTLocation(player, "Snotty Murdered", 220, tower_regions[options.snotty_floor]))
 
@@ -228,29 +252,9 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, levels_ma
             region_trickytreat.locations.append(PTLocation(player, "Chef Task: Pumpkin Munchkin", 457, region_trickytreat))
         tower_regions.append(region_trickytreat)
 
-    #must handle chef tasks separately since they aren't common to all levels
-    #weird naming here. cheftask_checks is the option bool, cheftasks_checks is the list of task names
-    if options.cheftask_checks:
-        level_offset = 7 - (options.character // 2) #no tutorial in swap mode so the offset is different
-        for i in range(len(levels_list)):
-            region_curr = tower_regions[i+level_offset]
-            for ii in range(3):
-                task_index = (i * 3) + ii
-                task_name = cheftasks_checks[task_index]
-                new_location = PTLocation(player, task_name, pt_locations[task_name], region_curr)
-                region_curr.locations.append(new_location)
-        for i in range(len(bosses_list)):
-            task_name = cheftasks_checks[i + 67]
-            boss_offset = 26 - (options.character // 2)
-            new_location = PTLocation(player, task_name, pt_locations[task_name], tower_regions[boss_offset+i])
-            tower_regions[boss_offset+i].locations.append(new_location)
-        for i in range(len(floors_list)):
-            curr_floor = tower_regions[i+1]
-            curr_floor.locations.append(PTLocation(player, "Chef Task: S Ranked #" + str(i + 1), pt_locations["Chef Task: S Ranked #" + str(i + 1)], curr_floor))
-            curr_floor.locations.append(PTLocation(player, "Chef Task: P Ranked #" + str(i + 1), pt_locations["Chef Task: P Ranked #" + str(i + 1)], curr_floor))
-
-    tower_regions.append(region_ctop)
-
     world.regions += tower_regions
 
-
+def add_cheftasks(lvl: str, player: int, check_region: Region, cheftasks_checks: dict):
+    for chk in cheftasks_checks[lvl]:
+        new_location = PTLocation(player, chk, pt_locations[chk], check_region)
+        check_region.locations.append(new_location)
