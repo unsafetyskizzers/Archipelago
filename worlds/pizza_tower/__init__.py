@@ -80,7 +80,8 @@ def internal_from_external(name: str):
         "The Vigilante": "boss_vigilante",
         "The Noise": "boss_noise",
         "The Doise": "boss_noise",
-        "Fake Peppino": "boss_fakepep"
+        "Fake Peppino": "boss_fakepep",
+        "Pizzaface": "boss_pizzaface"
     }
     if "Secret 1" in name:
         return aliases[name.replace(" Secret 1", "")] + "1"
@@ -114,7 +115,8 @@ def external_from_internal(name: str):
         "boss_pepperman" : "Pepperman",
         "boss_vigilante" : "The Vigilante",
         "boss_noise" : "The Noise",
-        "boss_fakepep" : "Fake Peppino"
+        "boss_fakepep" : "Fake Peppino",
+        "boss_pizzaface": "Pizzaface"
     }
     if "1" in name:
         return aliases[name.replace("1", "")] + " Secret 1"

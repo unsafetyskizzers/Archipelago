@@ -2222,12 +2222,12 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     for flr in range(floors):
         lvl_amount = 4 if flr != 4 else 3
         #don't add levels on the snotty floor if completion goal is snotty
-        if(options.completion_goal.option_Snotty and flr == options.snotty_floor - 1):
+        if(options.completion_goal == options.completion_goal.option_Snotty and flr == options.snotty_floor - 1):
             break
         for level in range(lvl_amount):
             level_name = world.level_map[levels_list[(4*flr)+level]]
-            multiworld.get_region(world.floors_list[flr], world.player).connect(multiworld.get_region(level_name, world.player), world.floors_list[flr] + " to " + level_name)
-        print(multiworld.get_region(world.floors_list[flr], world.player).connect(multiworld.get_region(world.boss_map[world.bosses_list[flr]], world.player), world.floors_list[flr] + " to " + world.boss_map[world.bosses_list[flr]]))
+            print(multiworld.get_region(world.floors_list[flr], world.player).connect(multiworld.get_region(level_name, world.player), world.floors_list[flr] + " to " + level_name))
+        multiworld.get_region(world.floors_list[flr], world.player).connect(multiworld.get_region(world.boss_map[world.bosses_list[flr]], world.player), world.floors_list[flr] + " to " + world.boss_map[world.bosses_list[flr]])
 
     #set rules
     for location in multiworld.get_locations(world.player):
@@ -2236,7 +2236,6 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         elif ("Chef Task: S Ranked" in location.name) or ("Chef Task: P Ranked" in location.name):
             if ("S Ranked" in location.name) and not options.srank_checks:
                 location.progress_type = LocationProgressType.EXCLUDED
-                print("heya")
             if ("P Ranked" in location.name) and not options.prank_checks:
                 location.progress_type = LocationProgressType.EXCLUDED
             lvls_on_floor = []
@@ -2273,7 +2272,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         if options.bonus_ladders < (floor(floor_index / 4)):
             level_name = world.level_map[level]
             floor_name = levels_to_floors[level]
-            set_rule(multiworld.get_entrance(floor_name + " to " + level_name, world.player), interpret_rule(level, True))
+            set_rule(multiworld.get_entrance(floor_name + " to " + level_name, world.player), interpret_rule(level, True)) #problem
         floor_index += 1
 
     #access rules for bosses

@@ -212,8 +212,10 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, level_map
     for boss in boss_map.values():
         check_region = Region(boss, player, world, None)
         for chk in bosses_checks:
-            if boss != "Pizzaface" or (boss == "Pizzaface" and chk == "Defeated"):
-                check_name = boss + " " + chk
+            if boss == "Pizzaface" and chk != "Defeated":
+                continue
+            
+            check_name = boss + " " + chk
             new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
             check_region.locations.append(new_location)
         if options.cheftask_checks:
@@ -248,8 +250,9 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, level_map
             region_trickytreat.locations.append(PTLocation(player, loc, pt_locations[loc], region_trickytreat))
         if options.cheftask_checks:
             region_trickytreat.locations.append(PTLocation(player, "Chef Task: Tricksy", 458, region_trickytreat))
-            #add pumpkin munchkin to ctop since that's where the last obtainable pumpkin is
-            region_trickytreat.locations.append(PTLocation(player, "Chef Task: Pumpkin Munchkin", 457, region_trickytreat))
+            #only enable pumpkin munchkin if your goal has you reach CTOP
+            if options.completion_goal == options.completion_goal.option_CTOP:
+                region_trickytreat.locations.append(PTLocation(player, "Chef Task: Pumpkin Munchkin", 457, region_trickytreat))
         tower_regions.append(region_trickytreat)
 
     world.regions += tower_regions
