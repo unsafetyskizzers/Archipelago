@@ -2305,5 +2305,5 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         for floor_index in range(floors - 1):
             add_rule(multiworld.get_entrance(world.floors_list[floor_index]+" to "+world.floors_list[floor_index+1], world.player), lambda state, boss_keys = floor_index+1: state.has("Boss Key", world.player, boss_keys))
     
-    from Utils import visualize_regions
-    visualize_regions(world.get_region("Menu"), "pizzatower_regions.puml")
+    # from Utils import visualize_regions
+    # visualize_regions(world.get_region("Menu"), "pizzatower_regions.puml")
