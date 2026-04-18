@@ -2226,7 +2226,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             break
         for level in range(lvl_amount):
             level_name = world.level_map[levels_list[(4*flr)+level]]
-            print(multiworld.get_region(world.floors_list[flr], world.player).connect(multiworld.get_region(level_name, world.player), world.floors_list[flr] + " to " + level_name))
+            multiworld.get_region(world.floors_list[flr], world.player).connect(multiworld.get_region(level_name, world.player), world.floors_list[flr] + " to " + level_name)
         multiworld.get_region(world.floors_list[flr], world.player).connect(multiworld.get_region(world.boss_map[world.bosses_list[flr]], world.player), world.floors_list[flr] + " to " + world.boss_map[world.bosses_list[flr]])
 
     #set rules
