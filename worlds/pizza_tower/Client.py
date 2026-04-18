@@ -164,9 +164,9 @@ class PTContext(SuperContext):
                 player_slot_name = self.player_names[args.get("slot")]
             if args.get("receiving"):
                 player_receiving_name = self.player_names[args.get("receiving")]
-            for char in ["{", "}"]:
-                player_slot_name = player_slot_name.replace(char, "")
-                player_receiving_name = player_receiving_name.replace(char, "")
+            for char in ["{", "}", "/"]:
+                player_slot_name = player_slot_name.replace(char, "▯")
+                player_receiving_name = player_receiving_name.replace(char, "▯")
             
             if args.get("type") == "Collect":
                 txtmsg = f"{player_slot_name} collected all of their items!"
@@ -175,6 +175,8 @@ class PTContext(SuperContext):
             if (args.get("type") == "ItemSend" and self.slot_concerns_self(args["item"].player) 
                 and args["item"].player != self.just_collected and not self.slot_concerns_self(args["receiving"])):
                 item_name = self.item_names.lookup_in_game(args["item"].item, self.slot_info[args["receiving"]].game)
+                for char in ["{", "}", "/"]:
+                    item_name = item_name.replace(char, "▯")
                 txtmsg = f"Found {player_receiving_name}'s {item_name}!"
             if args.get("type") == "Goal":
                 txtmsg = f"{player_slot_name} reached their goal!"
