@@ -253,6 +253,8 @@ async def parse_game_packets(ctx: PTContext, data):
             #send over connection data and receiveditems if valid
             if ctx.connected_msg and ctx.is_connected():
                 await ctx.send_msgs_proxy(ctx.connected_msg)
+                #send tags to proxy when connected
+                await ctx.send_msgs_proxy(encode([{"cmd": "UpdateTags", "tags": ctx.tags}]))
                 ctx.update_items()
         elif not ctx.is_proxy_connected():
             break
