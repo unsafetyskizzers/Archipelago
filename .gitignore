@@ -197,3 +197,4 @@ Thumbs.db
 [Dd]esktop.ini
 fuzz.py
 worlds/tracker/
+fuzz_output/
