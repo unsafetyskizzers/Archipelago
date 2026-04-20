@@ -332,7 +332,7 @@ class CompletionGoal(Choice):
     """
     Determines your goal in this run.
     CTOP: Defeat Pizzaface and complete the Crumbling Tower of Pizza.
-    Snotty: Kill Snotty.
+    Snotty: Kill Snotty. Only levels below Snotty's home floor will be accessible.
     """
     display_name = "Goal"
     option_CTOP = 0
