@@ -233,12 +233,6 @@ class PizzaTowerWorld(World):
         return boss_queue
 
     def generate_early(self):
-        self.bosses_list = [
-            "Pepperman",
-            "The Vigilante",
-            "The Noise" if self.options.character == PTChars.PEPPINO else "The Doise",
-            "Fake Peppino"
-        ]
         if self.options.do_move_rando and self.options.do_transfo_rando:
             if self.options.character == PTChars.PEPPINO:
                 early_item_list = ["Superjump", "Wallclimb"]
@@ -289,7 +283,14 @@ class PizzaTowerWorld(World):
             self.options.snotty_floor.value = slot_data["snotty_floor"]
             if self.options.character != PTChars.PEPPINO:
                 self.boss_map = {(k if k != "The Noise" else "The Doise"):(v if v != "The Noise" else "The Doise") for k,v in self.boss_map.items()}
-
+        
+        self.bosses_list = [
+            "Pepperman",
+            "The Vigilante",
+            "The Noise" if self.options.character == PTChars.PEPPINO else "The Doise",
+            "Fake Peppino"
+        ]
+        
         #create randomized level entrances
         if not self.level_map:
             if self.options.randomize_levels:

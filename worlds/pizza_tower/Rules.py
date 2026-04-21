@@ -2227,7 +2227,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         for level in range(lvl_amount):
             level_name = world.level_map[levels_list[(4*flr)+level]]
             multiworld.get_region(world.floors_list[flr], world.player).connect(multiworld.get_region(level_name, world.player), world.floors_list[flr] + " to " + level_name)
-        multiworld.get_region(world.floors_list[flr], world.player).connect(multiworld.get_region(world.boss_map[world.bosses_list[flr]], world.player), world.floors_list[flr] + " to " + world.boss_map[world.bosses_list[flr]])
+        multiworld.get_region(world.floors_list[flr], world.player).connect(multiworld.get_region(world.boss_map[list(world.boss_map.keys())[flr]], world.player), world.floors_list[flr] + " to " + world.boss_map[list(world.boss_map.keys())[flr]])
 
     #set rules
     for location in multiworld.get_locations(world.player):
@@ -2280,7 +2280,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         if options.bonus_ladders < (i+1):
             if(options.completion_goal.option_Snotty and i == options.snotty_floor - 1):
                 break
-            set_rule(multiworld.get_entrance(world.floors_list[i] + " to " + world.boss_map[world.bosses_list[i]], world.player), interpret_rule(world.bosses_list[i], True))
+            set_rule(multiworld.get_entrance(world.floors_list[i] + " to " + world.boss_map[list(world.boss_map.keys())[i]], world.player), interpret_rule(list(world.boss_map.keys())[i], True))
     
     toppin_cost_list = [
         options.floor_1_cost.value,
@@ -2294,7 +2294,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     for i in range(floors):
         if(options.completion_goal.option_Snotty and i == options.snotty_floor - 1):
             break
-        add_rule(multiworld.get_entrance(world.floors_list[i]+" to "+world.boss_map[world.bosses_list[i]], world.player), lambda state, required_toppins = toppin_cost_list[i]: state.has("Toppin", world.player, get_item_perc_amount(multiworld, toppins, required_toppins)))
+        add_rule(multiworld.get_entrance(world.floors_list[i]+" to "+world.boss_map[list(world.boss_map.keys())[i]], world.player), lambda state, required_toppins = toppin_cost_list[i]: state.has("Toppin", world.player, get_item_perc_amount(multiworld, toppins, required_toppins)))
 
     #pumpkin requirement for tricky treat
     if options.pumpkin_checks:
