@@ -4,7 +4,7 @@ from .Options import PTOptions
 from ..generic.Rules import set_rule, add_rule
 from math import floor
 from typing import Callable
-from BaseClasses import LocationProgressType, Location, Entrance, CollectionState
+from BaseClasses import Location, Entrance, CollectionState
 from . import levels_list, levels_to_floors, PTChars, PizzaTowerWorld
 
 rule_moves = {
@@ -2234,18 +2234,11 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         if (("S Rank" in location.name) or ("P Rank" in location.name)) and (location.parent_region.name in levels_list):
             add_s_rank_rule(location.parent_region.name, location)
         elif ("Chef Task: S Ranked" in location.name) or ("Chef Task: P Ranked" in location.name):
-            if ("S Ranked" in location.name) and not options.srank_checks:
-                location.progress_type = LocationProgressType.EXCLUDED
-            if ("P Ranked" in location.name) and not options.prank_checks:
-                location.progress_type = LocationProgressType.EXCLUDED
             lvls_on_floor = []
+            lvl_amount = 4 if location.parent_region.name != "Floor 5 Staff Only" else 3
             if (location.parent_region.name != "Floor 5 Staff Only"):
                 floor_first_lvl_index = (world.floors_list.index(location.parent_region.name) * 4)
-                for i in range(4):
-                    lvls_on_floor.append(world.level_map[levels_list[floor_first_lvl_index + i]])
-            else:
-                floor_first_lvl_index = (world.floors_list.index(location.parent_region.name) * 4)
-                for i in range(3):
+                for i in range(lvl_amount):
                     lvls_on_floor.append(world.level_map[levels_list[floor_first_lvl_index + i]])
             add_s_ranked_task_rule(lvls_on_floor, location)
         elif ("Chef Task: Pumpkin Munchkin" in location.name):
@@ -2256,9 +2249,6 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
                 add_rule(location, lambda state, index=i: state.can_reach(world.get_location(f"Tricky Treat Main Path Pumpkin {index+1}")))
                 add_rule(location, lambda state, index=i: state.can_reach(world.get_location(f"Tricky Treat Side Path Pumpkin {index+1}")))
         else:
-            if ("The Critic" in location.name) or ("The Ugly" in location.name) or ("Denoise" in location.name) or ("Faker" in location.name) or ("Face Off" in location.name):
-                if not options.prank_checks:
-                    location.progress_type = LocationProgressType.EXCLUDED
             set_rule(location, interpret_rule(location.name, False))
 
     #access rules for floors

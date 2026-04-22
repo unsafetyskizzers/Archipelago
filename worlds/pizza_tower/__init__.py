@@ -1,6 +1,6 @@
 from enum import IntEnum
 from worlds.AutoWorld import World, WebWorld
-from BaseClasses import Tutorial
+from BaseClasses import Tutorial, LocationProgressType
 from .Items import PTItem, pt_items, get_item_from_category, pt_item_groups
 from .Locations import pt_locations, pt_location_groups
 from .Options import PTOptions, pt_option_groups, pt_option_presets
@@ -325,7 +325,12 @@ class PizzaTowerWorld(World):
     def create_items(self):
         pizza_itempool = []
 
-        locations_to_fill = len(self.multiworld.get_unfilled_locations(self.player))
+        unfilled_locations = self.multiworld.get_unfilled_locations(self.player)
+        locations_to_fill = len(unfilled_locations)
+        excluded_locations = 0
+        for location in unfilled_locations:
+            if location.progress_type == LocationProgressType.EXCLUDED:
+                excluded_locations += 1
 
         #add lap 2 portal
         if self.options.shuffle_lap2:
@@ -369,7 +374,7 @@ class PizzaTowerWorld(World):
         
         #add toppins, if we can
         for i in range(self.options.toppin_count):
-            if locations_to_fill <= len(pizza_itempool):
+            if locations_to_fill - excluded_locations <= len(pizza_itempool):
                 break
             pizza_itempool.append(self.create_item("Toppin"))
             self.toppin_number = i+1
@@ -377,7 +382,7 @@ class PizzaTowerWorld(World):
         #add pumpkins, if we can
         if self.options.pumpkin_checks:
             for i in range(self.options.pumpkin_count):
-                if locations_to_fill <= len(pizza_itempool):
+                if locations_to_fill - excluded_locations <= len(pizza_itempool):
                     break
                 pizza_itempool.append(self.create_item("Pumpkin"))
                 self.pumpkin_number = i+1

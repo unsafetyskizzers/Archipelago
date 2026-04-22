@@ -1,4 +1,4 @@
-from BaseClasses import Region, MultiWorld
+from BaseClasses import Region, MultiWorld, LocationProgressType
 from .Locations import PTLocation, pt_locations
 from .Options import PTOptions
 from . import PTChars
@@ -182,11 +182,21 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, level_map
     floor_index = 1
     for flr in floors_list:
         floor_region = Region(flr, player, world, flr)
-        #add s/p ranked chef tasks for each floor, if 
+        #add s/p ranked chef tasks for each floor, if s/p rank checks is disabled make them only have filler items
         if options.cheftask_checks:
-            if options.completion_goal != options.completion_goal.option_Snotty or (options.completion_goal == options.completion_goal.option_Snotty and floor_index != (options.snotty_floor.value)):
-                floor_region.locations.append(PTLocation(player, "Chef Task: S Ranked #" + str(floor_index), pt_locations["Chef Task: S Ranked #" + str(floor_index)], floor_region))
-                floor_region.locations.append(PTLocation(player, "Chef Task: P Ranked #" + str(floor_index), pt_locations["Chef Task: P Ranked #" + str(floor_index)], floor_region))
+            if options.completion_goal != options.completion_goal.option_Snotty or (options.completion_goal == options.completion_goal.option_Snotty and floor_index != options.snotty_floor.value):
+                loc_name = "Chef Task: S Ranked #" + str(floor_index)
+                task_loc = PTLocation(player, loc_name, pt_locations[loc_name], floor_region)
+                if not options.srank_checks:
+                    task_loc.progress_type = LocationProgressType.EXCLUDED
+                floor_region.locations.append(task_loc)
+                
+                loc_name = "Chef Task: P Ranked #" + str(floor_index)  
+                task_loc = PTLocation(player, loc_name, pt_locations[loc_name], floor_region)
+                if not options.prank_checks:
+                    task_loc.progress_type = LocationProgressType.EXCLUDED
+                floor_region.locations.append(task_loc)
+
         tower_regions.append(floor_region)
         floor_index += 1
 
@@ -205,7 +215,9 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, level_map
             new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
             check_region.locations.append(new_location)
         if options.cheftask_checks:
-            add_cheftasks(lvl, player, check_region, cheftasks_checks)
+            for chk in cheftasks_checks[lvl]:
+                new_location = PTLocation(player, chk, pt_locations[chk], check_region)
+                check_region.locations.append(new_location)
 
         tower_regions.append(check_region)
 
@@ -219,7 +231,11 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, level_map
             new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
             check_region.locations.append(new_location)
         if options.cheftask_checks:
-            add_cheftasks(boss, player, check_region, cheftasks_checks)
+            for chk in cheftasks_checks[boss]:
+                new_location = PTLocation(player, chk, pt_locations[chk], check_region)
+                if not options.prank_checks:
+                    new_location.progress_type = LocationProgressType.EXCLUDED
+                check_region.locations.append(new_location)
         
         tower_regions.append(check_region)
 
@@ -232,16 +248,14 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, level_map
             region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza S Rank", 247, region_ctop))
         if options.prank_checks:
             region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza P Rank", 328, region_ctop))
-        
+        if options.pumpkin_checks:
+            region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza Pumpkin", 446, region_ctop))
         tower_regions.append(region_ctop)
     
     tower_regions[options.snotty_floor].locations.append(PTLocation(player, "Snotty Murdered", 220, tower_regions[options.snotty_floor]))
 
     if options.pumpkin_checks:
         region_trickytreat = Region("Tricky Treat", player, world, None)
-
-        if options.completion_goal == options.completion_goal.option_CTOP:
-            region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza Pumpkin", 446, region_ctop))
 
         for i in range(5):
             loc = f"Tricky Treat Main Path Pumpkin {i+1}"
@@ -256,8 +270,3 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, level_map
         tower_regions.append(region_trickytreat)
 
     world.regions += tower_regions
-
-def add_cheftasks(lvl: str, player: int, check_region: Region, cheftasks_checks: dict):
-    for chk in cheftasks_checks[lvl]:
-        new_location = PTLocation(player, chk, pt_locations[chk], check_region)
-        check_region.locations.append(new_location)
