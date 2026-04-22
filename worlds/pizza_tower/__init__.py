@@ -306,8 +306,9 @@ class PizzaTowerWorld(World):
                 self.boss_map = dict(zip(self.bosses_list, self.bosses_list))
             
             #add pizzaface to the end of boss lists
-            self.boss_map.update({"Pizzaface": "Pizzaface"})
-            self.bosses_list.append("Pizzaface")
+            if self.options.completion_goal != self.options.completion_goal.option_Snotty:
+                self.boss_map.update({"Pizzaface": "Pizzaface"})
+                self.bosses_list.append("Pizzaface")
         
         #slice floors/levels/bosses list if snotty goal
         if self.options.completion_goal == self.options.completion_goal.option_Snotty:
