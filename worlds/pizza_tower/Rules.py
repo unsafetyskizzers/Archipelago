@@ -1933,9 +1933,9 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         ),
         "Chef Task: Faker": (
             "GRAB | UPPER", 
-            "NONE", 
+            "GRAB | UPPER | SLAM", 
             "BOMB | GRAB", 
-            "NONE"
+            "BOMB | GRAB | SLAM | TORN | CRUSH"
         ),
         "Fake Peppino S Rank": (
             "GRAB | UPPER", 
