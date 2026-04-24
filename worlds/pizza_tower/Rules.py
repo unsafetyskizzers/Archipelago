@@ -393,7 +393,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         ),
         "Bloodsauce Dungeon Secret 2": (
             "SJUMP+SLAM", 
-            "SJUMP+SLAM", 
+            "SJUMP+SLAM | CLIMB+SLAM", 
             "SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP", 
             "SJUMP+SLAM | SJUMP+BOUNCE | SJUMP+CRUSH | SJUMP+TORN"
         ),
