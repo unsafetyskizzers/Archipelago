@@ -366,10 +366,14 @@ class PizzaTowerWorld(World):
         #add keys
         if not self.options.open_world:
             if self.options.shuffle_boss_keys:
-                for boss in self.boss_map:
+                for boss in self.boss_map.values():
+                    if boss == "Pizzaface":
+                        break
                     pizza_itempool.append(self.create_item("Boss Key"))
             else:
                 for boss in self.boss_map.values():
+                    if boss == "Pizzaface":
+                        break
                     self.multiworld.get_location(boss+" Defeated", self.player).place_locked_item(self.create_item("Boss Key"))
                     locations_to_fill -= 1 #manually placed 4 items
         
