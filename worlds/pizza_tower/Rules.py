@@ -2259,7 +2259,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     #access rules for levels
     floor_index = 0
     for level in world.level_map:
-        if options.bonus_ladders < (floor(floor_index / 4)):
+        if options.bonus_ladders <= (floor(floor_index / 4)):
             level_name = world.level_map[level]
             floor_name = levels_to_floors[level]
             set_rule(multiworld.get_entrance(floor_name + " to " + level_name, world.player), interpret_rule(level, True)) #problem
