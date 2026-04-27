@@ -131,14 +131,15 @@ class PizzaTowerWebWorld(WebWorld):
     option_groups = pt_option_groups
     option_presets = pt_option_presets
 
-    setup_en = Tutorial(
-        "MultiWorld Setup Guide",
-        "A guide to setting up Pizza Tower for Archipelago.",
-        "English",
-        "setup_en.md",
-        "setup/en",
-        ["Skizzers"]
-    )
+    tutorials = [Tutorial(
+            "MultiWorld Setup Guide",
+            "A guide to setting up Pizza Tower for Archipelago.",
+            "English",
+            "setup_en.md",
+            "setup/en",
+            ["Skizzers"]
+        )
+    ]
 
 class PizzaTowerWorld(World):
     """
