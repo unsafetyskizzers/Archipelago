@@ -2268,7 +2268,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     #access rules for bosses
     for i in range(floors):
         if options.bonus_ladders < (i+1):
-            if(options.completion_goal.option_Snotty and i == options.snotty_floor - 1):
+            if(options.completion_goal == options.completion_goal.option_Snotty and i == options.snotty_floor - 1):
                 break
             set_rule(multiworld.get_entrance(world.floors_list[i] + " to " + world.boss_map[list(world.boss_map.keys())[i]], world.player), interpret_rule(list(world.boss_map.keys())[i], True))
     
@@ -2282,7 +2282,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
 
     #toppin requirements for bosses
     for i in range(floors):
-        if(options.completion_goal.option_Snotty and i == options.snotty_floor - 1):
+        if (options.completion_goal == options.completion_goal.option_Snotty and i == options.snotty_floor - 1):
             break
         add_rule(multiworld.get_entrance(world.floors_list[i]+" to "+world.boss_map[list(world.boss_map.keys())[i]], world.player), lambda state, required_toppins = toppin_cost_list[i]: state.has("Toppin", world.player, get_item_perc_amount(multiworld, toppins, required_toppins)))
 
