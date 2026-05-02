@@ -149,7 +149,7 @@ class PizzaTowerWorld(World):
     """
     game = "Pizza Tower"
     web = PizzaTowerWebWorld()
-    topology_present = True
+    topology_present = False
 
     options_dataclass = PTOptions
     options: PTOptions

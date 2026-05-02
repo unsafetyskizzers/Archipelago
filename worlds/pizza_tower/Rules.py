@@ -65,9 +65,7 @@ def secret_rando(world: World, options: PTOptions) -> list[str]:
         secrets_queue[39] = "Peppibot Factory Secret 1"
     return secrets_queue
 
-def get_item_perc_amount(multiworld: MultiWorld, items: int, perc: int) -> int:
-    if getattr(multiworld,"re_gen_passthrough",{}):
-        return items
+def get_item_perc_amount(items: int, perc: int) -> int:
     return floor(items * (perc / 100))
 
 def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions, toppins: int, pumpkins: int):
@@ -2284,11 +2282,19 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     for i in range(floors):
         if (options.completion_goal == options.completion_goal.option_Snotty and i == options.snotty_floor - 1):
             break
-        add_rule(multiworld.get_entrance(world.floors_list[i]+" to "+world.boss_map[list(world.boss_map.keys())[i]], world.player), lambda state, required_toppins = toppin_cost_list[i]: state.has("Toppin", world.player, get_item_perc_amount(multiworld, toppins, required_toppins)))
+        if getattr(multiworld,"re_gen_passthrough",{}):
+            required_toppins = toppin_cost_list[i]
+        else:
+            required_toppins = get_item_perc_amount(toppins, toppin_cost_list[i])
+        add_rule(multiworld.get_entrance(world.floors_list[i]+" to "+world.boss_map[list(world.boss_map.keys())[i]], world.player), lambda state, toppin_req = required_toppins: state.has("Toppin", world.player, toppin_req))
 
     #pumpkin requirement for tricky treat
     if options.pumpkin_checks:
-        add_rule(multiworld.get_entrance("Floor 1 Tower Lobby to Tricky Treat", world.player), lambda state: state.has("Pumpkin", world.player, get_item_perc_amount(multiworld, pumpkins, options.tricky_treat_cost)))
+        if getattr(multiworld,"re_gen_passthrough",{}):
+            required_pumpkins = get_item_perc_amount(pumpkins, options.tricky_treat_cost)
+        else:
+            required_pumpkins = options.pumpkin_count.value
+        add_rule(multiworld.get_entrance("Floor 1 Tower Lobby to Tricky Treat", world.player), lambda state: state.has("Pumpkin", world.player, required_pumpkins))
 
     #boss key requirements for floors
     if not options.open_world:
