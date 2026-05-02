@@ -2291,9 +2291,9 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     #pumpkin requirement for tricky treat
     if options.pumpkin_checks:
         if getattr(multiworld,"re_gen_passthrough",{}):
-            required_pumpkins = get_item_perc_amount(pumpkins, options.tricky_treat_cost)
-        else:
             required_pumpkins = options.pumpkin_count.value
+        else:
+            required_pumpkins = get_item_perc_amount(pumpkins, options.tricky_treat_cost)
         add_rule(multiworld.get_entrance("Floor 1 Tower Lobby to Tricky Treat", world.player), lambda state: state.has("Pumpkin", world.player, required_pumpkins))
 
     #boss key requirements for floors
