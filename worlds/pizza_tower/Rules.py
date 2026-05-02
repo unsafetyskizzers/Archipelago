@@ -961,9 +961,9 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         ),
         "Chef Task: Bee Nice": (
             "TAUNT", 
-            "TAUNT | STAUNT", 
+            "TAUNT | STAUNT+SLAM", 
             "TAUNT", 
-            "TAUNT | STAUNT"
+            "TAUNT | STAUNT+SLAM | STAUNT+TORN | STAUNT+BOUNCE | STAUNT+CRUSH"
         ),
         "Chef Task: Bullseye": (
             "TAUNT", 
