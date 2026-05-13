@@ -8,6 +8,7 @@ from math import floor
 from typing import Any, TextIO
 from worlds.LauncherComponents import Component, components, icon_paths, launch as launch_component, Type
 from itertools import islice
+from Options import OptionError
 
 class PTChars(IntEnum):
     PEPPINO = 0
@@ -253,6 +254,10 @@ class PizzaTowerWorld(World):
         self.level_map = {}
         self.boss_map = {}
         self.secret_map = {}
+        
+        #Raise error if snotty goal while snotty is on floor 1
+        if self.options.snotty_floor.value == 1 and self.options.completion_goal.value == self.options.completion_goal.option_Snotty:
+            raise OptionError(f"Pizza Tower - {self.player_name}: Combination of floor 1 Snotty and Snotty completion goal doesn't create enough locations for playable world")
 
         #Support for universal tracker
         re_gen_passthrough = getattr(self.multiworld,"re_gen_passthrough",{})
@@ -461,24 +466,23 @@ class PizzaTowerWorld(World):
         spoiler_handle.write('{:<32} {:0}'.format("APWorld Version: ", apversion_string))
 
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
-        if self.topology_present:
-            ex_hint_info = dict()
-            level_map_inv = {value: key for key, value in self.level_map.items()}
-            boss_map_inv = {value: key for key, value in self.boss_map.items()}
-            for location in self.multiworld.get_locations(self.player):
-                if location.parent_region.name in levels_to_floors:
-                    ex_hint_info.update({location.address: levels_to_floors[level_map_inv[location.parent_region.name]]})
-                elif location.parent_region.name in bosses_to_floors:
-                    ex_hint_info.update({location.address: bosses_to_floors[boss_map_inv[location.parent_region.name]]})
-                elif location.parent_region.name == "The Crumbling Tower of Pizza":
-                    ex_hint_info.update({location.address: "Floor 5 Staff Only"})
-                elif location.parent_region.name == "Tricky Treat":
-                    ex_hint_info.update({location.address: "Floor 1 Tower Lobby"})
-                elif location.parent_region.name == "Pizzaface":
-                    ex_hint_info.update({location.address: "Floor 5 Staff Only"})
-                else:
-                    ex_hint_info.update({location.address: location.parent_region.name})
-            hint_data[self.player] = ex_hint_info
+        ex_hint_info = dict()
+        level_map_inv = {value: key for key, value in self.level_map.items()}
+        boss_map_inv = {value: key for key, value in self.boss_map.items()}
+        for location in self.multiworld.get_locations(self.player):
+            if location.parent_region.name in levels_to_floors:
+                ex_hint_info.update({location.address: levels_to_floors[level_map_inv[location.parent_region.name]]})
+            elif location.parent_region.name in bosses_to_floors:
+                ex_hint_info.update({location.address: bosses_to_floors[boss_map_inv[location.parent_region.name]]})
+            elif location.parent_region.name == "The Crumbling Tower of Pizza":
+                ex_hint_info.update({location.address: "Floor 5 Staff Only"})
+            elif location.parent_region.name == "Tricky Treat":
+                ex_hint_info.update({location.address: "Floor 1 Tower Lobby"})
+            elif location.parent_region.name == "Pizzaface":
+                ex_hint_info.update({location.address: "Floor 5 Staff Only"})
+            else:
+                ex_hint_info.update({location.address: location.parent_region.name})
+        hint_data[self.player] = ex_hint_info
 
 
     def fill_slot_data(self):
