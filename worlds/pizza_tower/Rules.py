@@ -2197,7 +2197,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     
     def add_s_ranked_task_rule(lvls: list, location: Location):
         for lvl in lvls:
-            add_rule(location, interpret_rule(lvl + " S Rank", False))
+            add_rule(location, lambda state, level = lvl: state.can_reach_location(f"{level} S Rank", world.player))
         if options.shuffle_lap2:
             add_rule(location, lambda state: state.has("Lap 2 Portals", world.player))
 
