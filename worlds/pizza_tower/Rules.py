@@ -2197,7 +2197,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     
     def add_s_ranked_task_rule(lvls: list, location: Location):
         for lvl in lvls:
-            add_rule(location, lambda state, level = lvl: state.can_reach_location(f"{level} S Rank", world.player))
+            add_rule(location, interpret_rule(f"{lvl} S Rank", False))
         if options.shuffle_lap2:
             add_rule(location, lambda state: state.has("Lap 2 Portals", world.player))
 
@@ -2234,10 +2234,9 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         elif ("Chef Task: S Ranked" in location.name) or ("Chef Task: P Ranked" in location.name):
             lvls_on_floor = []
             lvl_amount = 4 if location.parent_region.name != "Floor 5 Staff Only" else 3
-            if (location.parent_region.name != "Floor 5 Staff Only"):
-                floor_first_lvl_index = (world.floors_list.index(location.parent_region.name) * 4)
-                for i in range(lvl_amount):
-                    lvls_on_floor.append(world.level_map[levels_list[floor_first_lvl_index + i]])
+            floor_first_lvl_index = (world.floors_list.index(location.parent_region.name) * 4)
+            for i in range(lvl_amount):
+                lvls_on_floor.append(world.level_map[levels_list[floor_first_lvl_index + i]])
             add_s_ranked_task_rule(lvls_on_floor, location)
         elif ("Chef Task: Pumpkin Munchkin" in location.name):
             for lvl in world.level_map.values():
