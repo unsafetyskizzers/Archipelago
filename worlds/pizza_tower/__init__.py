@@ -130,7 +130,7 @@ def external_from_internal(name: str):
 class PizzaTowerWebWorld(WebWorld):
     theme = "stone"
     option_groups = pt_option_groups
-    option_presets = pt_option_presets
+    options_presets = pt_option_presets
 
     tutorials = [Tutorial(
             "MultiWorld Setup Guide",
