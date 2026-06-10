@@ -1,272 +1,96 @@
-from BaseClasses import Region, MultiWorld, LocationProgressType
-from .Locations import PTLocation, pt_locations
+from BaseClasses import Region, MultiWorld
+from AutoWorld import World
+from .Locations import PTLocation
 from .Options import PTOptions
 from . import PTChars
+from typing import List
 
-def create_regions(player: int, world: MultiWorld, options: PTOptions, level_map: dict, boss_map: dict, floors_list: list):
-    levels_checks = [
-        "Mushroom Toppin",
-        "Cheese Toppin",
-        "Tomato Toppin",
-        "Sausage Toppin",
-        "Pineapple Toppin",
-        "Complete"
+def create_regions(world: World, multiworld: MultiWorld, player: int):
+    class PTRegion(Region):
+        """Region constructor pre-filled with redundant data. Only argument is region name"""
+        def __init__(self, name: str):
+            super().__init__(self, name, player, multiworld)
+
+    pt_regions: List[str] = [ # each of these will become a region later
+        # generally, and for completeness, individual rooms will be separate regions
+        # we can split really big rooms into pieces if it makes sense
+        # we can also ignore rooms that don't make sense to individualize like the pizzaface hall
+        # use internal room names by convention, since these rooms don't have any other recognizable names
+        #       (unless you really want to call half the rooms "PIZZA TOWER ISLAND" for some reason)
+        # let's try using event items for level progression:
+        #       "[level] Pillar John"
+        #       "[level] Gerome"
+        #       "[level] Key"
+        #       "[level] Lap 2 Portal"
+
+        # hub world floors
+        # TODO make tower_1 the starting region in init.py
+        "tower_1",
+        "tower_2",
+        "tower_3",
+        "tower_3 Deep Dish 9 Area",
+        "tower_4",
+        "tower_5", 
+        "tower_5 WAR Area",
+
+        # john gutter
+        "entrance_1", # starting room
+        "entrance_2", # mushroom
+        "entrance_3", # forknight swing room
+        "entrance_4", # "how do i do this without bodyslam?"
+        "entrance_5", # cheese
+        "entrance_6", # secret 1
+        "entrance_7", # superjump room + tomato + treasure
+        "entrance_8", # sausage
+        "entrance_9", # pineapple + secret 2 + gerome
+        "entrance_10", # john
+        "entrance_6c", # escape + secret 3
+        "entrance_lap", # lap portal
+
+        # for spoiler log clarity, name secrets as normal, not by their internal name
+        # this will be done through a loop
+
+        # pizzascape
+        "medieval_1", # starting room and lap portal and mushroom
+        "medieval_2", # the insta isn't THAT hard, guys
+        "medieval_3", # first knight room + cheese
+        "medieval_3b", # secret 3
+        "medieval_4", # secret 1 + tomato
+        "medieval_5", # treasure
+        "medieval_6", # sausage + secret 2
+        "medieval_7", # pineapple + locked door
+        "medieval_8", # key
+        "medieval_9", # weird ass updoor room
+        "medieval_9b", # pineapple + gerome
+        "medieval_10", # john
+        # "medieval" doesnt even look like a real word anymore
+
+        # ancient cheese
+        "ruin_1", # start + locked door + lap portal
+        "ruin_2", # mushroom + secret 1 + delicacy
+        "ruin_3", # fork room
+        "ruin_3b", # gerome
+        "ruin_4", # key
+        "ruin_5", # cheese
+        "ruin_6", # tomato
+        "ruin_7", # secret 2 + volleybomb
+        "ruin_8", # treasure + path reconvenes from escape
+        "ruin_10" # room where you run in a straight line. room order gets weird here so pay attention
+        "Top of ruin_11", # room with a bunch of bomb goblins that is actually half of a larger room for some reason
+        "ruin_9", # sausage
+        "Bottom of ruin_11", # john + secret 3
+        "ruin_12", # escape + pineapple
+        "ruin_13", # escape + superjump room
+
+        # bloodsauce dungeon
+        "dungeon_1", # start + lap portal
+        "dungeon_2", # mushroom
+        "dungeon_3", # secret 1 + cheese
+        "dungeon_4", # tomato + gerome
+        "dungeon_5", # first dark room + secret 2 + first big bodyslam
+        "dungeon_6", # second dark room
+        "dungeon_7", # treasure
+        "dungeon_8", # second big bodyslam
+        "dungeon_9", # sausage + pineapple + secret 3
+        "dungeon_10", # john
     ]
-
-    bosses_checks = [
-        "Defeated"
-    ]
-
-    tutorial_checks = [
-        "Complete",
-        "Complete in under 2 minutes"
-    ]
-
-    cheftasks_checks = {
-        "John Gutter": [
-            "Chef Task: John Gutted",
-            "Chef Task: Primate Rage",
-            "Chef Task: Let's Make This Quick"
-        ],
-        "Pizzascape": [
-            "Chef Task: Shining Armor",
-            "Chef Task: Spoonknight",
-            "Chef Task: Spherical"
-        ],
-        "Ancient Cheese": [
-            "Chef Task: Thrill Seeker",
-            "Chef Task: Volleybomb",
-            "Chef Task: Delicacy",
-        ],
-        "Bloodsauce Dungeon": [
-            "Chef Task: Eruption Man",
-            "Chef Task: Very Very Hot Sauce",
-            "Chef Task: Unsliced Pizzaman"
-        ],
-        "Oregano Desert": [
-            "Chef Task: Peppino's Rain Dance",
-            "Chef Task: Unnecessary Violence",
-            "Chef Task: Alien Cow"
-        ],
-        "Wasteyard": [
-            "Chef Task: Alive and Well",
-            "Chef Task: Pretend Ghost",
-            "Chef Task: Ghosted"
-        ],
-        "Fun Farm": [
-            "Chef Task: Good Egg",
-            "Chef Task: No One Is Safe",
-            "Chef Task: Cube Menace"
-        ],
-        "Fastfood Saloon": [
-            "Chef Task: Royal Flush",
-            "Chef Task: Non-Alcoholic",
-            "Chef Task: Already Pressed"
-        ],
-        "Crust Cove": [
-            "Chef Task: Demolition Expert",
-            "Chef Task: Blowback",
-            "Chef Task: X"
-        ],
-        "Gnome Forest": [
-            "Chef Task: Bee Nice",
-            "Chef Task: Bullseye",
-            "Chef Task: Lumberjack"
-        ],
-        "Deep-Dish 9": [
-            "Chef Task: Blast 'Em Asteroids",
-            "Chef Task: Turbo Tunnel",
-            "Chef Task: Man Meteor"
-        ],
-        "GOLF": [
-            "Chef Task: Primo Golfer",
-            "Chef Task: Helpful Burger",
-            "Chef Task: Nice Shot"
-        ],
-        "The Pig City": [
-            "Chef Task: Say Oink!",
-            "Chef Task: Pan Fried",
-            "Chef Task: Strike!"
-        ],
-        "Peppibot Factory": [
-            "Chef Task: There Can Be Only One",
-            "Chef Task: Whoop This!",
-            "Chef Task: Unflattening"
-        ],
-        "Oh Shit!": [
-            "Chef Task: Food Clan",
-            "Chef Task: Can't Fool Me",
-            "Chef Task: Penny Pincher"
-        ],
-        "Freezerator": [
-            "Chef Task: Ice Climber",
-            "Chef Task: Season's Greetings",
-            "Chef Task: Frozen Nuggets"
-        ],
-        "Pizzascare": [
-            "Chef Task: Haunted Playground",
-            "Chef Task: Skullsplitter",
-            "Chef Task: Cross To Bare",
-        ],
-        "Don't Make A Sound": [
-            "Chef Task: Let Them Sleep",
-            "Chef Task: Jumpspared",
-            "Chef Task: And This... Is My Gun On A Stick!",
-        ],
-        "WAR": [
-            "Chef Task: Trip to the Warzone",
-            "Chef Task: Sharpshooter",
-            "Chef Task: Decorated Veteran",
-        ],
-        "Pepperman": [
-            "Chef Task: The Critic"
-        ],
-        "The Vigilante": [
-            "Chef Task: The Ugly"
-        ],
-        "The Noise": [
-            "Chef Task: Denoise"
-        ],
-        "The Doise": [
-            "Chef Task: Denoise"
-        ],
-        "Fake Peppino": [
-            "Chef Task: Faker"
-        ],
-        "Pizzaface": [
-            "Chef Task: Face Off"
-        ],
-        "Floor Tasks": [
-            "Chef Task: S Ranked #1",
-            "Chef Task: P Ranked #1",
-            "Chef Task: S Ranked #2",
-            "Chef Task: P Ranked #2",
-            "Chef Task: S Ranked #3",
-            "Chef Task: P Ranked #3",
-            "Chef Task: S Ranked #4",
-            "Chef Task: P Ranked #4",
-            "Chef Task: S Ranked #5",
-            "Chef Task: P Ranked #5",
-        ]
-    }
-
-    tower_regions: list[Region] = []
-
-    tower_regions.append(Region("Menu", player, world, None))
-
-    #extra mf checks!!!!!
-    if options.secret_checks:
-        levels_checks += ["Secret 1", "Secret 2", "Secret 3"]
-    if options.treasure_checks:
-        levels_checks.append("Treasure")
-    if options.srank_checks:
-        levels_checks.append("S Rank")
-        bosses_checks.append("S Rank")
-    if options.prank_checks:
-        levels_checks.append("P Rank")
-        bosses_checks.append("P Rank")
-    if options.pumpkin_checks:
-        levels_checks.append("Pumpkin")
-    if options.character == PTChars.PEPPINO:
-        tutorial_checks += [
-            "Mushroom Toppin",
-            "Cheese Toppin",
-            "Tomato Toppin",
-            "Sausage Toppin",
-            "Pineapple Toppin",
-        ]
-    elif options.character == PTChars.SWAP:
-        tutorial_checks = []
-
-    #create regions and add locations
-    floor_index = 1
-    for flr in floors_list:
-        floor_region = Region(flr, player, world, flr)
-        #add s/p ranked chef tasks for each floor, if s/p rank checks is disabled make them only have filler items
-        if options.cheftask_checks:
-            if options.completion_goal != options.completion_goal.option_Snotty or (options.completion_goal == options.completion_goal.option_Snotty and floor_index != options.snotty_floor.value):
-                loc_name = "Chef Task: S Ranked #" + str(floor_index)
-                task_loc = PTLocation(player, loc_name, pt_locations[loc_name], floor_region)
-                if not options.srank_checks:
-                    task_loc.progress_type = LocationProgressType.EXCLUDED
-                floor_region.locations.append(task_loc)
-                
-                loc_name = "Chef Task: P Ranked #" + str(floor_index)  
-                task_loc = PTLocation(player, loc_name, pt_locations[loc_name], floor_region)
-                if not options.prank_checks:
-                    task_loc.progress_type = LocationProgressType.EXCLUDED
-                floor_region.locations.append(task_loc)
-
-        tower_regions.append(floor_region)
-        floor_index += 1
-
-    if options.character != PTChars.SWAP:
-        region_tut = Region("Tutorial", player, world, None)
-        for chk in tutorial_checks:
-            check_name = "Tutorial " + chk
-            new_location = PTLocation(player, check_name, pt_locations[check_name], region_tut)
-            region_tut.locations.append(new_location)
-        tower_regions.append(region_tut)
-
-    for lvl in level_map.values():
-        check_region = Region(lvl, player, world, None)
-        for chk in levels_checks:
-            check_name = lvl + " " + chk
-            new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
-            check_region.locations.append(new_location)
-        if options.cheftask_checks:
-            for chk in cheftasks_checks[lvl]:
-                new_location = PTLocation(player, chk, pt_locations[chk], check_region)
-                check_region.locations.append(new_location)
-
-        tower_regions.append(check_region)
-
-    for boss in boss_map.values():
-        check_region = Region(boss, player, world, None)
-        for chk in bosses_checks:
-            if boss == "Pizzaface" and chk != "Defeated":
-                continue
-            
-            check_name = boss + " " + chk
-            new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
-            check_region.locations.append(new_location)
-        if options.cheftask_checks:
-            for chk in cheftasks_checks[boss]:
-                new_location = PTLocation(player, chk, pt_locations[chk], check_region)
-                if not options.prank_checks:
-                    new_location.progress_type = LocationProgressType.EXCLUDED
-                check_region.locations.append(new_location)
-        
-        tower_regions.append(check_region)
-
-    #odd regions
-    if options.completion_goal == options.completion_goal.option_CTOP:
-        region_ctop = Region("The Crumbling Tower of Pizza", player, world, None)
-
-        region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza Complete", 214, region_ctop))
-        if options.srank_checks:
-            region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza S Rank", 247, region_ctop))
-        if options.prank_checks:
-            region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza P Rank", 328, region_ctop))
-        if options.pumpkin_checks:
-            region_ctop.locations.append(PTLocation(player, "The Crumbling Tower of Pizza Pumpkin", 446, region_ctop))
-        tower_regions.append(region_ctop)
-    
-    tower_regions[options.snotty_floor].locations.append(PTLocation(player, "Snotty Murdered", 220, tower_regions[options.snotty_floor]))
-
-    if options.pumpkin_checks:
-        region_trickytreat = Region("Tricky Treat", player, world, None)
-
-        for i in range(5):
-            loc = f"Tricky Treat Main Path Pumpkin {i+1}"
-            region_trickytreat.locations.append(PTLocation(player, loc, pt_locations[loc], region_trickytreat))
-            loc = f"Tricky Treat Side Path Pumpkin {i+1}"
-            region_trickytreat.locations.append(PTLocation(player, loc, pt_locations[loc], region_trickytreat))
-        if options.cheftask_checks:
-            region_trickytreat.locations.append(PTLocation(player, "Chef Task: Tricksy", 458, region_trickytreat))
-            #only enable pumpkin munchkin if your goal has you reach CTOP
-            if options.completion_goal == options.completion_goal.option_CTOP:
-                region_trickytreat.locations.append(PTLocation(player, "Chef Task: Pumpkin Munchkin", 457, region_trickytreat))
-        tower_regions.append(region_trickytreat)
-
-    world.regions += tower_regions
