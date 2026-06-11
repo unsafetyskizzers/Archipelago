@@ -3,7 +3,8 @@ from AutoWorld import World
 from .Locations import PTLocation
 from .Options import PTOptions
 from . import PTChars
-from typing import List
+from typing import List, Dict, Tuple
+
 
 def create_regions(world: World, multiworld: MultiWorld, player: int):
     class PTRegion(Region):
@@ -11,7 +12,13 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
         def __init__(self, name: str):
             super().__init__(self, name, player, multiworld)
 
-    pt_regions: List[str] = [ # each of these will become a region later
+    pt_regions: Dict[str, PTRegion] = {}
+
+    pt_rooms: List[str] = [
+        # "room_name": ((connecting room name, connection name))
+        #
+        # connections should be named after their in-game door letter, except hub areas
+        #
         # generally, and for completeness, individual rooms will be separate regions
         # we can split really big rooms into pieces if it makes sense
         # we can also ignore rooms that don't make sense to individualize like the pizzaface hall
@@ -28,13 +35,14 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
 
         # hub world floors
         # TODO make tower_1 the starting region in init.py
-        "tower_1",
-        "tower_2",
-        "tower_3",
-        "tower_3 Deep Dish 9 Area",
-        "tower_4",
-        "tower_5", 
-        "tower_5 WAR Area",
+        # TODO connect these to boss regions whenever
+        #"tower_1": (("tower_2", None)),
+        #"tower_2": (("tower_1", None), ("tower_3", None)),
+        #"tower_3": (("tower_2", None), ("tower_4", None), ("tower_3 Deep Dish 9 Area", None)),
+        #"tower_3 Deep Dish 9 Area": (("tower_3", None)),
+        #"tower_4": (("tower_3", None), ("tower_5", None)),
+        #"tower_5": (("tower_4", None), ("tower_5 WAR Area", None)), 
+        #"tower_5 WAR Area": (("tower_5", None)),
 
         # john gutter
         "entrance_1", # starting room
@@ -365,3 +373,32 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
         "tower_johngutterhall",
         "tower_entrancehall" 
     ]
+
+    pt_connections: List[Tuple[str]] = [ # (connecting room, door letter)
+        ("entrance_2", "entrance_lap"),
+        ("entrance_1", "entrance_3"),
+        ("entrance_2", "entrance_4"),
+        ("entrance_3", "entrance_5"),
+        ("entrance_4", "entrance_6"),
+        ("entrance_6c", "entrance_7"),
+        ("entrance_6", "entrance_8"),
+        ("entrance_7", "entrance_9"),
+        ("entrance_8", "entrance_10"),
+        ("entrance_9"),
+        ("entrance_5")
+    ]
+
+    # create regions
+    for name in pt_rooms:
+        pt_regions[name] = PTRegion(name)
+
+    ########## CONNECTION STARTS HERE ##########
+
+    # name entrances after the in-game door letter they correspond to
+
+    # helper function for fetching regions from the dict
+    def get_region(name: str):
+        return pt_regions[name]
+
+    # connect john gutter
+    
