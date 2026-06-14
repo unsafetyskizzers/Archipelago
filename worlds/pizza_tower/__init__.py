@@ -464,6 +464,7 @@ class PizzaTowerWorld(World):
     def write_spoiler_header(self, spoiler_handle: TextIO):
         apversion_string = str(self.world_version[0]) + "." + str(self.world_version[1]) + "." + str(self.world_version[2])
         spoiler_handle.write('{:<32} {:0}'.format("APWorld Version: ", apversion_string))
+        spoiler_handle.write("\n")
 
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
         ex_hint_info = dict()
