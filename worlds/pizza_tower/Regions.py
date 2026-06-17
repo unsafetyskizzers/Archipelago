@@ -428,11 +428,13 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
         "kidsparty_john", # start escape
         "kidsparty_floor4_3 ESC",
         "kidsparty_escape1",
+        "kidsparty_floor2_3 ESC",
         "kidsparty_escape2",
         "kidsparty_floor1_3 ESC",
         "kidsparty_floor1_2 ESC",
         "kidsparty_floor1_1 ESC",
         "kidsparty_1 ESC",
+        "kidsparty LAP",
 
         # war - no john in this level so rules are gonna be easier to write
         "war_1",
@@ -469,457 +471,601 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
         "tower_escape12",
         "tower_1 ESC",
         "tower_johngutterhall",
-        "tower_entrancehall"
+        "tower_entrancehall",
+
+        "pepperman",
+        "vigilante",
+        "noise",
+        "fakepeppino",
+        "pizzaface",
+
+        "trickytreat_1",
+        "trickytreat_2",
+        "trickytreat_2b",
+        "trickytreat_3",
+        "trickytreat_3b",
+        "trickytreat_4",
+        "trickytreat_4b",
+        "trickytreat_5",
+        "trickytreat_6",
+        "trickytreat_6b",
+        "trickytreat_7",
     ]
 
-    pt_connections: List[Tuple[str]] = [ # (connecting room, door letter)
-        ("entrance_2", "entrance_lap"),
-        ("entrance_1", "entrance_3"),
-        ("entrance_2", "entrance_4"),
-        ("entrance_3", "entrance_5"),
-        ("entrance_4", "entrance_6"),
-        ("entrance_6c", "entrance_7"),
-        ("entrance_6", "entrance_8"),
-        ("entrance_7", "entrance_9"),
-        ("entrance_8", "entrance_10"),
-        ("entrance_9"),
-        ("entrance_5")
-    ]
+    # this is serious now!
+    class PTLevel():
+        name: str
+        start_region: str
+        end_region: str
+        lap_region: str
+        lap2_end_region: str | None
+        toppins: Tuple[str]
+        secrets: Tuple[str]
+        gerome: str
+        treasure: str
+        pumpkin: str
+        cheftasks: Dict[str, str]
 
-    pt_locations: Dict[str, Tuple[str]] = {
-        # let's try using event items for level progression:
-        #       "[level] Gerome"
-        #       "[level] Key"
-        #       "[level] Lap 2 Portal"
-        #       ...and others for chef tasks, as needed
-        "tower_1": None,
-        "tower_2": None,
-        "tower_3": None,
-        "tower_3 Deep Dish 9 Area": None,
-        "tower_4": None,
-        "tower_5": None,
-        "tower_5 WAR Area": None,
+        def __init__(self, start_region: str, end_region: str, lap_region: str, toppins: Tuple[str], secrets: Tuple[str], gerome: str, treasure: str, pumpkin: str, cheftasks: Dict[str, str], lap2_end_region: str | None = None) -> PTLevel:
+            self.start_region = start_region
+            self.end_region = end_region
+            self.lap_region = lap_region
+            self.toppins = toppins
+            self.secrets = secrets
+            self.gerome = gerome
+            self.treasure = treasure
+            self.pumpkin = pumpkin
+            self.cheftasks = cheftasks
+            self.lap2_end_region = lap2_end_region
 
+        def set_name(self, name: str) -> None:
+            self.name = name
+
+        def get_name(self) -> str:
+            return self.name
+
+        def set_toppins(self, mushroom: str, cheese: str, tomato: str, sausage: str, pineapple: str) -> None:
+            self.toppins = (
+                mushroom,
+                cheese,
+                tomato,
+                sausage,
+                pineapple
+            )
+
+        def get_toppins(self) -> Tuple[str]:
+            return self.toppins
         
-        "entrance_1": None,
-        "entrance_2": ("John Gutter Mushroom Toppin"),
-        "entrance_3": None,
-        "entrance_4": None,
-        "entrance_5": ("John Gutter Cheese Toppin"),
-        "entrance_6": ("John Gutter Tomato Toppin", "John Gutter Secret 1"),
-        "entrance_7": ("John Gutter Pumpkin"),
-        "entrance_8": ("John Gutter Sausage Toppin"),
-        "entrance_9": ("John Gutter Pineapple Toppin", "John Gutter Secret 2"),
-        "entrance_10": None, 
-        "entrance_9 ESC": None,
-        "entrance_8 ESC": None,
-        "entrance_7 ESC": ("John Gutter Treasure"),
-        "entrance_6 ESC": None,
-        "entrance_6c": ("John Gutter Secret 3", "Chef Task: John Gutted"),
-        "entrance_5 ESC": None,
-        "entrance_4 ESC": None,
-        "entrance_3 ESC": None,
-        "entrance_2 ESC": None,
-        "entrance_1 ESC": ("Chef Task: Let's Make This Quick", "Chef Task: Primate Rage"),
-        "entrance LAP": None,
+        def set_secrets(self, secret1: str, secret2: str, secret3: str) -> None:
+            self.secrets = (
+                secret1,
+                secret2,
+                secret3
+            )
 
+        def get_secrets(self) -> Tuple[str]:
+            return self.secrets
         
-        "medieval_1": ("Pizzascape Mushroom Toppin"),
-        "medieval_2": None,
-        "medieval_3": ("Pizzascape Cheese Toppin"),
-        "medieval_3b": ("Chef Task: Spherical"),
-        "medieval_4": ("Pizzascape Tomato Toppin", "Pizzascape Secret 1", "Chef Task: Spoonknight"),
-        "medieval_5": None,
-        "medieval_6": ("Pizzascape Sausage Toppin", "Pizzascape Secret 2"),
-        "medieval_7": ("Pizzascape Pineapple Toppin"),
-        "medieval_8": None,
-        "medieval_9": None,
-        "medieval_9b": None,
-        "medieval_10": ("Chef Task: Shining Armor"), 
-        "medieval_9b ESC": None,
-        "medieval_9 ESC": None,
-        "medieval_8 ESC": None,
-        "medieval_7 ESC": None,
-        "medieval_6 ESC": None,
-        "medieval_5 ESC": ("Pizzascape Treasure"),
-        "medieval_4 ESC": None,
-        "medieval_3b ESC": ("Pizzascape Secret 3"),
-        "medieval_2 ESC": None,
-        "medieval_1 ESC": None,
-        "medieval LAP": None,
+        def set_gerome(self, gerome: str) -> None:
+            self.gerome = gerome
+
+        def get_gerome(self) -> str:
+            return self.gerome
         
+        def set_treasure(self, treasure: str) -> None:
+            self.treasure = treasure
 
+        def get_treasure(self) -> str:
+            return self.treasure
         
-        "ruin_1": None,
-        "ruin_2": ("Ancient Cheese Mushroom Toppin", "Ancient Cheese Secret 1", "Chef Task: Delicacy"),
-        "ruin_3": None,
-        "ruin_3b": None,
-        "ruin_4": None,
-        "ruin_5": ("Ancient Cheese Cheese Toppin"),
-        "ruin_6": ("Ancient Cheese Tomato Toppin"),
-        "ruin_7": ("Chef Task: Volleybomb", "Ancient Cheese Secret 2"),
-        "ruin_8": ("Ancient Cheese Treasure"),
-        "ruin_10": None, 
-        "Top of ruin_11": None,
-        "ruin_9": ("Ancient Cheese Sausage Toppin"),
-        "Bottom of ruin_11": ("Ancient Cheese Secret 3"), 
-        "ruin_12": ("Ancient Cheese Pineapple Toppin"),
-        "ruin_13": None,
-        "ruin_8 ESC": None,
-        "ruin_7 ESC": None,
-        "ruin_6 ESC": None,
-        "ruin_5 ESC": None,
-        "ruin_1 ESC": ("Chef Task: Thrill Seeker"),
-        "ruin LAP": None,
+        def set_pumpkin(self, pumpkin: str) -> None:
+            self.pumpkin = pumpkin
 
+        def get_pumpkin(self) -> str:
+            return self.pumpkin
         
-        "dungeon_1": None,
-        "dungeon_2": ("Bloodsauce Dungeon Mushroom Toppin"),
-        "dungeon_3": ("Bloodsauce Dungeon Cheese Toppin", "Bloodsauce Dungeon Secret 1"),
-        "dungeon_4": ("Bloodsauce Dungeon Tomato Toppin"),
-        "dungeon_5": ("Bloodsauce Dungeon Secret 2"),
-        "dungeon_6": None,
-        "dungeon_7": ("Bloodsauce Dungeon Treasure"),
-        "dungeon_8": None,
-        "dungeon_9": ("Bloodsauce Dungeon Sausage Toppin", "Bloodsauce Dungeon Pineapple Toppin", "Bloodsauce Dungeon Secret 3"),
-        "dungeon_10": None, 
-        "dungeon_9 ESC": ("Chef Task: Eruption Man"),
-        "dungeon_8 ESC": None,
-        "dungeon_7 ESC": None,
-        "dungeon_6 ESC": None,
-        "dungeon_5 ESC": None,
-        "dungeon_4 ESC": None,
-        "dungeon_3 ESC": None,
-        "dungeon_2 ESC": None,
-        "dungeon_1 ESC": ("Chef Task: Very Very Hot Sauce", "Chef Task: Unsliced Pizzaman"),
-        "dungeon LAP": None,
+        def set_cheftasks(self, cheftasks: Dict[str, str]) -> None:
+            self.cheftasks = cheftasks
 
-        
-        "badland_1": None,
-        "badland_2": ("Chef Task: Peppino's Rain Dance"),
-        "badland_3": ("Oregano Desert Mushroom Toppin"),
-        "badland_4": ("Oregano Desert Secret 1"),
-        "badland_5 1F": None,
-        "badland_5a": ("Oregano Desert Cheese Toppin"),
-        "badland_5 2F": None,
-        "badland_5b": None,
-        "badland_5 3F": None,
-        "badland_8": ("Oregano Desert Secret 2"),
-        "badland_8b": None,
-        "badland_9": ("Oregano Desert Tomato Toppin"), 
-        "badland_10": ("Oregano Desert Sausage Toppin", "Oregano Desert Treasure"),
-        "badland_6": None,
-        "badland_7": ("Oregano Desert Pineapple Toppin", "Chef Task: Unnecessary Violence", "Oregano Desert Secret 3"),
-        "badland_3 ESC": None,
-        "badland_2 ESC": None,
-        "badland_1 ESC": ("Chef Task: Alien Cow"),
-        "badland LAP": None,
+        def set_cheftask(self, cheftask: str, location: str) -> None:
+            self.cheftasks[cheftask] = location
 
-        
-        "graveyard_1": None,
-        "graveyard_2": ("Wasteyard Mushroom Toppin"),
-        "graveyard_3": ("Wasteyard Secret 1"),
-        "graveyard_4": ("Wasteyard Cheese Toppin"),
-        "graveyard_5": ("Wasteyard Tomato Toppin"),
-        "graveyard_5b": None,
-        "graveyard_5c": ("Wasteyard Sausage Toppin", "Wasteyard Secret 2"),
-        "graveyard_6": ("Wasteyard Treasure"), 
-        "graveyard_5c ESC": None,
-        "graveyard_3 ESC": ("Wasteyard Secret 3"),
-        "graveyard_2 ESC": None,
-        "graveyard_7": None,
-        "graveyard_8": ("Wasteyard Pineapple Toppin"),
-        "graveyard_9": None,
-        "graveyard_9b": ("Chef Task: Pretend Ghost"),
-        "graveyard_10": ("Chef Task: Alive And Well"),
-        "graveyard_1 ESC": ("Chef Task: Ghosted"),
-        "graveyard LAP": None,
+        def get_cheftasks(self) -> List[str]:
+            return self.cheftasks.keys()
 
-        
-        "farm_2": None,
-        "farm_1": None,
-        "farm_3": None,
-        "farm_4": None,
-        "farm_4b": ("Fun Farm Secret 1"),
-        "farm_5": None,
-        "farm_7": None,
-        "farm_8": ("Fun Farm Mushroom Toppin", "Chef Task: Cube Menace"),
-        "farm_6": ("Fun Farm Cheese Toppin"),
-        "farm_9": None,
-        "farm_10": ("Fun Farm Tomato Toppin"),
-        "farm_9b": ("Fun Farm Sausage Toppin", "Fun Farm Secret 2"),
-        "farm_11": None, 
-        "farm_12": ("Chef Task: No One Is Safe"),
-        "farm_12b": None,
-        "farm_13": ("Fun Farm Pineapple Toppin", "Fun Farm Secret 3"),
-        "farm_4 ESC": None,
-        "farm_1 ESC": ("Fun Farm Treasure"),
-        "farm_2 ESC": ("Chef Task: Good Egg"),
-        "farm LAP": None,
+        def get_cheftask_location(self, cheftask: str) -> str:
+            return self.cheftasks[cheftask]
 
-        
-        "saloon_1": None,
-        "saloon_2": ("Fastfood Saloon Mushroom Toppin"),
-        "saloon_2b": None,
-        "saloon_3b": None,
-        "saloon_3": ("Fastfood Saloon Cheese Toppin"),
-        "saloon_4": ("Fastfood Saloon Tomato Toppin"),
-        "saloon_4b": None,
-        "saloon_5b": ("Fastfood Saloon Secret 1"),
-        "saloon_5": ("Fastfood Saloon Sausage Toppin", "Fastfood Saloon Secret 2"),
-        "saloon_6b": ("Fastfood Saloon Pineapple Toppin"),
-        "saloon_6": None, 
-        "saloon_5 ESC": None,
-        "saloon_4 ESC": None,
-        "saloon_3 ESC": ("Fastfood Saloon Treasure"),
-        "saloon_2 ESC": ("Fastfood Saloon Secret 3"),
-        "saloon_1 ESC": ("Chef Task: Non-Alcoholic", "Chef Task: Royal Flush", "Chef Task: Already Pressed"),
-        "saloon LAP": None,
-
-        # place X depending on logic difficulty later
-        "plage_entrance": None,
-        "plage_lap": None,
-        "plage_beach1": ("Crust Cove Mushroom Toppin", "Crust Cove Treasure"),
-        "plage_shipmain": ("Chef Task: Blowback"), # blowback here if wallclimb/superjump
-        "plage_ship1": None,
-        "plage_ship2": ("Crust Cove Cheese Toppin", "Crust Cove Secret 1", "Chef Task: Blowback"), # blowback here if no wallclimb/superjump
-        "plage_ship3": None,
-        "plage_beach2": ("Crust Cove Tomato Toppin", "Crust Cove Secret 2"),
-        "plage_cavern1": None,
-        "plage_cavern2": ("Crust Cove Sausage Toppin", "Crust Cove Secret 3"), 
-        "plage_cavern3": None,
-        "plage_beach2 ESC": None,
-        "plage_shipmain ESC": None,
-        "plage_shiptop": ("Crust Cove Pineapple Toppin"),
-        "plage_beach1 ESC": None,
-        "plage_entrance ESC": ("Chef Task: Demolition Expert"),
-        "plage LAP": None,
-
-        
-        "forest_1": ("Chef Task: Bee Nice"),
-        "forest_2": ("Chef Task: Bullseye"),
-        "forest_3": None,
-        "forest_G1": None,
-        "forest_G1b": None,
-        "forest_G2": ("Gnome Forest Secret 1"),
-        "forest_G3": None,
-        "forest_5": None,
-        "forest_6": ("Gnome Forest Mushroom Toppin"),
-        "forest_7": None,
-        "forest_G4": None, 
-        "forest_G5": ("Gnome Forest Cheese Toppin"),
-        "forest_8": None,
-        "forest_9": None,
-        "forest_10": ("Gnome Forest Tomato Toppin"),
-        "forest_12": ("Gnome Forest Secret 2"),
-        "forest_14": None,
-        "forest_15": None,
-        "forest_16": None,
-        "forest_17": ("Gnome Forest Sausage Toppin"),
-        "forest_john": None, 
-        "forest_escape2": None,
-        "forest_G5 ESC": None,
-        "forest_escape1": None,
-        "forest_G3 ESC": None,
-        "forest_G2 ESC": None,
-        "forest_G1 ESC": None,
-        "forest_3 ESC": ("Gnome Forest Pineapple Toppin", "Gnome Forest Treasure"),
-        "forest_2 ESC": None,
-        "forest_1 ESC": ("Gnome Forest Secret 3", "Chef Task: Lumberjack"),
-        "forest LAP": None,
-
-        
-        "space_1": None,
-        "space_2": None,
-        "space_3": ("Deep Dish 9 Mushroom Toppin", "Deep Dish 9 Secret 1"),
-        "space_4": ("Deep Dish 9 Cheese Toppin"),
-        "space_5": None,
-        "space_6": ("Deep Dish 9 Tomato Toppin"),
-        "space_7": ("Deep Dish 9 Secret 2", "Chef Task: Man Meteor"),
-        "space_8": ("Deep Dish 9 Sausage Toppin"),
-        "space_9": ("Deep Dish 9 Pineapple Toppin"), 
-        "space_10": ("Chef Task: Turbo Tunnel"),
-        "space_11": None,
-        "space_11b": ("Deep Dish 9 Secret 3", "Chef Task: Blast 'Em Asteroids"),
-        "space_12": None,
-        "space_1 ESC": ("Deep Dish 9 Treasure"),
-        "space LAP": None,
-
-        
-        "minigolf_1": None,
-        "minigolf_2": None,
-        "minigolf_3": None,
-        "minigolf_4": ("GOLF Mushroom Toppin"),
-        "minigolf_5": ("GOLF Cheese Toppin", "GOLF Secret 1"),
-        "minigolf_6": ("GOLF Tomato Toppin", "GOLF Secret 2", "Chef Task: Helpful Burger"),
-        "minigolf_7": ("GOLF Sausage Toppin", "GOLF Secret 3"),
-        "minigolf_8": ("GOLF Pineapple Toppin", "Chef Task: Nice Shot"), 
-        "minigolf_9": None,
-        "minigolf_10": None,
-        "minigolf_11": ("Chef Task: Primo Golfer"), 
-        "minigolf_4 ESC": ("GOLF Treasure"),
-        "minigolf_3 ESC": None,
-        "minigolf_2 ESC": None,
-        "minigolf_1 ESC": None,
-        "minigolf LAP": None,
-
-        
-        "street_intro": None,
-        "street_1": None,
-        "street_house1": ("The Pig City Mushroom Toppin"),
-        "street_2": None,
-        "street_house2": ("The Pig City Cheese Toppin", "The Pig City Secret 1"),
-        "street_3": None,
-        "street_house3": ("The Pig City Tomato Toppin"),
-        "street_bacon": ("Chef Task: Pan Fried"),
-        "street_jail": None,
-        "street_4": ("The Pig City Pumpkin"),
-        "street_house4": ("The Pig City Sausage Toppin", "The Pig City Secret 2"),
-        "street_5": ("Chef Task: Strike!", "Chef Task: Say Oink!"),
-        "street_house5": ("The Pig City Pineapple Toppin", "The Pig City Secret 3"),
-        "street_john": None, 
-        "street_5 ESC": None,
-        "street_4 ESC": None,
-        "street_jail ESC": ("The Pig City Treasure"),
-        "street_3 ESC": None,
-        "street_2 ESC": None,
-        "street_1 ESC": None,
-        "street_intro ESC": None,
-        "street LAP": None,
-
-        # add Whoop This! to wherever peppibot secret 1 ends up
-        "industrial_1": None,
-        "Left side of industrial_2": ("Peppibot Factory Mushroom Toppin", "Peppibot Factory Secret 1"),
-        "Left side of industrial_3": ("Peppibot Factory Cheese Toppin"),
-        "Left side of industrial_4": ("Peppibot Factory Tomato Toppin", "Peppibot Factory Secret 2"),
-        "industrial_5": ("Peppibot Factory Sausage Toppin", "Peppibot Factory Pumpkin"), 
-        "Right side of industrial_4": ("Peppibot Factory Pineapple Toppin"),
-        "Right side of industrial_3": ("Peppibot Factory Secret 3", "Chef Task: Unflattening"),
-        "Right side of industrial_2": ("Chef Task: There Can Be Only One"),
-        "industrial_1 ESC": ("Peppibot Factory Treasure"),
-        "industrial LAP": None,
-
-        
-        "sewer_1": None,
-        "sewer_2": None,
-        "sewer_3": ("Oh Shit! Mushroom Toppin", "Oh Shit! Secret 1"),
-        "sewer_4": ("Oh Shit! Cheese Toppin"),
-        "sewer_5": None,
-        "sewer_6": None,
-        "sewer_7": ("Oh Shit! Tomato Toppin", "Chef Task: Food Clan"),
-        "sewer_8": ("Oh Shit! Secret 2"), 
-        "sewer_9": ("Oh Shit! Sausage Toppin"),
-        "sewer_10": ("Oh Shit! Treasure"),
-        "sewer_11": ("Oh Shit! Pineapple Toppin", "Oh Shit! Secret 3"),
-        "sewer_12": None,
-        "sewer_2 ESC": None,
-        "sewer_1 ESC": ("Chef Task: Can't Fool Me", "Chef Task: Penny Pincher"),
-        "sewer LAP": None,
-
-        
-        "freezer_1": ("Freezerator Mushroom Toppin"),
-        "freezer_2": None,
-        "freezer_3": ("Freezerator Cheese Toppin"),
-        "freezer_4": None,
-        "freezer_5": None,
-        "freezer_6": None,
-        "freezer_6 Unfrozen": ("Freezerator Tomato Toppin", "Freezerator Secret 1"),
-        "freezer_7": None,
-        "freezer_9": None,
-        "freezer_9 Unfrozen": None,
-        "freezer_12": None,
-        "freezer_13": ("Freezerator Sausage Toppin"),
-        "freezer_15": ("Freezerator Pineapple Toppin", "Freezerator Secret 2"),
-        "freezer_16": None,
-        "freezer_16 Unfrozen": None,
-        "freezer_17": None,
-        "freezer_escape1": ("Freezerator Treasure", "Freezerator Secret 3", "Chef Task: Ice Climber", "Chef Task: Frozen Nuggets", "Chef Task: Season's Greetings"), # season's greetings here if player has supertaunt 
-        "freezer_13 ESC": None, 
-        "freezer_12 ESC": None,
-        "freezer_9 ESC": None,
-        "freezer_7 ESC": None,
-        "freezer_4 ESC": None,
-        "freezer_3 ESC": None,
-        "freezer_2 ESC": ("Chef Task: Season's Greetings"), # season's greetings here if player does not have supertaunt
-        "freezer_1 ESC": None,
-
-        
-        "chateau_1": None,
-        "chateau_2": ("Pizzascare Pumpkin"),
-        "chateau_3": ("Pizzascare Mushroom Toppin"),
-        "chateau_4": None,
-        "chateau_5": ("Pizzascare Cheese Toppin"),
-        "chateau_6": ("Pizzascare Tomato Toppin"),
-        "chateau_7": None,
-        "chateau_8": ("Pizzascare Sausage Toppin", "Pizzascare Secret 1"),
-        "chateau_9": None, 
-        "chateau_8 ESC": None,
-        "chateau_7 ESC": ("Pizzascare Pineapple Toppin", "Chef Task: Skullsplitter"), 
-        "chateau_5 ESC": ("Pizzascare Secret 2"),
-        "chateau_2 ESC": None,
-        "chateau_2b": ("Pizzascare Treasure"),
-        "chateau_1 ESC": ("Pizzascare Secret 3", "Chef Task: Haunted Playground"),
-        "chateau LAP": None,
-
-        
-        "kidsparty_1": None,
-        "kidsparty_floor1_1": None,
-        "kidsparty_floor1_2": None,
-        "kidsparty_floor1_3": None,
-        "kidsparty_floor2_1": None,
-        "kidsparty_floor2_2": None,
-        "kidsparty_floor2_3": None,
-        "kidsparty_floor3_1": None,
-        "kidsparty_floor3_2": None,
-        "kidsparty_floor3_3": None,
-        "kidsparty_floor4_1": None,
-        "kidsparty_floor4_2": None, 
-        "kidsparty_floor4_3": None,
-        "kidsparty_john": None, 
-        "kidsparty_floor4_3 ESC": None,
-        "kidsparty_escape1": None,
-        "kidsparty_escape2": None,
-        "kidsparty_floor1_3 ESC": None,
-        "kidsparty_floor1_2 ESC": None,
-        "kidsparty_floor1_1 ESC": None,
-        "kidsparty_1 ESC": None,
-
-        
-        "war_1": None,
-        "war_2": None,
-        "war_3": None,
-        "war_6": None,
-        "war_7": None,
-        "war_8": None,
-        "war_9": None,
-        "war_10": None,
-        "war_11": None,
-        "war_12": None,
-        "war_12b": None,
-        "war_13": None,
-        "war LAP": None,
-
-        
-        "tower_finalhallway": None,
-        "tower_5 ESC": None,
-        "tower_escape1": None,
-        "tower_escape2": None,
-        "tower_escape3": None,
-        "tower_4 ESC"
-        "tower_escape4": None,
-        "tower_escape5": None,
-        "tower_escape6": None,
-        "tower_3 ESC": None,
-        "tower_escape7": None,
-        "tower_escape8": None,
-        "tower_escape9": None,
-        "tower_2 ESC": None,
-        "tower_escape10": None,
-        "tower_escape11": None,
-        "tower_escape12": None,
-        "tower_1 ESC": None,
-        "tower_johngutterhall": None,
-        "tower_entrancehall": None,
+    # initialize levels
+    levels: Dict[str, PTLevel] = {
+        "John Gutter": PTLevel(
+            start_region="entrance_1",
+            end_region="entrance_1 ESC",
+            lap_region="entrance LAP",
+            toppins=(
+                "entrance_2",
+                "entrance_5",
+                "entrance_6",
+                "entrance_8",
+                "entrance_9"
+            ),
+            secrets=(
+                "entrance_5",
+                "entrance_9",
+                "entrance_6c"
+            ),
+            gerome="entrance_9",
+            treasure="entrance_7 ESC",
+            pumpkin="entrance_7",
+            cheftasks={
+                "John Gutted": "entrance_6c",
+                "Let's Make This Quick": "entrance_1 ESC",
+                "Primate Rage": "entrance_1 ESC"
+            }
+        ),
+        "Pizzascape": PTLevel(
+            start_region="medieval_1",
+            end_region="medieval_1 ESC",
+            lap_region="medieval LAP",
+            toppins=(
+                "medieval_1",
+                "medieval_3",
+                "medieval_4",
+                "medieval_6",
+                "medieval_7"
+            ),
+            secrets=(
+                "medieval_4",
+                "medieval_6",
+                "medieval_3b ESC"
+            ),
+            gerome="medieval_9b",
+            treasure="medieval_5 ESC",
+            pumpkin="medieval_5",
+            cheftasks={
+                "Spoonknight": "medieval_6",
+                "Spherical": "medieval_3b",
+                "Shining Armor": "medieval_10"
+            }
+        ),
+        "Ancient Cheese": PTLevel(
+            start_region="ruin_1",
+            end_region="ruin_1 ESC",
+            lap_region="ruin LAP",
+            toppins=(
+                "ruin_2",
+                "ruin_5",
+                "ruin_6",
+                "ruin_9",
+                "ruin_12"
+            ),
+            secrets=(
+                "ruin_2",
+                "ruin_7",
+                "Bottom of ruin_11"
+            ),
+            gerome="ruin_3",
+            treasure="ruin_8",
+            pumpkin="ruin_12",
+            cheftasks={
+                "Delicacy": "ruin_2",
+                "Volleybomb": "ruin_7",
+                "Thrill Seeker": "ruin_1 ESC"
+            }
+        ),
+        "Bloodsauce Dungeon": PTLevel(
+            start_region="dungeon_1",
+            end_region="dungeon_1 ESC",
+            lap_region="dungeon LAP",
+            toppins=(
+                "dungeon_2",
+                "dungeon_3",
+                "dungeon_4",
+                "dungeon_9",
+                "dungeon_9"
+            ),
+            secrets=(
+                "dungeon_3",
+                "dungeon_5",
+                "dungeon_9"
+            ),
+            gerome="dungeon_4",
+            treasure="dungeon_7",
+            pumpkin="dungeon_9",
+            cheftasks={
+                "Eruption Man": "dungeon_9 ESC",
+                "Very Very Hot Sauce": "dungeon_1 ESC",
+                "Unsliced Pizzaman": "dungeon_1 ESC"
+            }
+        ),
+        "Oregano Desert": PTLevel(
+            start_region="badland_1",
+            end_region="badland_1 ESC",
+            lap_region="badland LAP",
+            toppins=(
+                "badland_3",
+                "badland_5a",
+                "badland_9",
+                "badland_10",
+                "badland_7"
+            ),
+            secrets=(
+                "badland_4",
+                "badland_8",
+                "badland_7"
+            ),
+            gerome="badland_5b",
+            treasure="badland_10",
+            pumpkin="badland_7",
+            cheftasks={
+                "Peppino's Rain Dance": "badland_2",
+                "Unnecessary Violence": "badland_7",
+                "Alien Cow": "badland_1 ESC"
+            }
+        ),
+        "Wasteyard": PTLevel(
+            start_region="graveyard_1",
+            end_region="graveyard_1 ESC",
+            lap_region="graveyard LAP",
+            toppins=(
+                "graveyard_2",
+                "graveyard_4",
+                "graveyard_5",
+                "graveyard_5c",
+                "graveyard_8"
+            ),
+            secrets=(
+                "graveyard_3",
+                "graveyard_5c",
+                "graveyard_3 ESC"
+            ),
+            gerome="graveyard_5",
+            treasure="graveyard_6",
+            pumpkin="graveyard_5c",
+            cheftasks={
+                "Alive and Well": "graveyard_10",
+                "Pretend Ghost": "graveyard_9b",
+                "Ghosted": "graveyard_1 ESC"
+            }
+        ),
+        "Fun Farm": PTLevel(
+            start_region="farm_2",
+            end_region="farm_2 ESC",
+            lap_region="farm LAP",
+            toppins=(
+                "farm_8",
+                "farm_6",
+                "farm_10",
+                "farm_9b",
+                "farm_13"
+            ),
+            secrets=(
+                "farm_4b",
+                "farm_9b",
+                "farm_13"
+            ),
+            gerome="farm_6",
+            treasure="farm_1 ESC",
+            pumpkin="farm_12",
+            cheftasks={
+                "Good Egg": "farm_2 ESC",
+                "Cube Menace": "farm_8",
+                "No One Is Safe": "farm_12"
+            }
+        ),
+        "Fastfood Saloon": PTLevel(
+            start_region="saloon_1",
+            end_region="saloon_1 ESC",
+            lap_region="saloon LAP",
+            toppins=(
+                "saloon_2",
+                "saloon_3",
+                "saloon_4",
+                "saloon_5",
+                "saloon_6b"
+            ),
+            secrets=(
+                "saloon_5b",
+                "saloon_5",
+                "saloon_2 ESC"
+            ),
+            gerome="saloon_6",
+            treasure="saloon_3 ESC",
+            pumpkin="saloon_4",
+            cheftasks={
+                "Royal Flush": "saloon_1 ESC",
+                "Non-Alcoholic": "saloon_1 ESC",
+                "Already Pressed": "saloon_1 ESC"
+            }
+        ),
+        "Crust Cove": PTLevel(
+            start_region="plage_entrance",
+            end_region="plage_entrance ESC",
+            lap_region="plage LAP",
+            toppins=(
+                "plage_beach1",
+                "plage_ship2",
+                "plage_beach2",
+                "plage_cavern2",
+                "plage_shiptop"
+            ),
+            secrets=(
+                "plage_ship2",
+                "plage_beach2",
+                "plage_cavern2"
+            ),
+            gerome="plage_shipmain",
+            treasure="plage_beach1",
+            pumpkin="plage_cavern1",
+            cheftasks={
+                # X will be placed depending on difficulty
+                "Blowback": "plage_shipmain",
+                "Demolition Expert": "plage_entrance ESC"
+            }
+        ),
+        "Gnome Forest": PTLevel(
+            start_region="forest_1",
+            end_region="forest_1 ESC",
+            lap_region="forest LAP",
+            toppins=( # keeping track of gnome pizzas is unnecessary since they're all on the main path
+                "forest_6",
+                "forest_G5",
+                "forest_10",
+                "forest_17",
+                "forest_3 ESC"
+            ),
+            secrets=(
+                "forest_G2",
+                "forest_12",
+                "forest_1 ESC"
+            ),
+            gerome="forest_16",
+            treasure="forest_3 ESC",
+            pumpkin="forest_7",
+            cheftasks={
+                "Bee Nice": "forest_1",
+                "Bullseye": "forest_2",
+                "Lumberjack": "forest_2 ESC"
+            }
+        ),
+        "Deep Dish 9": PTLevel(
+            start_region="space_1", # the one place that hasn't been touched by capitalism
+            end_region="space_1 ESC",
+            lap_region="space LAP",
+            toppins=(
+                "space_3",
+                "space_4",
+                "space_6", # oh fuck is that a space pizzamart??? damn nevermind then
+                "space_8",
+                "space_9"
+            ),
+            secrets=(
+                "space_3",
+                "space_7",
+                "space_11b"
+            ),
+            gerome="space_7",
+            treasure="space_1 ESC",
+            pumpkin="space_5",
+            cheftasks={
+                "Man Meteor": "space_7",
+                "Turbo Tunnel": "space_10",
+                "Blast 'Em Asteroids": "space_11b"
+            }
+        ),
+        "GOLF": PTLevel(
+            start_region="minigolf_1",
+            end_region="minigolf_1 ESC",
+            lap_region="minigolf LAP",
+            toppins=(
+                "minigolf_4",
+                "minigolf_5",
+                "minigolf_6",
+                "minigolf_7",
+                "minigolf_8"
+            ),
+            secrets=(
+                "minigolf_5",
+                "minigolf_6",
+                "minigolf_7"
+            ),
+            gerome="minigolf_8",
+            treasure="minigolf_4 ESC",
+            pumpkin="minigolf_6",
+            cheftasks={
+                "Helpful Burger": "minigolf_6",
+                "Nice Shot": "minigolf_8",
+                "Primo Golfer": "minigolf_11"
+            }
+        ),
+        "The Pig City": PTLevel(
+            start_region="street_intro",
+            end_region="street_intro ESC",
+            lap_region="street LAP",
+            toppins=(
+                "street_house1",
+                "street_house2",
+                "street_house3",
+                "street_house4",
+                "street_house5"
+            ),
+            secrets=(
+                "street_house2",
+                "street_house4",
+                "street_house5"
+            ),
+            gerome="street_house5",
+            treasure="street_jail ESC",
+            pumpkin="street_4",
+            cheftasks={
+                "Say Oink!": "street_5",
+                "Strike!": "street_5",
+                "Pan Fried": "street_3"
+            }
+        ),
+        "Peppibot Factory": PTLevel(
+            start_region="industrial_1",
+            end_region="industrial_1 ESC",
+            lap_region="industrial LAP",
+            toppins=(
+                "Left side of industrial_2",
+                "Left side of industrial_3",
+                "Left side of industrial_4",
+                "industrial_5",
+                "Right side of industrial_4"
+            ),
+            secrets=(
+                "Left side of industrial_2",
+                "Left side of industrial_4",
+                "Right side of industrial_3"
+            ),
+            gerome="Left side of industrial_4",
+            treasure="industrial_1 ESC",
+            pumpkin="industrial_5",
+            cheftasks={
+                # Whoop This! goes wherever peppibot secret 1 ends up
+                "There Can Be Only One": "industrial_1 ESC",
+                "Unflattening": "Right side of industrial_3"
+            }
+        ),
+        "Oh Shit!": PTLevel(
+            start_region="sewer_1",
+            end_region="sewer_1 ESC",
+            lap_region="sewer LAP",
+            toppins=(
+                "sewer_3",
+                "sewer_4",
+                "sewer_7",
+                "sewer_9",
+                "sewer_11"
+            ),
+            secrets=(
+                "sewer_3",
+                "sewer_8",
+                "sewer_11"
+            ),
+            gerome="sewer_6",
+            treasure="sewer_10",
+            pumpkin="sewer_8",
+            cheftasks={
+                "Food Clan": "sewer_7",
+                "Can't Fool Me": "sewer_1 ESC",
+                "Penny Pincher": "sewer_1 ESC"
+            }
+        ),
+        "Freezerator": PTLevel( # satan's choice opens everything up so the escape regions are reserved for lap 2
+            start_region="freezer_1",
+            end_region="freezer_escape1",
+            lap_region="freezer_13 ESC",
+            toppins=(
+                "freezer_1",
+                "freezer_3",
+                "freezer_6 Unfrozen",
+                "freezer_13",
+                "freezer_15"
+            ),
+            secrets=(
+                "freezer_6 Unfrozen",
+                "freezer_15",
+                "freezer_escape1"
+            ),
+            gerome="freezer_escape1",
+            treasure="freezer_escape1",
+            pumpkin="freezer_6 Unfrozen",
+            cheftasks={
+                # place two of Season's Greetings:
+                # one at freezer_escape1 that requires staunt (meaning it can be done in lap 1),
+                # and one at freezer_1 ESC that requires grab (meaning it must be done in lap 2)
+                "Frozen Nuggets": "freezer_escape1",
+                "Ice Climber": "freezer_escape1"
+            }
+        ),
+        "Pizzascare": PTLevel(
+            start_region="chateau_1",
+            end_region="chateau_1 ESC",
+            lap_region="chateau LAP",
+            toppins=(
+                "chateau_3",
+                "chateau_5",
+                "chateau_6",
+                "chateau_8",
+                "chateau_7 ESC"
+            ),
+            secrets=(
+                "chateau_8",
+                "chateau_5 ESC",
+                "chateau_1 ESC"
+            ),
+            gerome="chateau_5 ESC",
+            treasure="chateau_2 ESC",
+            pumpkin="chateau_2",
+            cheftasks={
+                "Haunted Playground": "chateau_1 ESC",
+                "Skullsplitter": "chateau_7 ESC",
+                "Cross To Bare": "chateau_2 ESC"
+            }
+        ),
+        "Don't Make A Sound": PTLevel(
+            start_region="kidsparty_1",
+            end_region="kidsparty_1 ESC",
+            lap_region="kidsparty LAP",
+            toppins=(
+                "kidsparty_floor1_2",
+                "kidsparty_floor2_2",
+                "kidsparty_floor3_2",
+                "kidsparty_floor4_2",
+                "kidsparty_escape1"
+            ),
+            secrets=(
+                "kidsparty_floor1_2",
+                "kidsparty_floor2_3",
+                "kidsparty_floor3_3"
+            ),
+            gerome="kidsparty_floor4_3",
+            treasure="kidsparty_floor2_3 ESC",
+            pumpkin="kidsparty_floor4_2",
+            cheftasks={
+                "Let Them Sleep": "kidsparty_john",
+                "And This... Is My Gun On A Stick!": "kidsparty_floor1_2 ESC",
+                "Jumpspared": "kidsparty_1 ESC"
+            }
+        ),
+        "WAR": PTLevel(
+            start_region="war_1",
+            end_region="war_13",
+            lap_region="war LAP",
+            toppins=(
+                "war_2",
+                "war_3",
+                "war_6",
+                "war_8",
+                "war_13"
+            ),
+            secrets=(
+                "war_7",
+                "war_9",
+                "war_12"
+            ),
+            gerome="war_2",
+            treasure="war_12b",
+            pumpkin="war_2",
+            cheftasks={
+                "Trip to the Warzone": "war_13",
+                "Sharpshooter": "war_13",
+                "Decorated Veteran": "war_13"
+            }
+        ),
+        "The Crumbling Tower of Pizza": PTLevel(
+            start_region="tower_finalhallway",
+            end_region="tower_entrancehall ESC",
+            lap_region=None,
+            toppins=None,
+            secrets=None,
+            gerome=None,
+            treasure=None,
+            pumpkin="tower_escape4",
+            cheftasks=None
+        ),
     }
 
     # create regions
