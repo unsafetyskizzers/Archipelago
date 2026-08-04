@@ -22,14 +22,6 @@ class PTCommandProcessor(ClientCommandProcessor):
         """Check PT Connection State"""
         if isinstance(self.ctx, PTContext):
             logger.info(f"PT Status: {self.ctx.get_pt_status()}")
-    def _cmd_deathlink(self):
-        """Toggles Deathlink"""
-        if isinstance(self.ctx, PTContext):
-            async_start(self.ctx.toggle_tag("DeathLink"))
-    def _cmd_ringlink(self):
-        """Toggles Ringlink"""
-        if isinstance(self.ctx, PTContext):
-            async_start(self.ctx.toggle_tag("RingLink"))
 
 
 class PTContext(SuperContext):
@@ -129,11 +121,6 @@ class PTContext(SuperContext):
                 "tags": args["tags"]
                 }])
         elif cmd == "Connected":
-            #update tags
-            if args["slot_data"].get("death_link", False):
-                self.tags.add("DeathLink")
-            if args["slot_data"].get("ring_link", False):
-                self.tags.add("RingLink")
             update_room_info: dict = decode(self.room_info)[0]
             update_room_info.update({"tags": self.tags})
             self.room_info = encode([update_room_info])

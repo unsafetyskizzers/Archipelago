@@ -363,9 +363,7 @@ pt_option_groups = [
         CompletionGoal,
         OpenWorld,
         BonusLadders,
-        SnottyFloor,
-        DeathLink,
-        RingLink
+        SnottyFloor
     ]),
     OptionGroup("Boss Options", [
         ToppinCount,
@@ -401,8 +399,6 @@ pt_option_groups = [
         RandomizeTransfos,
         TransfosToRandomize,
         ShuffleLap2,
-        RandomizeMusic,
-        RandomizeEnemies,
         FairlyRandom
     ])
 ]
@@ -434,8 +430,6 @@ class PTOptions(PerGameCommonOptions):
     move_rando_list: MovesToRandomize
     do_transfo_rando: RandomizeTransfos
     transfo_rando_list: TransfosToRandomize
-    death_link: DeathLink
-    ring_link: RingLink
     clothing_filler: ClothingFiller
     shuffle_lap2: ShuffleLap2
     trap_weights: TrapWeights
@@ -443,10 +437,8 @@ class PTOptions(PerGameCommonOptions):
     pumpkin_checks: PumpkinChecks
     pumpkin_count: PumpkinCount
     tricky_treat_cost: TrickyTreatDoor
-    randomize_music: RandomizeMusic
     completion_goal: CompletionGoal
     snotty_floor: SnottyFloor
-    randomize_enemies: RandomizeEnemies
 
 #presets - feel free to suggest more
 

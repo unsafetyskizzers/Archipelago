@@ -499,7 +499,6 @@ class PizzaTowerWorld(World):
             "open_world": bool(self.options.open_world),
             "bonus_ladders": int(self.options.bonus_ladders),
             "character": int(self.options.character.value),
-            "death_link": bool(self.options.death_link),
             "treasure_checks": bool(self.options.treasure_checks), #for poptracker
             "srank_checks": bool(self.options.srank_checks), #for poptracker
             "prank_checks": bool(self.options.prank_checks), #for poptracker
@@ -510,12 +509,9 @@ class PizzaTowerWorld(World):
             "shuffle_lap2": bool(self.options.shuffle_lap2),
             "pumpkin_checks": bool(self.options.pumpkin_checks), #for poptracker
             "pumpkin_count": floor(self.pumpkin_number * (self.options.tricky_treat_cost / 100)),
-            "ring_link": bool(self.options.ring_link),
             "do_move_rando": bool(self.options.do_move_rando), #for poptracker
             "do_transfo_rando": bool(self.options.do_transfo_rando), #for poptracker
             "apworld_version": list(self.world_version),
-            "randomize_music": bool(self.options.randomize_music),
             "completion_goal": int(self.options.completion_goal),
             "snotty_floor": int(self.options.snotty_floor),
-            "randomize_enemies": bool(self.options.randomize_enemies)
         }
