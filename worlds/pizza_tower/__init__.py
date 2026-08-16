@@ -24,7 +24,7 @@ components.append(Component("Pizza Tower Client", "PTClient", func=launch_client
 
 icon_paths["pizza"] = f"ap:{__name__}/pizza.png"
 
-levels_to_floors = {
+gates_to_floors = {
     "John Gutter": "Floor 1 Tower Lobby",
     "Pizzascape": "Floor 1 Tower Lobby",
     "Ancient Cheese": "Floor 1 Tower Lobby",
@@ -43,10 +43,7 @@ levels_to_floors = {
     "Freezerator": "Floor 4 Slum",
     "Pizzascare": "Floor 5 Staff Only",
     "Don't Make A Sound": "Floor 5 Staff Only",
-    "WAR": "Floor 5 Staff Only"
-}
-
-bosses_to_floors = {
+    "WAR": "Floor 5 Staff Only",
     "Pepperman": "Floor 1 Tower Lobby",
     "The Vigilante": "Floor 2 Western District",
     "The Noise": "Floor 3 Vacation Resort",
@@ -54,7 +51,7 @@ bosses_to_floors = {
     "Fake Peppino": "Floor 4 Slum"
 }
 
-levels_list = list(levels_to_floors.keys())
+gates_list = dict((list(gates_to_floors.keys()), list(gates_to_floors.keys())))
 
 def internal_from_external(name: str):
     aliases = {
@@ -473,8 +470,8 @@ class PizzaTowerWorld(World):
         for location in self.multiworld.get_locations(self.player):
             if location.parent_region.name in levels_to_floors:
                 ex_hint_info.update({location.address: levels_to_floors[level_map_inv[location.parent_region.name]]})
-            elif location.parent_region.name in bosses_to_floors:
-                ex_hint_info.update({location.address: bosses_to_floors[boss_map_inv[location.parent_region.name]]})
+            elif location.parent_region.name in levels_to_floors:
+                ex_hint_info.update({location.address: levels_to_floors[boss_map_inv[location.parent_region.name]]})
             elif location.parent_region.name == "The Crumbling Tower of Pizza":
                 ex_hint_info.update({location.address: "Floor 5 Staff Only"})
             elif location.parent_region.name == "Tricky Treat":

@@ -115,17 +115,20 @@ class CharacterToPlay(Choice):
     alias_Both = 2
     default = 0
 
-class RandomizeLevels(Toggle):
+class RandomizeHubGates(Choice):
     """
-    Shuffle level entrances around the Hub.
+    Shuffle level/boss gates around the Hub.
+    
+    "Levels" will only shuffle around levels
+    "Bosses" will only shuffle around bosses
+    "Levels and Bosses" will only shuffle levels with other levels, and bosses with other bosses
+    "Full Shuffle" will shuffle level/boss gates indiscriminately
     """
-    display_name = "Shuffle Level Gates"
-
-class RandomizeBosses(Toggle):
-    """
-    Shuffle bosses (except Pizzaface) between floors.
-    """
-    display_name = "Shuffle Boss Gates"
+    display_name = "Shuffle Level/Boss Gates"
+    option_levels = 0
+    option_bosses = 1
+    option_levels_and_bosses = 2
+    option_full_shuffle = 3
 
 class RandomizeSecrets(Toggle):
     """
@@ -393,8 +396,7 @@ pt_option_groups = [
         TrapWeights
     ]),
     OptionGroup("Randomization Options", [
-        RandomizeLevels,
-        RandomizeBosses,
+        RandomizeHubGates,
         RandomizeSecrets,
         RandomizeMoves,
         MovesToRandomize,
@@ -422,8 +424,7 @@ class PTOptions(PerGameCommonOptions):
     prank_checks: PRankChecks
     cheftask_checks: ChefTaskChecks
     shuffle_boss_keys: ShuffleBossKeys
-    randomize_levels: RandomizeLevels
-    randomize_bosses: RandomizeBosses
+    randomize_gates: RandomizeHubGates
     randomize_secrets: RandomizeSecrets
     open_world: OpenWorld
     bonus_ladders: BonusLadders
