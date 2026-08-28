@@ -125,10 +125,11 @@ class RandomizeHubGates(Choice):
     "Full Shuffle" will shuffle level/boss gates indiscriminately
     """
     display_name = "Shuffle Level/Boss Gates"
-    option_levels = 0
-    option_bosses = 1
-    option_levels_and_bosses = 2
-    option_full_shuffle = 3
+    option_vanilla = 0
+    option_levels = 1
+    option_bosses = 2
+    option_levels_and_bosses = 3
+    option_full_shuffle = 4
 
 class RandomizeSecrets(Toggle):
     """
