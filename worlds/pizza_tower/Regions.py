@@ -1,12 +1,14 @@
-from BaseClasses import Region, MultiWorld
+from BaseClasses import Region, MultiWorld, Rule, ItemClassification
 from AutoWorld import World
-from .Locations import PTLocation
+from .Locations import PTLocation, pt_locations, levels_list
+from .Items import PTItem
 from .Options import PTOptions
-from . import PTChars
+from . import PizzaTowerWorld, PTChars
+from .data import pt_levels
 from typing import List, Dict, Tuple
+from rule_builder.rules import *
 
-
-def create_regions(world: World, multiworld: MultiWorld, player: int):
+def create_regions(world: PizzaTowerWorld, multiworld: MultiWorld, player: int):
     class PTRegion(Region):
         """Region constructor pre-filled with redundant data. Only argument is region name"""
         def __init__(self, name: str):
@@ -29,9 +31,9 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
         #       (unless you really want to call half the rooms "PIZZA TOWER ISLAND" for some reason)
         # don't forget pumpkins cuz they don't show up on the sr wiki
         # procedure for lap 2 for each level:
-        #       - make a lap region (even if the level doesn't have a lap room)
-        #       - give it a one-way transition into the escape start room
-        #       - place a lap 2 event item at the lap region
+        #       lap region contains all locations checked on lap 2
+        #       expect that the player can clear lap 2 if they clear lap 1
+        #       levels with laps that change the level significantly (freezer and war) get long rules on their lap 2 access
 
         # hub world floors
         # TODO make tower_1 the starting region in init.py
@@ -376,7 +378,7 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
         "freezer_6 Unfrozen",
         "freezer_7",
         "freezer_9",
-        "freezer_9 Unfrozen"
+        "freezer_9 Unfrozen",
         "freezer_12",
         "freezer_13",
         "freezer_15",
@@ -384,14 +386,7 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
         "freezer_16 Unfrozen"
         "freezer_17",
         "freezer_escape1", # start escape; place level completion here since peppino should have satan's by now
-        "freezer_13 ESC", # this room and below should be lap 2 only
-        "freezer_12 ESC",
-        "freezer_9 ESC",
-        "freezer_7 ESC",
-        "freezer_4 ESC",
-        "freezer_3 ESC",
-        "freezer_2 ESC",
-        "freezer_1 ESC",
+        "freezer LAP",
 
         # pizzascare
         "chateau_1",
@@ -449,7 +444,7 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
         "war_12",
         "war_12b",
         "war_13",
-        "war LAP",
+        "war LAP", # everything in war is accessible in lap 1 so we can just make lap 2 access a long rule
 
         # ctop - like war, this level is linear so rules are easy
         "tower_finalhallway",
@@ -828,7 +823,7 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
                 "Lumberjack": "forest_2 ESC"
             }
         ),
-        "Deep Dish 9": PTLevel(
+        "Deep-Dish 9": PTLevel(
             start_region="space_1", # the one place that hasn't been touched by capitalism
             end_region="space_1 ESC",
             lap_region="space LAP",
@@ -924,7 +919,7 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
             pumpkin="industrial_5",
             cheftasks={
                 # Whoop This! goes wherever peppibot secret 1 ends up
-                "There Can Be Only One": "industrial_1 ESC",
+                "There Can Be Only One": "industrial LAP",
                 "Unflattening": "Right side of industrial_3"
             }
         ),
@@ -956,7 +951,7 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
         "Freezerator": PTLevel( # satan's choice opens everything up so the escape regions are reserved for lap 2
             start_region="freezer_1",
             end_region="freezer_escape1",
-            lap_region="freezer_13 ESC",
+            lap_region="freezer LAP",
             toppins=(
                 "freezer_1",
                 "freezer_3",
@@ -1072,13 +1067,125 @@ def create_regions(world: World, multiworld: MultiWorld, player: int):
     for name in pt_rooms:
         pt_regions[name] = PTRegion(name)
 
+    ########## SECRET HANDLING STARTS HERE ##########
+
+    # create secret regions
+    secrets_list = []
+    for level in levels_list:
+        for i in range(1, 4):
+            secrets_list.append(f"{level} Secret {i}")
+    for name in secrets_list:
+        pt_regions[name] = PTRegion(name)
+
+    # create secret map
+    def secret_rando() -> List[str]:
+        shuffled_secrets = secrets_list.copy()
+        world.random.shuffle(shuffled_secrets)
+        if world.options.cheftask_checks and shuffled_secrets[16] != "Wasteyard Secret 2":
+            shuffled_secrets[shuffled_secrets.index("Wasteyard Secret 2")] = shuffled_secrets[16]
+            shuffled_secrets[16] = "Wasteyard Secret 2"
+        return shuffled_secrets
+
+    if not world.secret_map:
+        if world.options.randomize_secrets:
+            secret_map = dict(zip(secrets_list, secret_rando()))
+        else:
+            secret_map = dict(zip(secrets_list, secrets_list))
+        world.secret_map = secret_map
+    else:
+        secret_map = world.secret_map
+
     ########## CONNECTION STARTS HERE ##########
 
-    # name entrances after the in-game door letter they correspond to
+    # no rules yet; that will happen in Rules.py
 
-    # helper function for fetching regions from the dict
-    def get_region(name: str):
-        return pt_regions[name]
+    # try to place toppin(s)
+    def try_toppin(lvl_name: str, toppin_rooms: Tuple[str], curr_room: str):
+        toppins = (
+            "Mushroom",
+            "Cheese",
+            "Tomato",
+            "Sausage",
+            "Pineapple"
+        )
+        if curr_room in toppin_rooms: # we have to do this extra stuff because dungeon_9 has two toppins
+            toppins_present = []
+            for i in range(5):
+                if toppin_rooms[i] == curr_room:
+                    toppins_present.append(toppins[i])
+            new_locations = []
+            for toppin in toppins_present:
+                check_name = f"{lvl_name} {toppin} Toppin"
+                new_locations.append(PTLocation(player, check_name, pt_locations[check_name], pt_regions[curr_room]))
+            pt_regions[curr_room].locations += new_locations
 
-    # connect john gutter
-    
+    # try to place gerome as an event item
+    def try_gerome(lvl_name: str, gerome_room: str, curr_room: str):
+        if curr_room == gerome_room:
+            event_name = f"{lvl_name} Gerome"
+            event_location = PTLocation(player, event_name, None, pt_regions[curr_room])
+            event_location.place_locked_item(PTItem(event_name, ItemClassification.progression, None, player))
+            pt_regions[curr_room].locations.append(event_location)
+
+    # try to place treasure
+    def try_treasure(lvl_name: str, treasure_room: str, curr_room: str):
+        if curr_room == treasure_room:
+            check_name = f"{lvl_name} Treasure"
+            new_location = PTLocation(player, check_name, pt_locations[check_name], pt_regions[curr_room])
+            pt_regions[curr_room].locations.append(new_location)
+
+    # try to place pumpkin
+    # just one pumpkin per level; we'll deal with tricky treat separately
+    def try_pumpkin(lvl_name: str, pumpkin_room: str, curr_room: str):
+        if curr_room == pumpkin_room:
+            check_name = f"{lvl_name} Pumpkin"
+            new_location = PTLocation(player, check_name, pt_locations[check_name], pt_regions[curr_room])
+            pt_regions[curr_room].locations.append(new_location)
+
+    # try to place chef tasks
+    # we'll need to place the more complicated tasks manually:
+    #       X (can be in one of two spots depending on difficulty)
+    #       Whoop This! (can be wherever peppibot 1 ends up)
+    #       Season's Greetings (will be in two spots at the same time)
+    def try_tasks(cheftasks: dict, curr_room: str):
+        if curr_room in cheftasks.values:
+            tasks_present = []
+            for task, room in cheftasks.items():
+                if room == curr_room:
+                    tasks_present.append(task)
+            new_locations = []
+            for task in tasks_present:
+                task_name = f"Chef Task: {task}"
+                new_locations.append(PTLocation(player, task_name, pt_locations[task_name]))
+            pt_regions[curr_room].locations += new_locations
+
+    # try to place secrets
+    # also handles connections
+    def try_secrets(lvl_name: str, secrets: Tuple[str], curr_room: str):
+        if curr_room in secrets:
+            base_secret_name = f"{lvl_name} Secret {secrets.index(curr_room)+1}"
+            target_secret_name = secret_map[base_secret_name]
+            target_secret_region = pt_regions[target_secret_name]
+            if world.options.secret_checks: target_secret_region.locations.append(PTLocation(player, base_secret_name, pt_locations[base_secret_name], target_secret_region))
+            pt_regions[curr_room].connect(target_secret_region)
+
+    for name, level in levels.items():
+        start_room_index = pt_rooms.index(pt_regions[level.start_region])
+        lap_room_index = pt_rooms.index(pt_regions[level.lap_region])
+        for i in range(start_room_index, lap_room_index):
+            room = pt_rooms[i]
+            try_toppin(name, level.toppins, room)
+            if world.options.treasure_checks:
+                try_gerome(name, level.gerome, room)
+                try_treasure(name, level.treasure, room)
+            if world.options.cheftask_checks: try_tasks(level.cheftasks, room)
+            if world.options.pumpkin_checks: try_pumpkin(name, level.pumpkin, room)
+            try_secrets(name, level.secrets, room)
+            pt_regions[room].connect(pt_regions[pt_rooms[i+1]])
+        
+        end_room_region = pt_regions[level.end_region]
+        end_room_region.locations.append(PTLocation(player, f"{name} Complete", pt_locations[f"{name} Complete"], end_room_region))
+        if world.options.srank_checks: end_room_region.locations.append(PTLocation(player, f"{name} S Rank", pt_locations[f"{name} S Rank"], end_room_region))
+
+        lap_region = pt_regions[level.lap_region]
+        if world.options.prank_checks: end_room_region.locations.append(PTLocation(player, f"{name} P Rank", pt_locations[f"{name} P Rank"], end_room_region))

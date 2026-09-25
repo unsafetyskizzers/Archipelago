@@ -327,7 +327,7 @@ class PizzaTowerWorld(World):
     
     def create_regions(self):
         from .Regions import create_regions
-        create_regions(self.player, self.multiworld, self.options, self.level_map, self.boss_map, self.floors_list)
+        create_regions(self, self.multiworld, self.player)
 
     def create_items(self):
         pizza_itempool = []
