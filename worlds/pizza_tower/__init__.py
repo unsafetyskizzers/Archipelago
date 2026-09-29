@@ -186,24 +186,46 @@ class PizzaTowerWorld(World):
             "Pizzascape"
         ]
 
-        ok_start_levels = [ 
-            "Pizzascape",
-            "Ancient Cheese",
-            "Bloodsauce Dungeon",
-            "The Pig City",
-            "Don't Make A Sound"
-        ]
+        ok_start_levels = []
+        ok_start_bosses = []
 
-        ok_start_bosses = [
-            "Pepperman",
-            "The Noise" if self.options.character == PTChars.PEPPINO else "The Doise"
-        ]
+        #selection of non-restrictive levels for move rando
+        if self.options.do_move_rando.value:
+            ok_start_levels = [ 
+                "Pizzascape",
+                "Ancient Cheese",
+                "Bloodsauce Dungeon",
+                "The Pig City",
+                "Don't Make A Sound"
+            ]
+            ok_start_bosses = [
+                "Fake Peppino",
+                "The Noise" if self.options.character == PTChars.PEPPINO else "The Doise"
+            ]
+            
+        #selection of non-restrictive levels for transfo rando
+        elif self.options.do_transfo_rando.value:
+            ok_start_levels = [
+                "John Gutter",
+                "Pizzascape",
+                "Ancient Cheese",
+                "Bloodsauce Dungeon",
+                "Oregano Desert",
+                "Crust Cove",
+                "Gnome Forest",
+                "The Pig City",
+                "Don't Make A Sound",
+                "Peppibot Factory",
+                "Oh Shit!",
+                "Freezerator",
+                "Pizzascare"
+            ]
 
         rando_type = self.options.randomize_gates
 
         if self.options.character != PTChars.PEPPINO:
             ok_start_levels.append("Freezerator")
-        if self.options.difficulty.value > 0:
+        if self.options.difficulty.value > 0 and not self.options.do_transfo_rando.value:
             ok_start_levels.append("Wasteyard")
             ok_start_levels.append("GOLF")
 
