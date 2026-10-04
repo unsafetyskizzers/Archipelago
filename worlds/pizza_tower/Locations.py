@@ -513,6 +513,82 @@ pt_locations = { #TODO allow pumpkins to be checks eventually maybe
 
     "Chef Task: Pumpkin Munchkin": 457,
     "Chef Task: Tricksy": 458,
+
+    "John Gutter Secret 1 Complete": 459,
+    "John Gutter Secret 2 Complete": 460,
+    "John Gutter Secret 3 Complete": 461,
+
+    "Pizzascape Secret 1 Complete": 462,
+    "Pizzascape Secret 2 Complete": 463,
+    "Pizzascape Secret 3 Complete": 464,
+
+    "Ancient Cheese Secret 1 Complete": 465,
+    "Ancient Cheese Secret 2 Complete": 466,
+    "Ancient Cheese Secret 3 Complete": 467,
+
+    "Bloodsauce Dungeon Secret 1 Complete": 468,
+    "Bloodsauce Dungeon Secret 2 Complete": 469,
+    "Bloodsauce Dungeon Secret 3 Complete": 470,
+
+    "Oregano Desert Secret 1 Complete": 471,
+    "Oregano Desert Secret 2 Complete": 472,
+    "Oregano Desert Secret 3 Complete": 473,
+
+    "Wasteyard Secret 1 Complete": 474,
+    "Wasteyard Secret 2 Complete": 475,
+    "Wasteyard Secret 3 Complete": 476,
+
+    "Fun Farm Secret 1 Complete": 477,
+    "Fun Farm Secret 2 Complete": 478,
+    "Fun Farm Secret 3 Complete": 479,
+
+    "Fastfood Saloon Secret 1 Complete": 480,
+    "Fastfood Saloon Secret 2 Complete": 481,
+    "Fastfood Saloon Secret 3 Complete": 482,
+
+    "Crust Cove Secret 1 Complete": 483,
+    "Crust Cove Secret 2 Complete": 484,
+    "Crust Cove Secret 3 Complete": 485,
+
+    "Gnome Forest Secret 1 Complete": 486,
+    "Gnome Forest Secret 2 Complete": 487,
+    "Gnome Forest Secret 3 Complete": 488,
+
+    "Deep-Dish 9 Secret 1 Complete": 489,
+    "Deep-Dish 9 Secret 2 Complete": 490,
+    "Deep-Dish 9 Secret 3 Complete": 491,
+
+    "GOLF Secret 1 Complete": 492,
+    "GOLF Secret 2 Complete": 493,
+    "GOLF Secret 3 Complete": 494,
+
+    "The Pig City Secret 1 Complete": 495,
+    "The Pig City Secret 2 Complete": 496,
+    "The Pig City Secret 3 Complete": 497,
+
+    "Peppibot Factory Secret 1 Complete": 498,
+    "Peppibot Factory Secret 2 Complete": 499,
+    "Peppibot Factory Secret 3 Complete": 500,
+
+    "Oh Shit! Secret 1 Complete": 501,
+    "Oh Shit! Secret 2 Complete": 502,
+    "Oh Shit! Secret 3 Complete": 503,
+
+    "Freezerator Secret 1 Complete": 504,
+    "Freezerator Secret 2 Complete": 505,
+    "Freezerator Secret 3 Complete": 506,
+
+    "Pizzascare Secret 1 Complete": 507,
+    "Pizzascare Secret 2 Complete": 508,
+    "Pizzascare Secret 3 Complete": 509,
+
+    "Don't Make A Sound Secret 1 Complete": 510,
+    "Don't Make A Sound Secret 2 Complete": 511,
+    "Don't Make A Sound Secret 3 Complete": 512,
+
+    "WAR Secret 1 Complete": 513,
+    "WAR Secret 2 Complete": 514,
+    "WAR Secret 3 Complete": 515,
 }
 
 # location groups definition starts here

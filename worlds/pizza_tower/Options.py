@@ -68,7 +68,14 @@ class SecretChecks(DefaultOnToggle):
     """
     Adds the game's 57 Secrets to the pool as locations.
     """
-    display_name = "Secrets Award Checks"
+    display_name = "Secrets Award Checks When Entered"
+
+class SecretCompletionChecks(Toggle):
+    """
+    Each of the game's 57 Secrets gives a check when completed normally.
+    (Exiting the secret via the pause menu will, of course, not award a check.)
+    """
+    display_name = "Secrets Award Checks When Completed"
 
 class SRankChecks(Toggle):
     """
@@ -88,7 +95,7 @@ class ChefTaskChecks(Toggle):
     """
     Adds the game's 72 Chef Tasks (achievements) to the pool as locations.
 
-    If S/P Rank checks are disabled, the no-hit boss Chef Tasks as well as S/P Ranked floor Chef Tasks will set to Excluded.
+    If S/P Rank checks are disabled, the no-hit boss Chef Tasks and the S/P Ranked floor Chef Tasks will not give an important item.
     If Pumpkin checks are enabled, this will also add the 2 pumpkin-related Chef Tasks as checks.
     """
     display_name = "Chef Tasks Award Checks"
@@ -377,6 +384,7 @@ pt_option_groups = [
     OptionGroup("Extra Checks", [
         TreasureChecks,
         SecretChecks,
+        SecretCompletionChecks,
         SRankChecks,
         PRankChecks,
         ChefTaskChecks,
@@ -414,6 +422,7 @@ class PTOptions(PerGameCommonOptions):
     floor_5_cost: Floor5Door
     treasure_checks: TreasureChecks
     secret_checks: SecretChecks
+    secret_complete_checks: SecretCompletionChecks
     srank_checks: SRankChecks
     prank_checks: PRankChecks
     cheftask_checks: ChefTaskChecks
