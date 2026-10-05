@@ -2144,6 +2144,389 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         "Floor 4 Slum": ("NONE", "NONE"),
     }
 
+    secret_rules_dict = { # for secret completion
+        "John Gutter": (
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            ),
+            (
+                "CLIMB",
+                "CLIMB | UPPER",
+                "BOUNCE | UPPER | SJUMP | CRUSH",
+                "BOUNCE | UPPER | SJUMP | CRUSH"
+            ),
+            (
+                "CLIMB | SJUMP",
+                "CLIMB | SJUMP",
+                "SJUMP | UPPER | CRUSH | BOUNCE",
+                "SJUMP | UPPER | CRUSH | BOUNCE",
+            )
+        ),
+        "Pizzascape": (
+            (
+                "KNIGHT",
+                "KNIGHT",
+                "KNIGHT",
+                "KNIGHT"
+            ),
+            (
+                "KNIGHT",
+                "KNIGHT",
+                "KNIGHT",
+                "KNIGHT"
+            ),
+            (
+                "BALL",
+                "BALL",
+                "BALL",
+                "BALL"
+            )
+        ),
+        "Ancient Cheese":(
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            ),
+            (
+                "GRAB",
+                "GRAB | UPPER",
+                "GRAB",
+                "GRAB | UPPER",
+            ),
+            (
+                "CLIMB",
+                "CLIMB",
+                "SJUMP | BOUNCE | UPPER | CRUSH",
+                "SJUMP | BOUNCE | UPPER | CRUSH"
+            )
+        ),
+        "Bloodsauce Dungeon": (
+            (
+                "CLIMB | SJUMP",
+                "CLIMB | SJUMP | UPPER",
+                "SJUMP | BOUNCE | UPPER | CRUSH",
+                "SJUMP | BOUNCE | UPPER | CRUSH"
+            ),
+            (
+                "CLIMB",
+                "CLIMB",
+                "BOUNCE | UPPER",
+                "BOUNCE | UPPER | CRUSH"
+            ),
+            (
+                "CLIMB | UPPER | SJUMP | SLAM",
+                "NONE", # both chars can corner correct
+                "BOUNCE | UPPER | SJUMP | CRUSH | SLAM",
+                "NONE"
+            )
+        ),
+        "Oregano Desert": (
+            (
+                "SLAM",
+                "SLAM",
+                "SLAM | TORN | CRUSH",
+                "SLAM | TORN | CRUSH"
+            ),
+            (
+                "FIRE",
+                "FIRE",
+                "FIRE",
+                "FIRE"
+            ),
+            (
+                "SJUMP",
+                "SJUMP",
+                "UPPER | BOUNCE | SJUMP",
+                "UPPER | BOUNCE | SJUMP | CRUSH"
+            )
+        ),
+        "Wasteyard": (
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            ),
+            (
+                "GHOST",
+                "GHOST",
+                "GHOST",
+                "GHOST"
+            ),
+            (
+                "CLIMB",
+                "CLIMB | UPPER",
+                "UPPER | BOUNCE | SJUMP | CRUSH",
+                "UPPER | BOUNCE | SJUMP | CRUSH"
+            )
+        ),
+        "Fun Farm": (
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            ),
+            (
+                "MORT",
+                "MORT",
+                "SJUMP | MORT",
+                "SJUMP | MORT | CRUSH"
+            ),
+            (
+                "CLIMB | SJUMP",
+                "CLIMB | SJUMP",
+                "BOUNCE | SJUMP | UPPER | CRUSH",
+                "BOUNCE | SJUMP | UPPER | CRUSH"
+            )
+        ),
+        "Fastfood Saloon": (
+            (
+                "SJUMP | CLIMB | UPPER",
+                "SJUMP | CLIMB | UPPER",
+                "SJUMP | BOUNCE | UPPER | CRUSH",
+                "SJUMP | BOUNCE | UPPER | CRUSH"
+            ),
+            (
+                "CLIMB",
+                "CLIMB",
+                "BOUNCE | UPPER",
+                "BOUNCE | UPPER | CRUSH",
+            ),
+            (
+                "CLIMB | SLAM",
+                "CLIMB+SLAM | SJUMP+SLAM",
+                "BOUNCE | CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN",
+                "BOUNCE | CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN"
+            )
+        ),
+        "Crust Cove": (
+            (
+                "BARREL",
+                "BARREL",
+                "NONE",
+                "NONE"
+            ),
+            (
+                "SJUMP | CLIMB",
+                "SJUMP | CLIMB",
+                "BOUNCE | SJUMP | UPPER | CRUSH",
+                "BOUNCE | SJUMP | UPPER | CRUSH"
+            ),
+            (
+                "TAUNT",
+                "TAUNT",
+                "TAUNT",
+                "TAUNT"
+            )
+        ),
+        "Gnome Forest": (
+            (
+                "DJUMP",
+                "DJUMP",
+                "CRUSH | UPPER",
+                "CRUSH | UPPER"
+            ),
+            (
+                "DJUMP",
+                "DJUMP",
+                "CRUSH | UPPER | SJUMP",
+                "CRUSH | UPPER | SJUMP"
+            ),
+            (
+                "CLIMB",
+                "CLIMB | SJUMP",
+                "SJUMP | BOUNCE",
+                "SJUMP | BOUNCE | CRUSH"
+            )
+        ),
+        "Deep-Dish 9": (
+            (
+                "BUBB",
+                "BUBB | CLIMB",
+                "BUBB | SJUMP | UPPER | CRUSH",
+                "BUBB | SJUMP | UPPER | CRUSH"
+            ),
+            (
+                "ROCKET",
+                "ROCKET",
+                "ROCKET",
+                "ROCKET | CRUSH"
+            ),
+            (
+                "SLAM+BUBB | SLAM+SJUMP",
+                "SLAM+BUBB | SLAM+SJUMP | SLAM+CLIMB",
+                "SLAM+SJUMP | SLAM+UPPER | SLAM+BUBB | CRUSH",
+                "SLAM+SJUMP | SLAM+UPPER | SLAM+BUBB | CRUSH"
+            )
+        ),
+        "GOLF": (
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            ),
+            (
+                "BALL",
+                "BALL",
+                "BALL",
+                "BALL"
+            ),
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            )
+        ),
+        "The Pig City": (
+            (
+                "CLIMB | SJUMP",
+                "CLIMB | SJUMP | UPPER",
+                "BOUNCE | SJUMP | UPPER | CRUSH",
+                "BOUNCE | SJUMP | UPPER | CRUSH"
+            ),
+            (
+                "DJUMP",
+                "DJUMP",
+                "BOUNCE | UPPER",
+                "BOUNCE | UPPER | CRUSH"
+            ),
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            )
+        ),
+        "Peppibot Factory": (
+            (
+                "CLIMB | SJUMP | UPPER",
+                "NONE",
+                "BOUNCE | SJUMP | UPPER | CRUSH",
+                "NONE"
+            ),
+            (
+                "GRAB",
+                "GRAB | UPPER",
+                "GRAB",
+                "GRAB | UPPER"
+            ),
+            (
+                "BOX",
+                "BOX",
+                "BOX",
+                "BOX | CRUSH"
+            )
+        ),
+        "Oh Shit!": (
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            ),
+            (
+                "STICKY",
+                "STICKY",
+                "STICKY",
+                "STICKY"
+            ),
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            )
+        ),
+        "Freezerator": (
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            ),
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            ),
+            (
+                "SATAN",
+                "SATAN | SJUMP",
+                "NONE",
+                "NONE"
+            )
+        ),
+        "Pizzascare": (
+            (
+                "BALL+CLIMB",
+                "BALL+SJUMP | BALL+CLIMB",
+                "BALL+BOUNCE | BALL+SJUMP | BALL+UPPER | BALL+CRUSH",
+                "BALL+BOUNCE | BALL+SJUMP | BALL+UPPER | BALL+CRUSH"
+            ),
+            (
+                "CLIMB",
+                "CLIMB",
+                "BOUNCE | SJUMP | UPPER | CRUSH",
+                "BOUNCE | SJUMP | UPPER | CRUSH"
+            ),
+            (
+                "CLIMB | SJUMP",
+                "CLIMB | SJUMP",
+                "BOUNCE | SJUMP | UPPER | CRUSH",
+                "BOUNCE | SJUMP | UPPER | CRUSH"
+            )
+        ),
+        "Don't Make A Sound": (
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            ),
+            (
+                "CLIMB",
+                "CLIMB",
+                "SJUMP",
+                "SJUMP | CRUSH"
+            ),
+            (
+                "CLIMB | SJUMP",
+                "CLIMB | SJUMP",
+                "SJUMP",
+                "SJUMP | CRUSH"
+            )
+        ),
+        "WAR": (
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            ),
+            (
+                "CLIMB",
+                "CLIMB | UPPER",
+                "BOUNCE | UPPER | CRUSH | SJUMP",
+                "BOUNCE | UPPER | CRUSH | SJUMP"
+            ),
+            (
+                "NONE",
+                "NONE",
+                "NONE",
+                "NONE"
+            )
+        )
+    }
+
     pt_swap_rules = { #for swap-specific rules
         "Chef Task: Strike!": "SLAM+DJUMP+KICK | CRUSH+KICK | BOUNCE+SLAM+KICK | UPPER+SLAM+KICK | SJUMP+SLAM+KICK",
     }

@@ -157,6 +157,8 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, level_map
     #extra mf checks!!!!!
     if options.secret_checks:
         levels_checks += ["Secret 1", "Secret 2", "Secret 3"]
+    if options.secret_complete_checks:
+        levels_checks += ["Secret 1 Complete", "Secret 2 Complete", "Secret 3 Complete"]
     if options.treasure_checks:
         levels_checks.append("Treasure")
     if options.srank_checks:
