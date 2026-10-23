@@ -268,7 +268,7 @@ async def proxy_loop(ctx: PTContext):
         while not ctx.exit_event.is_set():
             if not ctx.is_connected():
                 ctx.connected = False
-            if not ctx.server_msgs:
+            if ctx.server_msgs:
                 await ctx.send_msgs_proxy(ctx.server_msgs)
 
                 ctx.server_msgs.clear()
