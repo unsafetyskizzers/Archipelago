@@ -1,9 +1,9 @@
 from BaseClasses import Region, MultiWorld, LocationProgressType
 from .Locations import PTLocation, pt_locations
 from .Options import PTOptions
-from . import PTChars
+from . import PTChars, levels_to_floors, bosses_to_floors
 
-def create_regions(player: int, world: MultiWorld, options: PTOptions, level_map: dict, boss_map: dict, floors_list: list):
+def create_regions(player: int, world: MultiWorld, options: PTOptions, gates_map: dict, floors_list: list):
     levels_checks = [
         "Mushroom Toppin",
         "Cheese Toppin",
@@ -200,43 +200,48 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, level_map
         tower_regions.append(floor_region)
         floor_index += 1
 
-    if options.character != PTChars.SWAP:
-        region_tut = Region("Tutorial", player, world, None)
-        for chk in tutorial_checks:
-            check_name = "Tutorial " + chk
-            new_location = PTLocation(player, check_name, pt_locations[check_name], region_tut)
-            region_tut.locations.append(new_location)
-        tower_regions.append(region_tut)
+    #slice floors list into new variable to get the floors that contain level gates (for snotty goal)
+    if (options.completion_goal == options.completion_goal.option_Snotty):
+        floors_with_levels = floors_list[:len(floors_list)]
+    else:
+        floors_with_levels = floors_list
 
-    for lvl in level_map.values():
-        check_region = Region(lvl, player, world, None)
-        for chk in levels_checks:
-            check_name = lvl + " " + chk
-            new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
-            check_region.locations.append(new_location)
-        if options.cheftask_checks:
-            for chk in cheftasks_checks[lvl]:
-                new_location = PTLocation(player, chk, pt_locations[chk], check_region)
-                check_region.locations.append(new_location)
-
-        tower_regions.append(check_region)
-
-    for boss in boss_map.values():
-        check_region = Region(boss, player, world, None)
-        for chk in bosses_checks:
-            if boss == "Pizzaface" and chk != "Defeated":
-                continue
-            
-            check_name = boss + " " + chk
-            new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
-            check_region.locations.append(new_location)
-        if options.cheftask_checks:
-            for chk in cheftasks_checks[boss]:
-                new_location = PTLocation(player, chk, pt_locations[chk], check_region)
-                if not options.prank_checks:
-                    new_location.progress_type = LocationProgressType.EXCLUDED
-                check_region.locations.append(new_location)
+    for gate in gates_map.keys():
+        lvl = gates_map[gate]
+        #dont add level if gate is not on an used floor
+        if levels_to_floors[gate] in floors_with_levels:
+            continue
         
+        check_region = Region(lvl, player, world, None)
+        if(lvl in levels_to_floors.keys()):
+            if lvl == "Tutorial":
+                for chk in tutorial_checks:
+                    check_name = "Tutorial " + chk
+                    new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
+                    check_region.locations.append(new_location)
+            else:
+                for chk in levels_checks:
+                    check_name = lvl + " " + chk
+                    new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
+                    check_region.locations.append(new_location)
+                if options.cheftask_checks:
+                    for chk in cheftasks_checks[lvl]:
+                        new_location = PTLocation(player, chk, pt_locations[chk], check_region)
+                        check_region.locations.append(new_location)
+        elif(lvl in bosses_to_floors.keys()):
+            for chk in bosses_checks:
+                if lvl == "Pizzaface" and chk != "Defeated":
+                    continue
+                
+                check_name = lvl + " " + chk
+                new_location = PTLocation(player, check_name, pt_locations[check_name], check_region)
+                check_region.locations.append(new_location)
+            if options.cheftask_checks:
+                for chk in cheftasks_checks[lvl]:
+                    new_location = PTLocation(player, chk, pt_locations[chk], check_region)
+                    if not options.prank_checks:
+                        new_location.progress_type = LocationProgressType.EXCLUDED
+                    check_region.locations.append(new_location)
         tower_regions.append(check_region)
 
     #odd regions

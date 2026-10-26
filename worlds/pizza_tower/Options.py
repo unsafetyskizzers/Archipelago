@@ -130,6 +130,7 @@ class RandomizeHubGates(Choice):
     option_bosses = 2
     option_levels_and_bosses = 3
     option_full_shuffle = 4
+    default = 0
 
 class RandomizeSecrets(Toggle):
     """

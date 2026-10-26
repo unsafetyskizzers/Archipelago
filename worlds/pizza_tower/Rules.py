@@ -5,7 +5,7 @@ from ..generic.Rules import set_rule, add_rule
 from math import floor
 from typing import Callable
 from BaseClasses import Location, Entrance, CollectionState
-from . import levels_list, levels_to_floors, PTChars, PizzaTowerWorld
+from . import levels_to_floors, bosses_to_floors, PTChars, PizzaTowerWorld
 
 rule_moves = {
     "GRAB": "Grab",
@@ -49,7 +49,9 @@ lap1_levels = [
 
 def get_secrets_list() -> list[str]:
     secrets_list = []
-    for lvl in levels_list:
+    for lvl in levels_to_floors.keys():
+        if lvl == "Tutorial":
+            continue
         for i in range(3):
             secrets_list.append(lvl + " Secret " + str(i+1))
     return secrets_list
@@ -68,7 +70,7 @@ def secret_rando(world: World, options: PTOptions) -> list[str]:
 def get_item_perc_amount(items: int, perc: int) -> int:
     return floor(items * (perc / 100))
 
-def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions, toppins: int, pumpkins: int):
+def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions, toppins: int, pumpkins: int, gates_map: dict[str, str]):
     rules_dict = { #tuples in this format: (pep easy, pep hard, noise easy, noise hard)
         #John Gutter
         "John Gutter Complete": (
@@ -2111,6 +2113,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
 
     hub_rules_dict = { #tuples in this format: (pep, noise)
         #levels
+        "Tutorial": ("NONE", "NONE"),
         "John Gutter": ("NONE", "NONE"),
         "Pizzascape": ("NONE", "NONE"),
         "Ancient Cheese": ("SJUMP | CLIMB", "SJUMP | UPPER | CRUSH | BOUNCE"),
@@ -2216,30 +2219,54 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         multiworld.get_region("Floor 1 Tower Lobby", world.player).connect(multiworld.get_region("Tutorial", world.player), "Floor 1 Tower Lobby to Tutorial")
     if options.pumpkin_checks:
         multiworld.get_region("Floor 1 Tower Lobby", world.player).connect(multiworld.get_region("Tricky Treat", world.player), "Floor 1 Tower Lobby to Tricky Treat")
+
+    #slice floors list into new variable to get the floors that contain level gates (for snotty goal)
+    if (options.completion_goal == options.completion_goal.option_Snotty):
+        floors_with_levels = world.floors_list[:len(world.floors_list)]
+    else:
+        floors_with_levels = world.floors_list
+    gates_to_floors: dict[str, str] = {}
+    gates_to_floors.update(levels_to_floors)
+    gates_to_floors.update(bosses_to_floors)
+
+    toppin_cost_list = {
+        "Floor 1 Tower Lobby": options.floor_1_cost.value,
+        "Floor 2 Western District": options.floor_2_cost.value,
+        "Floor 3 Vacation Resort": options.floor_3_cost.value,
+        "Floor 4 Slum": options.floor_4_cost.value,
+        "Floor 5 Staff Only": options.floor_5_cost.value
+    }
+
+    lvls_on_floor: dict[str, list[str]] = {}
     
-    for flr in range(floors):
-        lvl_amount = 4 if flr != 4 else 3
-        #don't add levels on the snotty floor if completion goal is snotty
-        if(options.completion_goal == options.completion_goal.option_Snotty and flr == options.snotty_floor - 1):
-            break
-        for level in range(lvl_amount):
-            level_name = world.level_map[levels_list[(4*flr)+level]]
-            multiworld.get_region(world.floors_list[flr], world.player).connect(multiworld.get_region(level_name, world.player), world.floors_list[flr] + " to " + level_name)
-        multiworld.get_region(world.floors_list[flr], world.player).connect(multiworld.get_region(world.boss_map[list(world.boss_map.keys())[flr]], world.player), world.floors_list[flr] + " to " + world.boss_map[list(world.boss_map.keys())[flr]])
+    #setup level gate connections and rules based on the gate map
+    for gate in gates_map.keys():
+        #check if gate is on a valid floor
+        if gate in gates_to_floors and gates_to_floors[gate] in floors_with_levels:
+            lvl = gates_map[gate]
+            hub_region = multiworld.get_region(gates_to_floors[gate], world.player)
+            lvl_region = multiworld.get_region(lvl, world.player)
+            #set hub rule for this gate
+            gate_connection = hub_region.connect(lvl_region, hub_region.name + " to " + lvl_region.name)
+            set_rule(gate_connection, interpret_rule(gate, True))
+            #add toppin req for boss gates
+            if gate in bosses_to_floors.keys():
+                if getattr(multiworld,"re_gen_passthrough",{}):
+                    required_toppins = toppin_cost_list[hub_region.name]
+                else:
+                    required_toppins = get_item_perc_amount(toppins, toppin_cost_list[hub_region.name])
+                add_rule(gate_connection, lambda state, toppin_req = required_toppins: state.has("Toppin", world.player, toppin_req))
+            if lvl != "Tutorial" and lvl != "Pizzaface":
+                lvls_on_floor[hub_region.name].append(lvl)
 
     #set rules
     for location in multiworld.get_locations(world.player):
-        if (("S Rank" in location.name) or ("P Rank" in location.name)) and (location.parent_region.name in levels_list):
+        if (("S Rank" in location.name) or ("P Rank" in location.name)):
             add_s_rank_rule(location.parent_region.name, location)
         elif ("Chef Task: S Ranked" in location.name) or ("Chef Task: P Ranked" in location.name):
-            lvls_on_floor = []
-            lvl_amount = 4 if location.parent_region.name != "Floor 5 Staff Only" else 3
-            floor_first_lvl_index = (world.floors_list.index(location.parent_region.name) * 4)
-            for i in range(lvl_amount):
-                lvls_on_floor.append(world.level_map[levels_list[floor_first_lvl_index + i]])
-            add_s_ranked_task_rule(lvls_on_floor, location)
+            add_s_ranked_task_rule(lvls_on_floor[location.parent_region.name], location)
         elif ("Chef Task: Pumpkin Munchkin" in location.name):
-            for lvl in world.level_map.values():
+            for lvl in gates_map.values():
                 add_rule(location, lambda state, level=lvl: state.can_reach(world.get_location(f"{level} Pumpkin")))
             add_rule(location, lambda state: state.can_reach(world.get_location("The Crumbling Tower of Pizza Pumpkin")))
             for i in range(5):
@@ -2252,40 +2279,6 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     for i in range(floors - 1): 
         if options.bonus_ladders < (i+1):
             set_rule(multiworld.get_entrance(world.floors_list[i] + " to " + world.floors_list[i+1], world.player), interpret_rule(world.floors_list[i], True))
-
-    #access rules for levels
-    floor_index = 0
-    for level in world.level_map:
-        if options.bonus_ladders <= (floor(floor_index / 4)):
-            level_name = world.level_map[level]
-            floor_name = levels_to_floors[level]
-            set_rule(multiworld.get_entrance(floor_name + " to " + level_name, world.player), interpret_rule(level, True)) #problem
-        floor_index += 1
-
-    #access rules for bosses
-    for i in range(floors):
-        if options.bonus_ladders < (i+1):
-            if(options.completion_goal == options.completion_goal.option_Snotty and i == options.snotty_floor - 1):
-                break
-            set_rule(multiworld.get_entrance(world.floors_list[i] + " to " + world.boss_map[list(world.boss_map.keys())[i]], world.player), interpret_rule(list(world.boss_map.keys())[i], True))
-    
-    toppin_cost_list = [
-        options.floor_1_cost.value,
-        options.floor_2_cost.value,
-        options.floor_3_cost.value,
-        options.floor_4_cost.value,
-        options.floor_5_cost.value
-    ]
-
-    #toppin requirements for bosses
-    for i in range(floors):
-        if (options.completion_goal == options.completion_goal.option_Snotty and i == options.snotty_floor - 1):
-            break
-        if getattr(multiworld,"re_gen_passthrough",{}):
-            required_toppins = toppin_cost_list[i]
-        else:
-            required_toppins = get_item_perc_amount(toppins, toppin_cost_list[i])
-        add_rule(multiworld.get_entrance(world.floors_list[i]+" to "+world.boss_map[list(world.boss_map.keys())[i]], world.player), lambda state, toppin_req = required_toppins: state.has("Toppin", world.player, toppin_req))
 
     #pumpkin requirement for tricky treat
     if options.pumpkin_checks:
@@ -2300,5 +2293,5 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         for floor_index in range(floors - 1):
             add_rule(multiworld.get_entrance(world.floors_list[floor_index]+" to "+world.floors_list[floor_index+1], world.player), lambda state, boss_keys = floor_index+1: state.has("Boss Key", world.player, boss_keys))
     
-    # from Utils import visualize_regions
-    # visualize_regions(world.get_region("Menu"), "pizzatower_regions.puml")
+    from Utils import visualize_regions
+    visualize_regions(world.get_region("Menu"), "pizzatower_regions.puml")

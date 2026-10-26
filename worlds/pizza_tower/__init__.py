@@ -25,6 +25,7 @@ components.append(Component("Pizza Tower Client", "PTClient", func=launch_client
 icon_paths["pizza"] = f"ap:{__name__}/pizza.png"
 
 levels_to_floors = {
+    "Tutorial": "Floor 1 Tower Lobby",
     "John Gutter": "Floor 1 Tower Lobby",
     "Pizzascape": "Floor 1 Tower Lobby",
     "Ancient Cheese": "Floor 1 Tower Lobby",
@@ -51,11 +52,13 @@ bosses_to_floors = {
     "The Vigilante": "Floor 2 Western District",
     "The Noise": "Floor 3 Vacation Resort",
     "The Doise": "Floor 3 Vacation Resort",
-    "Fake Peppino": "Floor 4 Slum"
+    "Fake Peppino": "Floor 4 Slum",
+    "Pizzaface": "Floor 5 Staff Only"
 }
 
 def internal_from_external(name: str):
     aliases = {
+        "Tutorial": "tutorial",
         "John Gutter": "entrance",
         "Pizzascape": "medieval",
         "Ancient Cheese": "ruin",
@@ -92,6 +95,7 @@ def internal_from_external(name: str):
 
 def external_from_internal(name: str):
     aliases = {
+        "tutorial": "Tutorial",
         "entrance" : "John Gutter",
         "medieval" : "Pizzascape",
         "ruin" : "Ancient Cheese",
@@ -181,6 +185,7 @@ class PizzaTowerWorld(World):
     ut_can_gen_without_yaml = True
 
     def hub_gate_rando(self):
+        level_order: dict[str, str] = {}
         starting_levels = [
             "John Gutter",
             "Pizzascape"
@@ -232,6 +237,11 @@ class PizzaTowerWorld(World):
         levels_list = list(levels_to_floors.keys())
         bosses_list = list(bosses_to_floors.keys())
 
+        #place tutorial manually, dont place it at all in swap mode
+        if self.options.character != PTChars.SWAP:
+            level_order["Tutorial"] = "Tutorial"
+        levels_list.remove("Tutorial")
+
         #add non-restrictive starting levels
         if rando_type != rando_type.option_bosses:
             if self.options.fairly_random.value or (self.options.do_transfo_rando and self.options.do_move_rando):
@@ -239,13 +249,13 @@ class PizzaTowerWorld(World):
                 for level in starting_levels:
                     rando_level = ok_start_levels.pop()
                     levels_list.remove(rando_level)
-                    self.gates_map[level] = rando_level
+                    level_order[level] = rando_level
 
         #add non-restrictive starting boss
         if rando_type != rando_type.option_levels:
             if self.options.fairly_random.value:
                 rando_boss = self.random.choice(ok_start_bosses)
-                self.gates_map["Pepperman"] = rando_boss
+                level_order["Pepperman"] = rando_boss
                 bosses_list.remove(rando_boss)
         
         levels_queue = levels_list.copy()
@@ -255,68 +265,21 @@ class PizzaTowerWorld(World):
         if rando_type != rando_type.option_full_shuffle:
             self.random.shuffle(levels_queue)
             self.random.shuffle(bosses_queue)
-            for gate in self.gates_map:
+            for gate in level_order:
                 if rando_type == rando_type.option_bosses or rando_type == rando_type.option_levels_and_bosses:
                     if gate in bosses_list:
-                        self.gates_map[gate] = bosses_queue.pop()
+                        level_order[gate] = bosses_queue.pop()
                 if rando_type == rando_type.option_levels or rando_type == rando_type.option_levels_and_bosses:
                     if gate in levels_list:
-                        self.gates_map[gate] = levels_queue.pop()
+                        level_order[gate] = levels_queue.pop()
         #full shuffle
         else:
             gates_queue: list[str] = levels_queue + bosses_queue
             self.random.shuffle(gates_queue)
-            for gate in self.gates_map:
-                self.gates_map[gate] = gates_queue.pop()
+            for gate in level_order:
+                level_order[gate] = gates_queue.pop()
 
-    def level_gate_rando(self, is_noise: bool, logic_type: int) -> list[str]:
-        #replace john gutter and pizzascape with any of these levels
-        ok_start_levels = [ 
-            "Pizzascape",
-            "Ancient Cheese",
-            "Bloodsauce Dungeon",
-            "The Pig City",
-            "Don't Make A Sound"
-        ]
-
-        if is_noise:
-            ok_start_levels.append("Freezerator")
-        if logic_type > 0:
-            ok_start_levels.append("Wasteyard")
-            ok_start_levels.append("GOLF")
-
-        #copies of level and boss lists to be shuffled
-        level_queue = levels_list.copy()
-
-        rando_level_order = []
-
-        #place two levels from ok_start_levels at the beginning of the rando level order
-        if self.options.fairly_random or (self.options.do_transfo_rando and self.options.do_move_rando):
-            for i in range(2):
-                rando_level = ok_start_levels[self.random.randrange(len(ok_start_levels) - 1)]
-                rando_level_order.append(rando_level)
-                ok_start_levels.remove(rando_level)
-                level_queue.remove(rando_level)
-        
-        #don't care where the leftover levels go
-        self.random.shuffle(level_queue)
-        #if playing with snotty goal don't add levels that are on the same floor or further
-        if self.options.completion_goal == self.options.completion_goal.option_Snotty:
-            for i in range((self.options.snotty_floor.value * 4) - 4):
-                rando_level_order.append(level_queue.pop())
-        else:
-            rando_level_order += level_queue
-
-        return rando_level_order
-
-    def boss_gate_rando(self) -> list[str]:
-        boss_queue = self.bosses_list.copy()
-
-        self.random.shuffle(boss_queue)
-        if self.options.fairly_random and self.options.difficulty > 0:
-            while boss_queue[0] == "The Vigilante" or boss_queue[0] == "Pepperman": #floor 1 boss should not be vigi or pepperman
-                self.random.shuffle(boss_queue)
-        return boss_queue
+        return level_order
 
     def prepare_ut(self, re_gen_passthrough):
         slot_data = re_gen_passthrough[self.game]
@@ -343,8 +306,6 @@ class PizzaTowerWorld(World):
         self.options.do_transfo_rando.value = slot_data["do_transfo_rando"]
         self.options.completion_goal.value = slot_data["completion_goal"]
         self.options.snotty_floor.value = slot_data["snotty_floor"]
-        if self.options.character != PTChars.PEPPINO:
-            self.boss_map = {(k if k != "The Noise" else "The Doise"):(v if v != "The Noise" else "The Doise") for k,v in self.boss_map.items()}
 
     def generate_early(self):
         if self.options.do_move_rando and self.options.do_transfo_rando:
@@ -377,19 +338,18 @@ class PizzaTowerWorld(World):
             self.prepare_ut(re_gen_passthrough)
 
         if self.options.randomize_gates != self.options.randomize_gates.option_vanilla:
-            self.hub_gate_rando()
-        
+            self.gates_map = self.hub_gate_rando()
+
         #slice floors/levels/bosses list if snotty goal
         if self.options.completion_goal == self.options.completion_goal.option_Snotty:
             self.floors_list = self.floors_list[0 : self.options.snotty_floor.value]
-            self.gates_map = dict(islice(self.gates_map.items(), (self.options.snotty_floor.value-1) * 5))
 
     def create_item(self, name: str) -> PTItem:
         return PTItem(name, pt_items[name].classification, pt_items[name].id, self.player)
     
     def create_regions(self):
         from .Regions import create_regions
-        create_regions(self.player, self.multiworld, self.options, self.level_map, self.boss_map, self.floors_list)
+        create_regions(self.player, self.multiworld, self.options, self.gates_map, self.floors_list)
 
     def create_items(self):
         pizza_itempool = []
@@ -434,16 +394,15 @@ class PizzaTowerWorld(World):
         #add keys
         if not self.options.open_world:
             if self.options.shuffle_boss_keys:
-                for boss in self.boss_map.values():
-                    if boss == "Pizzaface":
-                        break
-                    pizza_itempool.append(self.create_item("Boss Key"))
-            else:
-                for boss in self.boss_map.values():
-                    if boss == "Pizzaface":
-                        break
-                    self.multiworld.get_location(boss+" Defeated", self.player).place_locked_item(self.create_item("Boss Key"))
-                    locations_to_fill -= 1 #manually placed 4 items
+                for lvl in self.gates_map.values():
+                    if lvl == "Pizzaface":
+                        continue
+                    elif lvl in bosses_to_floors.keys():
+                        if self.options.shuffle_boss_keys:
+                            pizza_itempool.append(self.create_item("Boss Key"))
+                        else:
+                            self.multiworld.get_location(lvl+" Defeated", self.player).place_locked_item(self.create_item("Boss Key"))
+                            locations_to_fill -= 1 #manually placed 4 items
         
         #add toppins, if we can
         for i in range(self.options.toppin_count):
@@ -509,7 +468,7 @@ class PizzaTowerWorld(World):
 
     def set_rules(self):
         from .Rules import set_rules
-        set_rules(self.multiworld, self, self.options, self.toppin_number, self.pumpkin_number)
+        set_rules(self.multiworld, self, self.options, self.toppin_number, self.pumpkin_number, self.gates_map)
         if self.options.completion_goal == self.options.completion_goal.option_CTOP:
             self.multiworld.completion_condition[self.player] = lambda state: state.can_reach("The Crumbling Tower of Pizza Complete", "Location", self.player)
         elif self.options.completion_goal == self.options.completion_goal.option_Snotty:
@@ -530,13 +489,12 @@ class PizzaTowerWorld(World):
 
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
         ex_hint_info = dict()
-        level_map_inv = {value: key for key, value in self.level_map.items()}
-        boss_map_inv = {value: key for key, value in self.boss_map.items()}
+        gates_map_inv = {value: key for key, value in self.gates_map.items()}
         for location in self.multiworld.get_locations(self.player):
-            if location.parent_region.name in gates_to_floors:
-                ex_hint_info.update({location.address: gates_to_floors[level_map_inv[location.parent_region.name]]})
-            elif location.parent_region.name in gates_to_floors:
-                ex_hint_info.update({location.address: gates_to_floors[boss_map_inv[location.parent_region.name]]})
+            if location.parent_region.name in levels_to_floors:
+                ex_hint_info.update({location.address: levels_to_floors[gates_map_inv[location.parent_region.name]]})
+            elif location.parent_region.name in bosses_to_floors:
+                ex_hint_info.update({location.address: bosses_to_floors[gates_map_inv[location.parent_region.name]]})
             elif location.parent_region.name == "The Crumbling Tower of Pizza":
                 ex_hint_info.update({location.address: "Floor 5 Staff Only"})
             elif location.parent_region.name == "Tricky Treat":
