@@ -2,6 +2,7 @@ import asyncio
 import Utils
 import websockets
 import functools
+from math import ceil
 from typing import List, Any, Iterable
 from NetUtils import decode, encode
 from MultiServer import Endpoint
@@ -22,14 +23,6 @@ class PTCommandProcessor(ClientCommandProcessor):
         """Check PT Connection State"""
         if isinstance(self.ctx, PTContext):
             logger.info(f"PT Status: {self.ctx.get_pt_status()}")
-    def _cmd_deathlink(self):
-        """Toggles Deathlink"""
-        if isinstance(self.ctx, PTContext):
-            async_start(self.ctx.toggle_tag("DeathLink"))
-    def _cmd_ringlink(self):
-        """Toggles Ringlink"""
-        if isinstance(self.ctx, PTContext):
-            async_start(self.ctx.toggle_tag("RingLink"))
 
 
 class PTContext(SuperContext):
@@ -60,8 +53,6 @@ class PTContext(SuperContext):
             "ClientPong",
             "ProxyDisconnect"
         ]
-        self.message_queue = []
-        self.is_processing_outgoing_messages = False
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -84,16 +75,7 @@ class PTContext(SuperContext):
         if DEBUG:
             logger.info(f"Outgoing message: {msgs}")
 
-        #queue so that packets sent in quick succession don't get lost
-        #special thanks to profdecube for looking into this issue and writing a fix for it
-        self.message_queue.append(msgs)
-        if not self.is_processing_outgoing_messages:            
-            self.is_processing_outgoing_messages = True
-            while(len(self.message_queue) > 0):
-                message_to_process = self.message_queue.pop(0)
-                await self.endpoint.socket.send(message_to_process)
-                await asyncio.sleep(0.1)
-            self.is_processing_outgoing_messages = False
+        await self.endpoint.socket.send(msgs)
         return True
 
     async def disconnect(self, allow_autoreconnect: bool = False):
@@ -129,11 +111,6 @@ class PTContext(SuperContext):
                 "tags": args["tags"]
                 }])
         elif cmd == "Connected":
-            #update tags
-            if args["slot_data"].get("death_link", False):
-                self.tags.add("DeathLink")
-            if args["slot_data"].get("ring_link", False):
-                self.tags.add("RingLink")
             update_room_info: dict = decode(self.room_info)[0]
             update_room_info.update({"tags": self.tags})
             self.room_info = encode([update_room_info])
@@ -235,32 +212,46 @@ async def proxy(websocket, path: str = "/", ctx: PTContext = None):
 
 async def parse_game_packets(ctx: PTContext, data):
     for msg in decode(data):
-        if msg["cmd"] == "ClientPing":
-            # Ensure that the client is still connected to the text client using a special packet
-            text = encode([{"cmd": "ClientPong"}])
-            await ctx.send_msgs_proxy(text)
-        #dont send further packets if not connected with server yet
-        #connected is only set to true if we've actually received the initial connection data from the server
-        elif not ctx.connected:
-            break
-        #connection with server is handled by proxy client already, just send back the important data
-        elif msg["cmd"] == "Connect":
-            # Proxy is connecting, make sure it is valid
-            if msg["game"] != "Pizza Tower":
-                logger.info("Aborting proxy connection: game is not Pizza Tower")
-                await ctx.disconnect_proxy()
+            if msg["cmd"] == "ClientPing":
+                # Ensure that the client is still connected to the text client using a special packet
+                text = encode([{"cmd": "ClientPong"}])
+                await ctx.send_msgs_proxy(text)
+            #dont send further packets if not connected with server yet
+            #connected is only set to true if we've actually received the initial connection data from the server
+            elif not ctx.connected:
                 break
-            #send over connection data and receiveditems if valid
-            if ctx.connected_msg and ctx.is_connected():
-                await ctx.send_msgs_proxy(ctx.connected_msg)
-                #send tags to proxy when connected
-                await ctx.send_msgs_proxy(encode([{"cmd": "UpdateTags", "tags": ctx.tags}]))
-                ctx.update_items()
-        elif not ctx.is_proxy_connected():
-            break
-        #send over any packets received from the game client to the server
-        else:
-            await ctx.send_msgs([msg])
+            #connection with server is handled by proxy client already, just send back the important data
+            elif msg["cmd"] == "Connect":
+                # Proxy is connecting, make sure it is valid
+                if msg["game"] != "Pizza Tower":
+                    logger.info("Aborting proxy connection: game is not Pizza Tower")
+                    await ctx.disconnect_proxy()
+                    break
+                #send over connection data and receiveditems if valid
+                if ctx.connected_msg and ctx.is_connected():
+                    connected_package = decode(ctx.connected_msg)[0]
+                    # if there are more than 1000 players in the Connected packet, split them up using AddPlayers packets
+                    all_players = connected_package["players"]
+                    if len(all_players) > 1000:
+                        connected_package["players"] = []
+                        # Connected is sent first, then each of AddPlayers in order
+                        await ctx.send_msgs_proxy(encode([connected_package]))
+                        for i in range(ceil(len(all_players)/1000)):
+                            add_players_package = {
+                                "cmd": "AddPlayers",
+                                "players": all_players[i*1000:-1] if (i+1)*1000 > len(all_players) else all_players[i*1000:(i+1)*1000]
+                            }
+                            await ctx.send_msgs_proxy(encode([add_players_package]))
+                    else:
+                        await ctx.send_msgs_proxy(ctx.connected_msg)
+                    #send tags to proxy when connected
+                    await ctx.send_msgs_proxy(encode([{"cmd": "UpdateTags", "tags": ctx.tags}]))
+                    ctx.update_items()
+            elif not ctx.is_proxy_connected():
+                break
+            #send over any packets received from the game client to the server
+            else:
+                await ctx.send_msgs([msg])
 
 
 async def on_client_connected(ctx: PTContext):
@@ -277,9 +268,8 @@ async def proxy_loop(ctx: PTContext):
         while not ctx.exit_event.is_set():
             if not ctx.is_connected():
                 ctx.connected = False
-            if len(ctx.server_msgs) > 0:
-                for msg in ctx.server_msgs:
-                    await ctx.send_msgs_proxy(msg)
+            if ctx.server_msgs:
+                await ctx.send_msgs_proxy(ctx.server_msgs)
 
                 ctx.server_msgs.clear()
             await asyncio.sleep(0.1)

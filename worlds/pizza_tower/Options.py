@@ -68,7 +68,14 @@ class SecretChecks(DefaultOnToggle):
     """
     Adds the game's 57 Secrets to the pool as locations.
     """
-    display_name = "Secrets Award Checks"
+    display_name = "Secrets Award Checks When Entered"
+
+class SecretCompletionChecks(Toggle):
+    """
+    Each of the game's 57 Secrets gives a check when completed normally.
+    (Exiting the secret via the pause menu will, of course, not award a check.)
+    """
+    display_name = "Secrets Award Checks When Completed"
 
 class SRankChecks(Toggle):
     """
@@ -88,7 +95,7 @@ class ChefTaskChecks(Toggle):
     """
     Adds the game's 72 Chef Tasks (achievements) to the pool as locations.
 
-    If S/P Rank checks are disabled, the no-hit boss Chef Tasks as well as S/P Ranked floor Chef Tasks will set to Excluded.
+    If S/P Rank checks are disabled, the no-hit boss Chef Tasks and the S/P Ranked floor Chef Tasks will not give an important item.
     If Pumpkin checks are enabled, this will also add the 2 pumpkin-related Chef Tasks as checks.
     """
     display_name = "Chef Tasks Award Checks"
@@ -368,9 +375,7 @@ pt_option_groups = [
         CompletionGoal,
         OpenWorld,
         BonusLadders,
-        SnottyFloor,
-        DeathLink,
-        RingLink
+        SnottyFloor
     ]),
     OptionGroup("Boss Options", [
         ToppinCount,
@@ -384,6 +389,7 @@ pt_option_groups = [
     OptionGroup("Extra Checks", [
         TreasureChecks,
         SecretChecks,
+        SecretCompletionChecks,
         SRankChecks,
         PRankChecks,
         ChefTaskChecks,
@@ -405,8 +411,6 @@ pt_option_groups = [
         RandomizeTransfos,
         TransfosToRandomize,
         ShuffleLap2,
-        RandomizeMusic,
-        RandomizeEnemies,
         FairlyRandom
     ])
 ]
@@ -422,6 +426,7 @@ class PTOptions(PerGameCommonOptions):
     floor_5_cost: Floor5Door
     treasure_checks: TreasureChecks
     secret_checks: SecretChecks
+    secret_complete_checks: SecretCompletionChecks
     srank_checks: SRankChecks
     prank_checks: PRankChecks
     cheftask_checks: ChefTaskChecks
@@ -437,8 +442,6 @@ class PTOptions(PerGameCommonOptions):
     move_rando_list: MovesToRandomize
     do_transfo_rando: RandomizeTransfos
     transfo_rando_list: TransfosToRandomize
-    death_link: DeathLink
-    ring_link: RingLink
     clothing_filler: ClothingFiller
     shuffle_lap2: ShuffleLap2
     trap_weights: TrapWeights
@@ -446,10 +449,8 @@ class PTOptions(PerGameCommonOptions):
     pumpkin_checks: PumpkinChecks
     pumpkin_count: PumpkinCount
     tricky_treat_cost: TrickyTreatDoor
-    randomize_music: RandomizeMusic
     completion_goal: CompletionGoal
     snotty_floor: SnottyFloor
-    randomize_enemies: RandomizeEnemies
 
 #presets - feel free to suggest more
 
