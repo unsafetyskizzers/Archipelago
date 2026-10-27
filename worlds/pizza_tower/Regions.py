@@ -207,11 +207,14 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, gates_map
         floors_with_levels = floors_list[:len(floors_list)]
     else:
         floors_with_levels = floors_list
+    gates_to_floors: dict[str, str] = {}
+    gates_to_floors.update(levels_to_floors)
+    gates_to_floors.update(bosses_to_floors)
 
     for gate in gates_map.keys():
         lvl = gates_map[gate]
         #dont add level if gate is not on an used floor
-        if levels_to_floors[gate] in floors_with_levels:
+        if gates_to_floors[gate] not in floors_with_levels:
             continue
         
         check_region = Region(lvl, player, world, None)

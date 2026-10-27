@@ -2598,8 +2598,6 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     if options.completion_goal == options.completion_goal.option_CTOP:
         multiworld.get_region("Pizzaface", world.player).connect(multiworld.get_region("The Crumbling Tower of Pizza", world.player), "Pizzaface to The Crumbling Tower of Pizza")
     
-    if options.character != PTChars.SWAP:
-        multiworld.get_region("Floor 1 Tower Lobby", world.player).connect(multiworld.get_region("Tutorial", world.player), "Floor 1 Tower Lobby to Tutorial")
     if options.pumpkin_checks:
         multiworld.get_region("Floor 1 Tower Lobby", world.player).connect(multiworld.get_region("Tricky Treat", world.player), "Floor 1 Tower Lobby to Tricky Treat")
 
@@ -2640,7 +2638,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
                     required_toppins = get_item_perc_amount(toppins, toppin_cost_list[hub_region.name])
                 add_rule(gate_connection, lambda state, toppin_req = required_toppins: state.has("Toppin", world.player, toppin_req))
             if lvl != "Tutorial" and lvl != "Pizzaface":
-                lvls_on_floor[hub_region.name].append(lvl)
+                lvls_on_floor.setdefault(hub_region.name, []).append(lvl)
 
     #set rules
     for location in multiworld.get_locations(world.player):

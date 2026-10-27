@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import DefaultOnToggle, Range, NamedRange, Toggle, Choice, PerGameCommonOptions, OptionSet, OptionGroup, OptionCounter, DeathLink
+from Options import DefaultOnToggle, Range, NamedRange, Toggle, Choice, PerGameCommonOptions, OptionSet, OptionGroup, OptionCounter, OptionDict
 from .Items import pt_items
 
 class ToppinCount(Range):
@@ -368,6 +368,10 @@ class RandomizeEnemies(Toggle):
     """
     display_name = "Randomize Enemies"
 
+class GatePlando(OptionDict):
+    display_name = "Hub Gate Plando"
+    default = {}
+
 pt_option_groups = [
     OptionGroup("General Options", [
         CharacterToPlay,
@@ -405,6 +409,7 @@ pt_option_groups = [
     ]),
     OptionGroup("Randomization Options", [
         RandomizeHubGates,
+        GatePlando,
         RandomizeSecrets,
         RandomizeMoves,
         MovesToRandomize,
@@ -451,6 +456,7 @@ class PTOptions(PerGameCommonOptions):
     tricky_treat_cost: TrickyTreatDoor
     completion_goal: CompletionGoal
     snotty_floor: SnottyFloor
+    gate_plando: GatePlando
 
 #presets - feel free to suggest more
 
