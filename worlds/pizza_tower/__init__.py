@@ -8,6 +8,7 @@ from math import floor
 from typing import Any, TextIO, NamedTuple
 from worlds.LauncherComponents import Component, components, icon_paths, launch as launch_component, Type
 from Options import OptionError
+import logging
 
 class PTChars(IntEnum):
     PEPPINO = 0
@@ -113,20 +114,66 @@ class PizzaTowerWorld(World):
 
     def hub_gate_rando(self):
         level_order: dict[str, str] = {}
-        for gate in list(levels_to_floors.keys()) + list(bosses_to_floors.keys()):
+        place_locked: dict[str, str] = {}
+        level_queue: list[str] = []
+        boss_queue: list[str] = []
+
+        #fill up level order and randomization queue
+        for gate in level_data:
+            if ((gate == "The Doise" and self.options.character.value == PTChars.PEPPINO) or
+                (gate == "The Noise" and self.options.character.value != PTChars.PEPPINO) or
+                (gate == "Tutorial" and self.options.character.value == PTChars.SWAP)):
+                continue
             level_order[gate] = None
-        starting_levels = [
-            "John Gutter",
-            "Pizzascape"
-        ]
-        place_locked = {
-            "Tutorial": "Tutorial",
-            "Pizzaface": "Pizzaface"
-        }
+            boss_queue.append(gate) if level_data[gate].is_boss else level_queue.append(gate)
 
+        if self.options.randomize_gates.value != self.options.randomize_gates.option_vanilla:
+            #grab starting levels
+            place_locked.update(self.get_starting_levels())
+            #load plando settings
+            place_locked.update(self.options.gate_plando)
+
+        #add un-randomized levels to plando
+        for lvl in level_order:
+            if ((self.options.randomize_gates.value == self.options.randomize_gates.option_vanilla) or
+                (not level_data[lvl].is_boss and self.options.randomize_gates.value == self.options.randomize_gates.option_bosses) or
+                (level_data[lvl].is_boss and self.options.randomize_gates.value == self.options.randomize_gates.option_levels)):
+                place_locked.update({lvl: lvl})
+
+        #always place pizzaface at pizzaface
+        place_locked.update({"Pizzaface": "Pizzaface"})
+
+        #place locked levels
+        for gate in place_locked:
+            lvl = place_locked[gate]
+            level_order[gate] = lvl
+            boss_queue.remove(lvl) if level_data[lvl].is_boss else level_queue.remove(lvl)
+
+        if not self.options.shuffle_boss_keys.value and self.options.randomize_gates.value == self.options.randomize_gates.option_full_shuffle:
+            self.options.randomize_gates.value = self.options.randomize_gates.option_levels_and_bosses
+            logging.warning("Option Full Shuffle requires Shuffle Boss Keys to be enabled, changing shuffle mode to Levels and Bosses")
+
+        #full shuffle
+        if self.options.randomize_gates.value == self.options.randomize_gates.option_full_shuffle:
+            gates_queue = level_queue + boss_queue
+            self.random.shuffle(gates_queue)
+            for gate in level_order:
+                if level_order[gate] == None:
+                    level_order[gate] = gates_queue.pop()
+        #typed shuffle
+        elif self.options.randomize_gates.value != self.options.randomize_gates.option_vanilla:
+            for gate in level_order:
+                if level_order[gate] == None:
+                    if level_data[gate].is_boss:
+                        level_order[gate] = boss_queue.pop()
+                    else:
+                        level_order[gate] = level_queue.pop()
+
+        return level_order
+
+    def get_starting_levels(self) -> dict[str, str]:
         ok_start_levels = []
-        ok_start_bosses = []
-
+        locked_starting_levels: dict[str, str] = {}
         #selection of non-restrictive levels for move rando
         if self.options.do_move_rando.value:
             ok_start_levels = [ 
@@ -135,10 +182,6 @@ class PizzaTowerWorld(World):
                 "Bloodsauce Dungeon",
                 "The Pig City",
                 "Don't Make A Sound"
-            ]
-            ok_start_bosses = [
-                "Fake Peppino",
-                "The Noise" if self.options.character == PTChars.PEPPINO else "The Doise"
             ]
 
             if self.options.character != PTChars.PEPPINO:
@@ -164,99 +207,23 @@ class PizzaTowerWorld(World):
                 "Freezerator",
                 "Pizzascare"
             ]
-            ok_start_bosses = list(bosses_to_floors.keys())
-
-        else:
-            ok_start_levels = list(levels_to_floors.keys())
-            ok_start_bosses = list(bosses_to_floors.keys())
-
-        if not self.options.shuffle_boss_keys.value and self.options.randomize_gates.value == self.options.randomize_gates.option_full_shuffle:
-            self.options.randomize_gates.value = self.options.randomize_gates.option_levels_and_bosses
-            print("Option Full Shuffle requires Shuffle Boss Keys to be enabled, changing shuffle mode to Levels and Bosses")
-        rando_type = self.options.randomize_gates
-
-        levels_list = list(levels_to_floors.keys())
-        bosses_list = list(bosses_to_floors.keys())
-
-        #dont place tutorial at all in swap mode
-        if self.options.character == PTChars.SWAP:
-            level_order.pop("Tutorial")
-            levels_list.remove("Tutorial")
-
-        #remove noise or doise based on the character
-        if self.options.character == PTChars.PEPPINO:
-            level_order.pop("The Doise")
-            bosses_list.remove("The Doise")
-        else:
-            level_order.pop("The Noise")
-            bosses_list.remove("The Noise")
-
-        levels_queue = levels_list.copy()
-        bosses_queue = bosses_list.copy()
-
-        #setup plando
-        place_locked.update(self.options.gate_plando.value)
-        for gate in place_locked.keys():
-            lvl = place_locked[gate]
-            level_order[gate] = lvl
-            if lvl in levels_list:
-                levels_queue.remove(lvl)
-            else:
-                bosses_queue.remove(lvl)
-
-        def place_early_level(level_order: dict, starting_levels: list[str], ok_start_levels: list[str], levels_list: list[str]):
+        
+        starting_gates = [
+            "John Gutter",
+            "Pizzascape"
+        ]
+        #manually place start levels
+        if ok_start_levels:
             self.random.shuffle(ok_start_levels)
-            for level in starting_levels:
-                if level_order[level] != None:
-                    continue
-                rando_level = ok_start_levels.pop()
-                while(rando_level not in levels_list):
-                    if not ok_start_levels:
-                        return
-                    rando_level = ok_start_levels.pop()
-                levels_list.remove(rando_level)
-                level_order[level] = rando_level
+            for gate in starting_gates:
+                locked_starting_levels.update({gate: ok_start_levels.pop()})
 
-        #add non-restrictive starting levels
-        if rando_type != rando_type.option_bosses:
-            if self.options.fairly_random.value or (self.options.do_transfo_rando and self.options.do_move_rando):
-                place_early_level(level_order, starting_levels, ok_start_levels, levels_queue)
-
-        #add non-restrictive starting boss
-        if (rando_type == rando_type.option_bosses or rando_type == rando_type.option_levels_and_bosses) and level_order["Pepperman"] == None:
-            if self.options.fairly_random.value:
-                place_early_level(level_order, ["Pepperman"], ok_start_bosses, bosses_queue)
-
-        #shuffle based on type
-        if rando_type != rando_type.option_full_shuffle:
-            self.random.shuffle(levels_queue)
-            self.random.shuffle(bosses_queue)
-            for gate in level_order:
-                if level_order[gate] != None:
-                    continue
-                if rando_type == rando_type.option_bosses or rando_type == rando_type.option_levels_and_bosses:
-                    if gate in bosses_list:
-                        level_order[gate] = bosses_queue.pop()
-                if rando_type == rando_type.option_levels or rando_type == rando_type.option_levels_and_bosses:
-                    if gate in levels_list:
-                        level_order[gate] = levels_queue.pop()
-        #full shuffle
-        else:
-            gates_queue: list[str] = levels_queue + bosses_queue
-            self.random.shuffle(gates_queue)
-            for gate in level_order:
-                if level_order[gate] != None:
-                    continue
-                level_order[gate] = gates_queue.pop()
-
-        print(level_order)
-
-        return level_order
+        return locked_starting_levels
 
     def prepare_ut(self, re_gen_passthrough):
         slot_data = re_gen_passthrough[self.game]
-        self.gates_map = {external_from_internal(gate): external_from_internal(slot_data["rando_gates"][gate]) for gate in slot_data["rando_gates"]}
-        self.secret_map = {external_from_internal(sec): external_from_internal(slot_data["rando_secrets"][sec]) for sec in slot_data["rando_secrets"]}
+        #self.gates_map = {external_from_internal(gate): external_from_internal(slot_data["rando_gates"][gate]) for gate in slot_data["rando_gates"]}
+        #self.secret_map = {external_from_internal(sec): external_from_internal(slot_data["rando_secrets"][sec]) for sec in slot_data["rando_secrets"]}
         self.options.character.value = slot_data["character"]
         self.options.difficulty.value = slot_data["difficulty"]
         self.options.floor_1_cost.value = slot_data["floor_1_toppins"]
@@ -308,11 +275,7 @@ class PizzaTowerWorld(World):
         if re_gen_passthrough and self.game in re_gen_passthrough:
             self.prepare_ut(re_gen_passthrough)
 
-        if self.options.randomize_gates != self.options.randomize_gates.option_vanilla:
-            self.gates_map = self.hub_gate_rando()
-        else:
-            self.gates_map.update(dict(zip(list(levels_to_floors.keys()), list(levels_to_floors.keys()))))
-            self.gates_map.update(dict(zip(list(bosses_to_floors.keys()), list(bosses_to_floors.keys()))))
+        self.gates_map = self.hub_gate_rando()
 
         #slice floors/levels/bosses list if snotty goal
         if self.options.completion_goal == self.options.completion_goal.option_Snotty:
@@ -367,13 +330,12 @@ class PizzaTowerWorld(World):
         
         #add keys
         if not self.options.open_world:
-            for lvl in self.gates_map.values():
-                if lvl == "Pizzaface":
-                    continue
-                elif lvl in bosses_to_floors.keys():
-                    if self.options.shuffle_boss_keys:
-                        pizza_itempool.append(self.create_item("Boss Key"))
-                    else:
+            if self.options.shuffle_boss_keys:
+                for flr in self.floors_list:
+                    pizza_itempool.append(self.create_item("Boss Key"))
+            else:
+                for lvl in self.gates_map:
+                    if level_data[lvl].is_boss and lvl != "Pizzaface":
                         self.multiworld.get_location(lvl+" Defeated", self.player).place_locked_item(self.create_item("Boss Key"))
                         locations_to_fill -= 1 #manually placed 4 items
         
@@ -463,18 +425,13 @@ class PizzaTowerWorld(World):
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
         ex_hint_info = dict()
         gates_map_inv = {value: key for key, value in self.gates_map.items()}
-        gates_to_floors = {}
-        gates_to_floors.update(levels_to_floors)
-        gates_to_floors.update(bosses_to_floors)
         for location in self.multiworld.get_locations(self.player):
-            if location.parent_region.name in gates_to_floors:
-                ex_hint_info.update({location.address: gates_to_floors[gates_map_inv[location.parent_region.name]]})
+            if location.parent_region.name in list(level_data.values()):
+                ex_hint_info.update({location.address: level_data[gates_map_inv[location.parent_region.name]].floor})
             elif location.parent_region.name == "The Crumbling Tower of Pizza":
                 ex_hint_info.update({location.address: "Floor 5 Staff Only"})
             elif location.parent_region.name == "Tricky Treat":
                 ex_hint_info.update({location.address: "Floor 1 Tower Lobby"})
-            elif location.parent_region.name == "Pizzaface":
-                ex_hint_info.update({location.address: "Floor 5 Staff Only"})
             else:
                 ex_hint_info.update({location.address: location.parent_region.name})
         hint_data[self.player] = ex_hint_info
@@ -487,8 +444,8 @@ class PizzaTowerWorld(World):
             "floor_3_toppins": floor((self.toppin_number / 100) * self.options.floor_3_cost),
             "floor_4_toppins": floor((self.toppin_number / 100) * self.options.floor_4_cost),
             "floor_5_toppins": floor((self.toppin_number / 100) * self.options.floor_5_cost),
-            "rando_gates": {internal_from_external(gate): internal_from_external(self.gates_map[gate]) for gate in self.gates_map},
-            "rando_secrets": {internal_from_external(sec): internal_from_external(self.secret_map[sec]) for sec in self.secret_map},
+            #"rando_gates": {internal_from_external(gate): internal_from_external(self.gates_map[gate]) for gate in self.gates_map},
+            #"rando_secrets": {internal_from_external(sec): internal_from_external(self.secret_map[sec]) for sec in self.secret_map},
             "open_world": bool(self.options.open_world),
             "bonus_ladders": int(self.options.bonus_ladders),
             "character": int(self.options.character.value),

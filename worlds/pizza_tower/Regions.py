@@ -1,7 +1,7 @@
 from BaseClasses import Region, MultiWorld, LocationProgressType
 from .Locations import PTLocation, pt_locations
 from .Options import PTOptions
-from . import PTChars, levels_to_floors, bosses_to_floors
+from . import PTChars, level_data
 
 def create_regions(player: int, world: MultiWorld, options: PTOptions, gates_map: dict, floors_list: list):
     levels_checks = [
@@ -203,22 +203,21 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, gates_map
         floor_index += 1
 
     #slice floors list into new variable to get the floors that contain level gates (for snotty goal)
+    floors_with_levels = floors_list.copy()
     if (options.completion_goal == options.completion_goal.option_Snotty):
-        floors_with_levels = floors_list[:len(floors_list)]
-    else:
-        floors_with_levels = floors_list
-    gates_to_floors: dict[str, str] = {}
-    gates_to_floors.update(levels_to_floors)
-    gates_to_floors.update(bosses_to_floors)
+        floors_with_levels = floors_with_levels[:len(floors_with_levels)-1]
 
-    for gate in gates_map.keys():
+    gates_to_remove: list[str] = []
+
+    for gate in gates_map:
         lvl = gates_map[gate]
         #dont add level if gate is not on an used floor
-        if gates_to_floors[gate] not in floors_with_levels:
+        if level_data[gate].floor not in floors_with_levels:
+            gates_to_remove.append(gate)
             continue
         
         check_region = Region(lvl, player, world, None)
-        if(lvl in levels_to_floors.keys()):
+        if not level_data[lvl].is_boss:
             if lvl == "Tutorial":
                 for chk in tutorial_checks:
                     check_name = "Tutorial " + chk
@@ -233,7 +232,7 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, gates_map
                     for chk in cheftasks_checks[lvl]:
                         new_location = PTLocation(player, chk, pt_locations[chk], check_region)
                         check_region.locations.append(new_location)
-        elif(lvl in bosses_to_floors.keys()):
+        elif level_data[lvl].is_boss:
             for chk in bosses_checks:
                 if lvl == "Pizzaface" and chk != "Defeated":
                     continue
@@ -248,6 +247,9 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, gates_map
                         new_location.progress_type = LocationProgressType.EXCLUDED
                     check_region.locations.append(new_location)
         tower_regions.append(check_region)
+
+    for gate in gates_to_remove:
+        gates_map.pop(gate)
 
     #odd regions
     if options.completion_goal == options.completion_goal.option_CTOP:
