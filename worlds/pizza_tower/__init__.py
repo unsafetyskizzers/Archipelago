@@ -49,6 +49,15 @@ level_data: dict[str, PTLevelData] = {
     "Pizzaface":            PTLevelData("boss_pizzaface", "Floor 5 Staff Only", True),
 }
 
+def internal_from_external(name: str):
+    if "Secret 1" in name:
+        return level_data[name.replace(" Secret 1", "")].internal_name + "1"
+    if "Secret 2" in name:
+        return level_data[name.replace(" Secret 2", "")].internal_name + "2"
+    if "Secret 3" in name:
+        return level_data[name.replace(" Secret 3", "")].internal_name + "3"
+    return level_data[name].internal_name
+
 def launch_client(*args: str):
     from .Client import launch
     launch_component(launch, name="PTClient", args=args)
@@ -444,8 +453,8 @@ class PizzaTowerWorld(World):
             "floor_3_toppins": floor((self.toppin_number / 100) * self.options.floor_3_cost),
             "floor_4_toppins": floor((self.toppin_number / 100) * self.options.floor_4_cost),
             "floor_5_toppins": floor((self.toppin_number / 100) * self.options.floor_5_cost),
-            #"rando_gates": {internal_from_external(gate): internal_from_external(self.gates_map[gate]) for gate in self.gates_map},
-            #"rando_secrets": {internal_from_external(sec): internal_from_external(self.secret_map[sec]) for sec in self.secret_map},
+            "rando_gates": {internal_from_external(gate): internal_from_external(self.gates_map[gate]) for gate in self.gates_map},
+            "rando_secrets": {internal_from_external(sec): internal_from_external(self.secret_map[sec]) for sec in self.secret_map},
             "open_world": bool(self.options.open_world),
             "bonus_ladders": int(self.options.bonus_ladders),
             "character": int(self.options.character.value),
