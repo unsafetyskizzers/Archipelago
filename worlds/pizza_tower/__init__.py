@@ -5,15 +5,48 @@ from .Items import PTItem, pt_items, get_item_from_category, pt_item_groups
 from .Locations import pt_locations, pt_location_groups
 from .Options import PTOptions, pt_option_groups, pt_option_presets
 from math import floor
-from typing import Any, TextIO
+from typing import Any, TextIO, NamedTuple
 from worlds.LauncherComponents import Component, components, icon_paths, launch as launch_component, Type
-from itertools import islice
 from Options import OptionError
 
 class PTChars(IntEnum):
     PEPPINO = 0
     NOISE = 1
     SWAP = 2
+
+class PTLevelData(NamedTuple):
+    internal_name: str
+    floor: str
+    is_boss: bool = False
+
+level_data: dict[str, PTLevelData] = {
+    "Tutorial":             PTLevelData("tutorial", "Floor 1 Tower Lobby"),
+    "John Gutter":          PTLevelData("entrance", "Floor 1 Tower Lobby"),
+    "Pizzascape":           PTLevelData("medieval", "Floor 1 Tower Lobby"),
+    "Ancient Cheese":       PTLevelData("ruin", "Floor 1 Tower Lobby"),
+    "Bloodsauce Dungeon":   PTLevelData("dungeon", "Floor 1 Tower Lobby"),
+    "Pepperman":            PTLevelData("boss_pepperman", "Floor 1 Tower Lobby", True),
+    "Oregano Desert":       PTLevelData("badland", "Floor 2 Western District"),
+    "Wasteyard":            PTLevelData("graveyard", "Floor 2 Western District"),
+    "Fun Farm":             PTLevelData("farm", "Floor 2 Western District"),
+    "Fastfood Saloon":      PTLevelData("saloon", "Floor 2 Western District"),
+    "The Vigilante":        PTLevelData("boss_vigilante", "Floor 2 Western District", True),
+    "Crust Cove":           PTLevelData("plage", "Floor 3 Vacation Resort"),
+    "Gnome Forest":         PTLevelData("forest", "Floor 3 Vacation Resort"),
+    "Deep-Dish 9":          PTLevelData("space", "Floor 3 Vacation Resort"),
+    "GOLF":                 PTLevelData("minigolf", "Floor 3 Vacation Resort"),
+    "The Noise":            PTLevelData("boss_noise", "Floor 3 Vacation Resort", True),
+    "The Doise":            PTLevelData("boss_noise", "Floor 3 Vacation Resort", True),
+    "The Pig City":         PTLevelData("street", "Floor 4 Slum"),
+    "Peppibot Factory":     PTLevelData("industrial", "Floor 4 Slum"),
+    "Oh Shit!":             PTLevelData("sewer", "Floor 4 Slum"),
+    "Freezerator":          PTLevelData("freezer", "Floor 4 Slum"),
+    "Fake Peppino":         PTLevelData("boss_fakepep", "Floor 4 Slum", True),
+    "Pizzascare":           PTLevelData("chateau", "Floor 5 Staff Only"),
+    "Don't Make A Sound":   PTLevelData("kidsparty", "Floor 5 Staff Only"),
+    "WAR":                  PTLevelData("war", "Floor 5 Staff Only"),
+    "Pizzaface":            PTLevelData("boss_pizzaface", "Floor 5 Staff Only", True),
+}
 
 def launch_client(*args: str):
     from .Client import launch
@@ -23,111 +56,6 @@ def launch_client(*args: str):
 components.append(Component("Pizza Tower Client", "PTClient", func=launch_client, component_type=Type.CLIENT, icon="pizza"))
 
 icon_paths["pizza"] = f"ap:{__name__}/pizza.png"
-
-levels_to_floors = {
-    "Tutorial": "Floor 1 Tower Lobby",
-    "John Gutter": "Floor 1 Tower Lobby",
-    "Pizzascape": "Floor 1 Tower Lobby",
-    "Ancient Cheese": "Floor 1 Tower Lobby",
-    "Bloodsauce Dungeon": "Floor 1 Tower Lobby",
-    "Oregano Desert": "Floor 2 Western District",
-    "Wasteyard": "Floor 2 Western District",
-    "Fun Farm": "Floor 2 Western District",
-    "Fastfood Saloon": "Floor 2 Western District",
-    "Crust Cove": "Floor 3 Vacation Resort",
-    "Gnome Forest": "Floor 3 Vacation Resort",
-    "Deep-Dish 9": "Floor 3 Vacation Resort",
-    "GOLF": "Floor 3 Vacation Resort",
-    "The Pig City": "Floor 4 Slum",
-    "Peppibot Factory": "Floor 4 Slum",
-    "Oh Shit!": "Floor 4 Slum",
-    "Freezerator": "Floor 4 Slum",
-    "Pizzascare": "Floor 5 Staff Only",
-    "Don't Make A Sound": "Floor 5 Staff Only",
-    "WAR": "Floor 5 Staff Only"
-}
-
-bosses_to_floors = {
-    "Pepperman": "Floor 1 Tower Lobby",
-    "The Vigilante": "Floor 2 Western District",
-    "The Noise": "Floor 3 Vacation Resort",
-    "The Doise": "Floor 3 Vacation Resort",
-    "Fake Peppino": "Floor 4 Slum",
-    "Pizzaface": "Floor 5 Staff Only"
-}
-
-def internal_from_external(name: str):
-    aliases = {
-        "Tutorial": "tutorial",
-        "John Gutter": "entrance",
-        "Pizzascape": "medieval",
-        "Ancient Cheese": "ruin",
-        "Bloodsauce Dungeon": "dungeon",
-        "Oregano Desert": "badland",
-        "Wasteyard": "graveyard",
-        "Fun Farm": "farm",
-        "Fastfood Saloon": "saloon",
-        "Crust Cove": "plage",
-        "Gnome Forest": "forest",
-        "Deep-Dish 9": "space",
-        "GOLF": "minigolf",
-        "The Pig City": "street",
-        "Peppibot Factory": "industrial",
-        "Oh Shit!": "sewer",
-        "Freezerator": "freezer",
-        "Pizzascare": "chateau",
-        "Don't Make A Sound": "kidsparty",
-        "WAR": "war",
-        "Pepperman": "boss_pepperman",
-        "The Vigilante": "boss_vigilante",
-        "The Noise": "boss_noise",
-        "The Doise": "boss_noise",
-        "Fake Peppino": "boss_fakepep",
-        "Pizzaface": "boss_pizzaface"
-    }
-    if "Secret 1" in name:
-        return aliases[name.replace(" Secret 1", "")] + "1"
-    if "Secret 2" in name:
-        return aliases[name.replace(" Secret 2", "")] + "2"
-    if "Secret 3" in name:
-        return aliases[name.replace(" Secret 3", "")] + "3"
-    return aliases[name]
-
-def external_from_internal(name: str):
-    aliases = {
-        "tutorial": "Tutorial",
-        "entrance" : "John Gutter",
-        "medieval" : "Pizzascape",
-        "ruin" : "Ancient Cheese",
-        "dungeon" : "Bloodsauce Dungeon",
-        "badland" : "Oregano Desert",
-        "graveyard" : "Wasteyard",
-        "farm" : "Fun Farm",
-        "saloon" : "Fastfood Saloon",
-        "plage" : "Crust Cove",
-        "forest" : "Gnome Forest",
-        "space" : "Deep-Dish 9",
-        "minigolf" : "GOLF",
-        "street" : "The Pig City",
-        "industrial" : "Peppibot Factory",
-        "sewer" : "Oh Shit!",
-        "freezer" : "Freezerator",
-        "chateau" : "Pizzascare",
-        "kidsparty" : "Don't Make A Sound",
-        "war" : "WAR",
-        "boss_pepperman" : "Pepperman",
-        "boss_vigilante" : "The Vigilante",
-        "boss_noise" : "The Noise",
-        "boss_fakepep" : "Fake Peppino",
-        "boss_pizzaface": "Pizzaface"
-    }
-    if "1" in name:
-        return aliases[name.replace("1", "")] + " Secret 1"
-    if "2" in name:
-        return aliases[name.replace("2", "")] + " Secret 2"
-    if "3" in name:
-        return aliases[name.replace("3", "")] + " Secret 3"
-    return aliases[name]
 
 class PizzaTowerWebWorld(WebWorld):
     theme = "stone"
@@ -160,16 +88,15 @@ class PizzaTowerWorld(World):
     toppin_number: int = 0
     pumpkin_number: int = 0
 
-    gates_map: dict[str, str]
-    secret_map: dict[str, str]
-
-    floors_list = [
+    floors_list: list[str] = [
         "Floor 1 Tower Lobby",
         "Floor 2 Western District",
         "Floor 3 Vacation Resort",
         "Floor 4 Slum",
         "Floor 5 Staff Only"
     ]
+    gates_map: dict[str, str]
+    secret_map: dict[str, str]
 
     item_name_to_id = {name: data.id for name, data in pt_items.items()}
     location_name_to_id = pt_locations
