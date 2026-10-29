@@ -2632,13 +2632,14 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
 
     #set rules
     for location in multiworld.get_locations(world.player):
-        if (("S Rank" in location.name) or ("P Rank" in location.name)):
-            add_s_rank_rule(location.parent_region.name, location)
-        elif ("Chef Task: S Ranked" in location.name) or ("Chef Task: P Ranked" in location.name):
+        if ("Chef Task: S Ranked" in location.name) or ("Chef Task: P Ranked" in location.name):
             add_s_ranked_task_rule(lvls_on_floor[location.parent_region.name], location)
+        elif (("S Rank" in location.name) or ("P Rank" in location.name)):
+            add_s_rank_rule(location.parent_region.name, location)
         elif ("Chef Task: Pumpkin Munchkin" in location.name):
-            for lvl in gates_map.values():
-                add_rule(location, lambda state, level=lvl: state.can_reach(world.get_location(f"{level} Pumpkin")))
+            for lvl in gates_map:
+                if not level_data[lvl].is_boss and lvl != "Tutorial":
+                    add_rule(location, lambda state, level=lvl: state.can_reach(world.get_location(f"{level} Pumpkin")))
             add_rule(location, lambda state: state.can_reach(world.get_location("The Crumbling Tower of Pizza Pumpkin")))
             for i in range(5):
                 add_rule(location, lambda state, index=i: state.can_reach(world.get_location(f"Tricky Treat Main Path Pumpkin {index+1}")))

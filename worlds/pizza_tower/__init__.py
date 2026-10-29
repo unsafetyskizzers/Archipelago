@@ -343,7 +343,7 @@ class PizzaTowerWorld(World):
                 for flr in self.floors_list:
                     pizza_itempool.append(self.create_item("Boss Key"))
             else:
-                for lvl in self.gates_map:
+                for lvl in self.gates_map.values():
                     if level_data[lvl].is_boss and lvl != "Pizzaface":
                         self.multiworld.get_location(lvl+" Defeated", self.player).place_locked_item(self.create_item("Boss Key"))
                         locations_to_fill -= 1 #manually placed 4 items
