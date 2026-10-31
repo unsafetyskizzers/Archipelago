@@ -150,7 +150,7 @@ class PizzaTowerWorld(World):
                 place_locked.update({lvl: lvl})
 
         #always place pizzaface at pizzaface
-        place_locked.update({"Tutorial": "Tutorial", "Pizzaface": "Pizzaface"})
+        place_locked.update({"Pizzaface": "Pizzaface"})
 
         #place locked levels
         for gate in place_locked:
