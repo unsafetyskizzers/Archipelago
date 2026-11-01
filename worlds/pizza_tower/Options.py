@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from Options import DefaultOnToggle, Range, NamedRange, Toggle, Choice, PerGameCommonOptions, OptionSet, OptionGroup, OptionCounter, OptionDict
-from .Items import pt_items
+from . import level_data
 
 class ToppinCount(Range):
     """
@@ -228,6 +228,7 @@ class MovesToRandomize(OptionSet):
         "Crusher",
         "Bomb"
     ]
+    valid_keys = default
 
 class RandomizeTransfos(Toggle):
     """
@@ -257,6 +258,7 @@ class TransfosToRandomize(OptionSet):
         "Shotgun",
         "Revolver"
     ]
+    valid_keys = default
 
 class ClothingFiller(Toggle):
     """
@@ -278,6 +280,7 @@ class FillerWeights(OptionCounter):
         "Primo Burg": 15,
     }
     display_name = "Filler Weights"
+    valid_keys = default.keys()
 
 class ShuffleLap2(Toggle):
     """
@@ -301,6 +304,7 @@ class TrapWeights(OptionCounter):
         "Ghost Trap": 10,
     }
     display_name = "Trap Weights"
+    valid_keys = default.keys()
 
 class PumpkinChecks(Toggle):
     """
@@ -328,19 +332,6 @@ class TrickyTreatDoor(Range):
     range_end = 100
     default = 67
 
-class RingLink(Toggle):
-    """
-    Links your in-level point gain/loss with other players.
-    Point gain is only linked when coming from pizza toppings, pizzasonas, clocks and bells.
-    """
-    display_name = "Ring Link"
-
-class RandomizeMusic(Toggle):
-    """
-    Determines whether in-game music should be randomized.
-    """
-    display_name = "Randomize Music"
-
 class CompletionGoal(Choice):
     """
     Determines your goal in this run.
@@ -362,15 +353,13 @@ class SnottyFloor(Range):
     range_end = 5
     default = 4
 
-class RandomizeEnemies(Toggle):
-    """
-    Determines whether an enemy is replaced with a random other enemy.
-    """
-    display_name = "Randomize Enemies"
-
 class GatePlando(OptionDict):
+    """
+    Plando hub gates onto other hub gates. For example \"John Gutter: \" \"Pepperman\" will place Pepperman at John Gutter.
+    """
     display_name = "Hub Gate Plando"
     default = {}
+    valid_keys = level_data.keys()
 
 pt_option_groups = [
     OptionGroup("General Options", [
