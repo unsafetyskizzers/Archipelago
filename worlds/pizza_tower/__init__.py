@@ -3,7 +3,6 @@ from worlds.AutoWorld import World, WebWorld
 from BaseClasses import Tutorial, LocationProgressType
 from .Items import PTItem, pt_items, get_item_from_category, pt_item_groups
 from .Locations import pt_locations, pt_location_groups
-from .Options import PTOptions, pt_option_groups, pt_option_presets
 from math import floor
 from typing import Any, TextIO, NamedTuple
 from worlds.LauncherComponents import Component, components, icon_paths, launch as launch_component, Type
@@ -48,6 +47,8 @@ level_data: dict[str, PTLevelData] = {
     "WAR":                  PTLevelData("war", "Floor 5 Staff Only"),
     "Pizzaface":            PTLevelData("boss_pizzaface", "Floor 5 Staff Only", True),
 }
+
+from .Options import PTOptions, pt_option_groups, pt_option_presets
 
 def internal_from_external(name: str):
     if "Secret 1" in name:
@@ -230,9 +231,12 @@ class PizzaTowerWorld(World):
         return locked_starting_levels
 
     def prepare_ut(self, re_gen_passthrough):
+        external_from_internal = {}
+        for level in level_data.keys():
+            external_from_internal.update({level_data[level].internal_name: level})
+
         slot_data = re_gen_passthrough[self.game]
-        #self.gates_map = {external_from_internal(gate): external_from_internal(slot_data["rando_gates"][gate]) for gate in slot_data["rando_gates"]}
-        #self.secret_map = {external_from_internal(sec): external_from_internal(slot_data["rando_secrets"][sec]) for sec in slot_data["rando_secrets"]}
+        self.gates_map = {external_from_internal[gate]: external_from_internal[slot_data["rando_gates"][gate]] for gate in slot_data["rando_gates"]}
         self.options.character.value = slot_data["character"]
         self.options.difficulty.value = slot_data["difficulty"]
         self.options.floor_1_cost.value = slot_data["floor_1_toppins"]
@@ -283,8 +287,8 @@ class PizzaTowerWorld(World):
         re_gen_passthrough = getattr(self.multiworld,"re_gen_passthrough",{})
         if re_gen_passthrough and self.game in re_gen_passthrough:
             self.prepare_ut(re_gen_passthrough)
-
-        self.gates_map = self.hub_gate_rando()
+        else:
+            self.gates_map = self.hub_gate_rando()
 
         #slice floors/levels/bosses list if snotty goal
         if self.options.completion_goal == self.options.completion_goal.option_Snotty:

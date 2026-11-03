@@ -43,7 +43,7 @@ class PTContext(SuperContext):
         self.awaiting_info = False
         self.just_collected = None
         self.full_inventory: List[Any] = []
-        self.server_msgs: List[Any] = []
+        self.server_msgs: List[dict] = []
         self.connected = False
         self.authenticated = False
         self.relevant_packets = [
@@ -53,6 +53,7 @@ class PTContext(SuperContext):
             "ClientPong",
             "ProxyDisconnect"
         ]
+        self.is_processing_outgoing_messages = False
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -67,7 +68,7 @@ class PTContext(SuperContext):
 
         return "Connected to Pizza Tower"
 
-    async def send_msgs_proxy(self, msgs: Iterable[dict]) -> bool:
+    async def send_msgs_proxy(self, msgs: list[dict]) -> bool:
         """ `msgs` JSON serializable """
         if not self.endpoint or not self.endpoint.socket.open or self.endpoint.socket.closed:
             return False
@@ -75,7 +76,13 @@ class PTContext(SuperContext):
         if DEBUG:
             logger.info(f"Outgoing message: {msgs}")
 
-        await self.endpoint.socket.send(msgs)
+        #queue so that packets sent in quick succession don't get lost
+        #special thanks to profdecube for looking into this issue and writing a fix for it
+        if not self.is_processing_outgoing_messages:            
+            self.is_processing_outgoing_messages = True
+            await self.endpoint.socket.send(encode(msgs))
+            await asyncio.sleep(0.1)
+            self.is_processing_outgoing_messages = False
         return True
 
     async def disconnect(self, allow_autoreconnect: bool = False):
@@ -98,25 +105,25 @@ class PTContext(SuperContext):
         if not self.is_connected():
             return
 
-        self.server_msgs.append(encode([{"cmd": "ReceivedItems", "index": 0, "items": self.full_inventory}]))
+        self.server_msgs.append({"cmd": "ReceivedItems", "index": 0, "items": self.full_inventory})
 
     def on_package(self, cmd: str, args: dict):
         super().on_package(cmd, args)
         if cmd == "RoomInfo":
             #prepare roominfo packet to send to game client when it connects to our proxy
             self.seed_name = args["seed_name"]
-            self.room_info = encode([{
+            self.room_info = {
                 "cmd": "RoomInfo", 
                 "seed_name": args["seed_name"], 
                 "tags": args["tags"]
-                }])
+                }
         elif cmd == "Connected":
-            update_room_info: dict = decode(self.room_info)[0]
+            update_room_info: dict = self.room_info
             update_room_info.update({"tags": self.tags})
-            self.room_info = encode([update_room_info])
+            self.room_info = update_room_info
             async_start(self.update_tags())
             #same as roominfo except with the connected packet
-            self.connected_msg = encode([args])
+            self.connected_msg = args
             if self.awaiting_info:
                 self.server_msgs.append(self.room_info)
                 self.update_items()
@@ -130,7 +137,7 @@ class PTContext(SuperContext):
                 self.full_inventory.clear()
             for item in args["items"]:
                 self.full_inventory.append(item)
-            self.server_msgs.append(encode([args]))
+            self.server_msgs.append(args)
         #adjusted printjson packet, only sends over assembled text message and the type
         elif cmd == "PrintJSON":
             txtmsg = ""
@@ -158,14 +165,14 @@ class PTContext(SuperContext):
             if args.get("type") == "Goal":
                 txtmsg = f"{player_slot_name} reached their goal!"
             if txtmsg:
-                self.server_msgs.append(encode([{
+                self.server_msgs.append({
                     "cmd": cmd,
                     "type": args.get("type"),
                     "text": txtmsg
-                }]))
+                })
         #send over all other relevant received data from the server in full
         elif cmd in self.relevant_packets:
-            self.server_msgs.append(encode([args]))
+            self.server_msgs.append(args)
     
     def make_gui(self) -> type[GameManager]:
         ui = super().make_gui()
@@ -189,7 +196,7 @@ class PTContext(SuperContext):
     
     async def update_tags(self):
         await self.send_msgs([{"cmd": "ConnectUpdate", "tags": self.tags}])
-        await self.send_msgs_proxy(encode([{"cmd": "UpdateTags", "tags": self.tags}]))
+        self.server_msgs.append({"cmd": "UpdateTags", "tags": self.tags})
 
 async def proxy(websocket, path: str = "/", ctx: PTContext = None):
     ctx.endpoint = Endpoint(websocket)
@@ -200,8 +207,7 @@ async def proxy(websocket, path: str = "/", ctx: PTContext = None):
                 if DEBUG:
                     logger.info(f"Incoming message: {data}")
                 if not ctx.is_connected() and ctx.authenticated:
-                    text = encode([{"cmd": "ProxyDisconnect"}])
-                    await ctx.send_msgs_proxy(text)
+                    ctx.server_msgs.append({"cmd": "ProxyDisconnect"})
                     ctx.authenticated = False
                 await parse_game_packets(ctx, data)
     except Exception as e:
@@ -214,8 +220,7 @@ async def parse_game_packets(ctx: PTContext, data):
     for msg in decode(data):
             if msg["cmd"] == "ClientPing":
                 # Ensure that the client is still connected to the text client using a special packet
-                text = encode([{"cmd": "ClientPong"}])
-                await ctx.send_msgs_proxy(text)
+                ctx.server_msgs.append({"cmd": "ClientPong"})
             #dont send further packets if not connected with server yet
             #connected is only set to true if we've actually received the initial connection data from the server
             elif not ctx.connected:
@@ -229,23 +234,24 @@ async def parse_game_packets(ctx: PTContext, data):
                     break
                 #send over connection data and receiveditems if valid
                 if ctx.connected_msg and ctx.is_connected():
-                    connected_package = decode(ctx.connected_msg)[0]
+                    connected_package = ctx.connected_msg
                     # if there are more than 1000 players in the Connected packet, split them up using AddPlayers packets
                     all_players = connected_package["players"]
                     if len(all_players) > 1000:
                         connected_package["players"] = []
                         # Connected is sent first, then each of AddPlayers in order
-                        await ctx.send_msgs_proxy(encode([connected_package]))
+                        ctx.server_msgs.append(connected_package)
                         for i in range(ceil(len(all_players)/1000)):
+                            await asyncio.sleep(0.15)
                             add_players_package = {
                                 "cmd": "AddPlayers",
                                 "players": all_players[i*1000:-1] if (i+1)*1000 > len(all_players) else all_players[i*1000:(i+1)*1000]
                             }
-                            await ctx.send_msgs_proxy(encode([add_players_package]))
+                            ctx.server_msgs.append(add_players_package)
                     else:
-                        await ctx.send_msgs_proxy(ctx.connected_msg)
+                        ctx.server_msgs.append(ctx.connected_msg)
                     #send tags to proxy when connected
-                    await ctx.send_msgs_proxy(encode([{"cmd": "UpdateTags", "tags": ctx.tags}]))
+                    ctx.server_msgs.append({"cmd": "UpdateTags", "tags": ctx.tags})
                     ctx.update_items()
             elif not ctx.is_proxy_connected():
                 break
@@ -256,12 +262,12 @@ async def parse_game_packets(ctx: PTContext, data):
 
 async def on_client_connected(ctx: PTContext):
     if ctx.room_info and ctx.connected:
-        await ctx.send_msgs_proxy(ctx.room_info)
+        ctx.server_msgs.append(ctx.room_info)
     else:
         ctx.awaiting_info = True
-        text = encode([{"cmd": "ClientPong"}])
-        await ctx.send_msgs_proxy(text)
-
+        text = {"cmd": "ClientPong"}
+        ctx.server_msgs.append(text)
+    await asyncio.sleep(0.1)
 
 async def proxy_loop(ctx: PTContext):
     try:
@@ -269,9 +275,10 @@ async def proxy_loop(ctx: PTContext):
             if not ctx.is_connected():
                 ctx.connected = False
             if ctx.server_msgs:
-                await ctx.send_msgs_proxy(ctx.server_msgs)
-
-                ctx.server_msgs.clear()
+                messages_to_send = []
+                for msg in ctx.server_msgs:
+                    messages_to_send.append(ctx.server_msgs.pop())
+                await ctx.send_msgs_proxy(messages_to_send)
             await asyncio.sleep(0.1)
     except Exception as e:
         logger.exception(e)
