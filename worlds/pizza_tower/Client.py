@@ -277,7 +277,7 @@ async def proxy_loop(ctx: PTContext):
             if ctx.server_msgs:
                 messages_to_send = []
                 for msg in ctx.server_msgs:
-                    messages_to_send.append(ctx.server_msgs.pop())
+                    messages_to_send.append(ctx.server_msgs.pop(0))
                 await ctx.send_msgs_proxy(messages_to_send)
             await asyncio.sleep(0.1)
     except Exception as e:
