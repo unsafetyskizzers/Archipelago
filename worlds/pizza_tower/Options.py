@@ -355,7 +355,7 @@ class SnottyFloor(Range):
 
 class GatePlando(OptionDict):
     """
-    Plando hub gates onto other hub gates. For example \"John Gutter: \" \"Pepperman\" will place Pepperman at John Gutter.
+    Plando hub gates onto other hub gates. For example \"John Gutter\": \"Pepperman\" will place Pepperman at John Gutter.
     """
     display_name = "Hub Gate Plando"
     default = {}
