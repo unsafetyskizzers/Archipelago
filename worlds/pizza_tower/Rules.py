@@ -1007,8 +1007,8 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "CRUSH+TAUNT+BARR | SJUMP+TORN+TAUNT+BARR | SJUMP+SLAM+TAUNT+BARR | BOUNCE+TAUNT+BARR"
         ),
         "Crust Cove Secret 1 Complete": (
-            "BARREL",
-            "BARREL",
+            "BARR",
+            "BARR",
             "NONE",
             "NONE"
         ),

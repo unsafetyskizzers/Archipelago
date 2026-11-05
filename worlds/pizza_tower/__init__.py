@@ -403,7 +403,7 @@ class PizzaTowerWorld(World):
                     for i in range(floor(one_percent_trap * (self.options.trap_weights[get_trapweight] * trapweight_mult))):
                         pizza_itempool.append(self.create_item(trap))
             else:
-                raise Exception("Traps are enabled, but all trap weights are zero")
+                raise OptionError("Traps are enabled, but all trap weights are zero")
         
         #add filler
         one_percent_filler = (locations_to_fill - len(pizza_itempool)) / 100
@@ -416,7 +416,7 @@ class PizzaTowerWorld(World):
                 for i in range(floor(one_percent_filler * (self.options.filler_weights[filler] * fillerweight_mult))):
                     pizza_itempool.append(self.create_item(filler))
         else:
-            raise Exception("Please set at least one filler weight to be greater than 0")
+            raise OptionError("Please set at least one filler weight to be greater than 0")
         
         #if there's still slots left over from rounding fill them with primo burgs
         for i in range(locations_to_fill - len(pizza_itempool)):
