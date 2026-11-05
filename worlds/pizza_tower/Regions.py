@@ -155,10 +155,6 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, gates_map
     tower_regions.append(Region("Menu", player, world, None))
 
     #extra mf checks!!!!!
-    if options.secret_checks:
-        levels_checks += ["Secret 1", "Secret 2", "Secret 3"]
-    if options.secret_complete_checks:
-        levels_checks += ["Secret 1 Complete", "Secret 2 Complete", "Secret 3 Complete"]
     if options.treasure_checks:
         levels_checks.append("Treasure")
     if options.srank_checks:
@@ -232,6 +228,19 @@ def create_regions(player: int, world: MultiWorld, options: PTOptions, gates_map
                     for chk in cheftasks_checks[lvl]:
                         new_location = PTLocation(player, chk, pt_locations[chk], check_region)
                         check_region.locations.append(new_location)
+                #secret regions
+                if options.secret_checks.value or options.secret_complete_checks.value:
+                    for secret in range(3):
+                        secret_name = f"{lvl} Secret {secret+1}"
+                        secret_region = Region(secret_name, player, world, None)
+                        if options.secret_checks.value:
+                            new_location = PTLocation(player, secret_name, pt_locations[secret_name], secret_region)
+                            secret_region.locations.append(new_location)
+                        if options.secret_complete_checks.value:
+                            new_location = PTLocation(player, f"{secret_name} Complete", pt_locations[f"{secret_name} Complete"], secret_region)
+                            secret_region.locations.append(new_location)
+                        tower_regions.append(secret_region)
+
         elif level_data[lvl].is_boss:
             for chk in bosses_checks:
                 if lvl == "Pizzaface" and chk != "Defeated":

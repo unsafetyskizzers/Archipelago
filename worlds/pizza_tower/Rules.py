@@ -3,8 +3,7 @@ from BaseClasses import MultiWorld
 from .Options import PTOptions
 from ..generic.Rules import set_rule, add_rule
 from math import floor
-from typing import Callable
-from BaseClasses import Location, Entrance, CollectionState
+from BaseClasses import Location, CollectionState
 from . import PTChars, PizzaTowerWorld, level_data
 
 rule_moves = {
@@ -127,6 +126,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SJUMP+SLAM | SJUMP+CRUSH", 
             "SJUMP | UPPER | CRUSH | BOUNCE"
         ),
+        "John Gutter Secret 1 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
+        ),
+        "John Gutter Secret 2 Complete": (
+            "CLIMB",
+            "CLIMB | UPPER",
+            "BOUNCE | UPPER | SJUMP | CRUSH",
+            "BOUNCE | UPPER | SJUMP | CRUSH"
+        ),
+        "John Gutter Secret 3 Complete": (
+            "CLIMB | SJUMP",
+            "CLIMB | SJUMP",
+            "SJUMP | UPPER | CRUSH | BOUNCE",
+            "SJUMP | UPPER | CRUSH | BOUNCE",
+        ),
         "John Gutter Treasure": (
             "SJUMP+SLAM", 
             "SJUMP | CLIMB", 
@@ -218,6 +235,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "UPPER+SJUMP+KNIGHT | UPPER+CLIMB+KNIGHT | GRAB+SJUMP+KNIGHT | GRAB+CLIMB+KNIGHT", 
             "GRAB+SJUMP+KNIGHT", 
             "GRAB+SJUMP+KNIGHT | UPPER+KNIGHT | GRAB+BOUNCE+KNIGHT | GRAB+CRUSH+KNIGHT"
+        ),
+        "Pizzascape Secret 1 Complete": (
+            "KNIGHT",
+            "KNIGHT",
+            "KNIGHT",
+            "KNIGHT"
+        ),
+        "Pizzascape Secret 2 Complete": (
+            "KNIGHT",
+            "KNIGHT",
+            "KNIGHT",
+            "KNIGHT"
+        ),
+        "Pizzascape Secret 3 Complete": (
+            "BALL",
+            "BALL",
+            "BALL",
+            "BALL"
         ),
         "Pizzascape Treasure": (
             "GRAB+SJUMP+KNIGHT | GRAB+CLIMB+KNIGHT", 
@@ -311,6 +346,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "GRAB+SJUMP+SLAM | GRAB+UPPER+SLAM | GRAB+BOUNCE+SLAM | GRAB+SJUMP+TORN | GRAB+UPPER+TORN | GRAB+BOUNCE+TORN | GRAB+SJUMP+CRUSH | GRAB+UPPER+CRUSH | GRAB+BOUNCE+CRUSH", 
             "GRAB+BOUNCE+SLAM | GRAB+BOUNCE+TORN | GRAB+BOUNCE+CRUSH | GRAB+SJUMP+CRUSH | GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | UPPER+SLAM | UPPER+TORN | UPPER+CRUSH"
         ),
+        "Ancient Cheese Secret 1 Complete": (
+            "NONE", 
+            "NONE", 
+            "NONE", 
+            "NONE"
+        ),
+        "Ancient Cheese Secret 2 Complete": (
+            "GRAB",
+            "GRAB | UPPER",
+            "GRAB",
+            "GRAB | UPPER",
+        ),
+        "Ancient Cheese Secret 3 Complete": (
+            "CLIMB",
+            "CLIMB",
+            "SJUMP | BOUNCE | UPPER | CRUSH",
+            "SJUMP | BOUNCE | UPPER | CRUSH"
+        ),
         "Ancient Cheese Treasure": (
             "GRAB+SLAM+CLIMB | GRAB+SLAM+SJUMP", 
             "UPPER+CLIMB | UPPER+SJUMP | GRAB+CLIMB | GRAB+SJUMP", 
@@ -402,6 +455,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SJUMP+SLAM | CLIMB+SLAM", 
             "SLAM+SJUMP | TORN+SJUMP | CRUSH+SJUMP", 
             "SJUMP+SLAM | SJUMP+TORN | SJUMP+CRUSH | SJUMP+BOUNCE"
+        ),
+        "Bloodsauce Dungeon Secret 1 Complete": (
+            "CLIMB | SJUMP",
+            "CLIMB | SJUMP | UPPER",
+            "SJUMP | BOUNCE | UPPER | CRUSH",
+            "SJUMP | BOUNCE | UPPER | CRUSH"
+        ),
+        "Bloodsauce Dungeon Secret 2 Complete": (
+            "CLIMB",
+            "CLIMB",
+            "BOUNCE | UPPER",
+            "BOUNCE | UPPER | CRUSH"
+        ),
+        "Bloodsauce Dungeon Secret 3 Complete": (
+            "CLIMB | UPPER | SJUMP | SLAM",
+            "NONE", # both chars can corner correct
+            "BOUNCE | UPPER | SJUMP | CRUSH | SLAM",
+            "NONE"
         ),
         "Bloodsauce Dungeon Treasure": (
             "SJUMP+SLAM | CLIMB+SLAM", 
@@ -495,6 +566,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE", 
             "SJUMP+FIRE | UPPER+FIRE | CRUSH+FIRE | BOUNCE+FIRE"
         ),
+        "Oregano Desert Secret 1 Complete": (
+            "SLAM",
+            "SLAM",
+            "SLAM | TORN | CRUSH",
+            "SLAM | TORN | CRUSH"
+        ),
+        "Oregano Desert Secret 2 Complete": (
+            "FIRE",
+            "FIRE",
+            "FIRE",
+            "FIRE"
+        ),
+        "Oregano Desert Secret 3 Complete": (
+            "SJUMP",
+            "SJUMP",
+            "UPPER | BOUNCE | SJUMP",
+            "UPPER | BOUNCE | SJUMP | CRUSH"
+        ),
         "Oregano Desert Treasure": (
             "CLIMB+FIRE", 
             "SJUMP+GRAB+FIRE | SJUMP+SLAM+FIRE | CLIMB+FIRE", 
@@ -586,6 +675,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SJUMP+GHOST | CLIMB+GHOST", 
             "SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST", 
             "SJUMP+GHOST | UPPER+GHOST | CRUSH+GHOST | BOUNCE+GHOST"
+        ),
+        "Wasteyard Secret 1 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
+        ),
+        "Wasteyard Secret 2 Complete": (
+            "GHOST",
+            "GHOST",
+            "GHOST",
+            "GHOST"
+        ),
+        "Wasteyard Secret 3 Complete": (
+            "CLIMB",
+            "CLIMB | UPPER",
+            "UPPER | BOUNCE | SJUMP | CRUSH",
+            "UPPER | BOUNCE | SJUMP | CRUSH"
         ),
         "Wasteyard Treasure": (
             "SJUMP+GHOST | CLIMB+UPPER+GHOST", 
@@ -679,6 +786,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "BOUNCE+SLAM+MORT | UPPER+SLAM+MORT | SJUMP+SLAM+MORT | CRUSH+MORT", 
             "CRUSH+MORT | SLAM+UPPER+MORT | SLAM+BOUNCE+MORT | SLAM+SJUMP+MORT"
         ),
+        "Fun Farm Secret 1 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
+        ),
+        "Fun Farm Secret 2 Complete": (
+            "MORT",
+            "MORT",
+            "SJUMP | MORT",
+            "SJUMP | MORT | CRUSH"
+        ),
+        "Fun Farm Secret 3 Complete": (
+            "CLIMB | SJUMP",
+            "CLIMB | SJUMP",
+            "BOUNCE | SJUMP | UPPER | CRUSH",
+            "BOUNCE | SJUMP | UPPER | CRUSH"
+        ),
         "Fun Farm Treasure": (
             "SLAM+CLIMB+MORT", 
             "SLAM+UPPER+GRAB+MORT | SLAM+SJUMP+MORT | SLAM+CLIMB+MORT", 
@@ -770,6 +895,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "GRAB+SJUMP+WEEN | GRAB+CLIMB+WEEN", 
             "SJUMP+GRAB+WEEN", 
             "SJUMP+GRAB+WEEN | UPPER+GRAB+WEEN | CRUSH+GRAB+WEEN | BOUNCE+GRAB+WEEN"
+        ),
+        "Fastfood Saloon Secret 1 Complete": (
+            "SJUMP | CLIMB | UPPER",
+            "SJUMP | CLIMB | UPPER",
+            "SJUMP | BOUNCE | UPPER | CRUSH",
+            "SJUMP | BOUNCE | UPPER | CRUSH"
+        ),
+        "Fastfood Saloon Secret 2 Complete": (
+            "CLIMB",
+            "CLIMB",
+            "BOUNCE | UPPER",
+            "BOUNCE | UPPER | CRUSH",
+        ),
+        "Fastfood Saloon Secret 3 Complete": (
+            "CLIMB | SLAM",
+            "CLIMB+SLAM | SJUMP+SLAM",
+            "BOUNCE | CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN",
+            "BOUNCE | CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN"
         ),
         "Fastfood Saloon Treasure": (
             "SJUMP+GRAB+CLIMB+WEEN", 
@@ -863,6 +1006,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SJUMP+SLAM+TAUNT+BARR | SJUMP+CRUSH+TAUNT+BARR | SJUMP+TORN+TAUNT+BARR | BOUNCE+UPPER+SLAM+TAUNT+BARR | BOUNCE+UPPER+TORN+TAUNT+BARR | BOUNCE+CRUSH+TAUNT+BARR", 
             "CRUSH+TAUNT+BARR | SJUMP+TORN+TAUNT+BARR | SJUMP+SLAM+TAUNT+BARR | BOUNCE+TAUNT+BARR"
         ),
+        "Crust Cove Secret 1 Complete": (
+            "BARREL",
+            "BARREL",
+            "NONE",
+            "NONE"
+        ),
+        "Crust Cove Secret 2 Complete": (
+            "SJUMP | CLIMB",
+            "SJUMP | CLIMB",
+            "BOUNCE | SJUMP | UPPER | CRUSH",
+            "BOUNCE | SJUMP | UPPER | CRUSH"
+        ),
+        "Crust Cove Secret 3 Complete": (
+            "TAUNT",
+            "TAUNT",
+            "TAUNT",
+            "TAUNT"
+        ),
         "Crust Cove Treasure": (
             "SJUMP | CLIMB", 
             "SJUMP | CLIMB", 
@@ -954,6 +1115,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SJUMP+SLAM+DJUMP | CLIMB+SLAM+DJUMP", 
             "BOUNCE+CRUSH | SJUMP+CRUSH", 
             "CRUSH"
+        ),
+        "Gnome Forest Secret 1 Complete": (
+            "DJUMP",
+            "DJUMP",
+            "CRUSH | UPPER",
+            "CRUSH | UPPER"
+        ),
+        "Gnome Forest Secret 2 Complete": (
+            "DJUMP",
+            "DJUMP",
+            "CRUSH | UPPER | SJUMP",
+            "CRUSH | UPPER | SJUMP"
+        ),
+        "Gnome Forest Secret 3 Complete": (
+            "CLIMB",
+            "CLIMB | SJUMP",
+            "SJUMP | BOUNCE",
+            "SJUMP | BOUNCE | CRUSH"
         ),
         "Gnome Forest Treasure": (
             "SLAM+DJUMP+SPIN+SJUMP | SLAM+DJUMP+KICK+SJUMP | SLAM+DJUMP+SPIN+CLIMB | SLAM+DJUMP+KICK+CLIMB", 
@@ -1047,6 +1226,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SLAM+SJUMP+ROCKET+BUBB | TORN+SJUMP+ROCKET+BUBB | CRUSH+SJUMP+ROCKET+BUBB | SLAM+BOUNCE+ROCKET+BUBB | TORN+BOUNCE+ROCKET+BUBB | CRUSH+BOUNCE+ROCKET+BUBB | SLAM+UPPER+ROCKET+BUBB | TORN+UPPER+ROCKET+BUBB | CRUSH+UPPER+ROCKET+BUBB", 
             "SJUMP+SLAM+ROCKET | SJUMP+TORN+ROCKET | SJUMP+BOUNCE+ROCKET | BUBB+SLAM+UPPER+ROCKET | BUBB+TORN+UPPER+ROCKET | BUBB+BOUNCE+ROCKET | CRUSH+ROCKET"
         ),
+        "Deep-Dish 9 Secret 1 Complete": (
+            "BUBB",
+            "BUBB | CLIMB",
+            "BUBB | SJUMP | UPPER | CRUSH",
+            "BUBB | SJUMP | UPPER | CRUSH"
+        ),
+        "Deep-Dish 9 Secret 2 Complete": (
+            "ROCKET",
+            "ROCKET",
+            "ROCKET",
+            "ROCKET | CRUSH"
+        ),
+        "Deep-Dish 9 Secret 3 Complete": (
+            "SLAM+BUBB | SLAM+SJUMP",
+            "SLAM+BUBB | SLAM+SJUMP | SLAM+CLIMB",
+            "SLAM+SJUMP | SLAM+UPPER | SLAM+BUBB | CRUSH",
+            "SLAM+SJUMP | SLAM+UPPER | SLAM+BUBB | CRUSH"
+        ),
         "Deep-Dish 9 Treasure": (
             "SLAM+CLIMB+ROCKET+BUBB", 
             "SLAM+SJUMP+GRAB+ROCKET+BUBB | SLAM+CLIMB+ROCKET+BUBB", 
@@ -1138,6 +1335,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "BALL", 
             "SJUMP+GRAB+BALL | CRUSH+GRAB+BALL | UPPER+GRAB+BALL | BOUNCE+GRAB+BALL", 
             "BALL"
+        ),
+        "GOLF Secret 1 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
+        ),
+        "GOLF Secret 2 Complete": (
+            "BALL",
+            "BALL",
+            "BALL",
+            "BALL"
+        ),
+        "GOLF Secret 3 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
         ),
         "GOLF Treasure": (
             "GRAB+CLIMB+BALL | GRAB+SJUMP+BALL", 
@@ -1231,6 +1446,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SJUMP+SLAM | CRUSH | BOUNCE+SLAM | UPPER+SLAM", 
             "SJUMP+SLAM | BOUNCE+SLAM | CRUSH | UPPER+SLAM"
         ),
+        "The Pig City Secret 1 Complete": (
+            "CLIMB | SJUMP",
+            "CLIMB | SJUMP | UPPER",
+            "BOUNCE | SJUMP | UPPER | CRUSH",
+            "BOUNCE | SJUMP | UPPER | CRUSH"
+        ),
+        "The Pig City Secret 2 Complete": (
+            "DJUMP",
+            "DJUMP",
+            "BOUNCE | UPPER",
+            "BOUNCE | UPPER | CRUSH"
+        ),
+        "The Pig City Secret 3 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
+        ),
         "The Pig City Treasure": (
             "SLAM+DJUMP", 
             "SLAM+DJUMP", 
@@ -1322,6 +1555,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SJUMP+SLAM+BOX | CLIMB+GRAB+SLAM+BOX | CLIMB+UPPER+SLAM+BOX", 
             "SJUMP+SLAM+BOX | SJUMP+TORN+BOX | SJUMP+CRUSH+BOX", 
             "SJUMP+BOUNCE+BOX | SJUMP+TORN+BOX | UPPER+BOUNCE+BOX | UPPER+TORN+BOX | CRUSH+BOX"
+        ),
+        "Peppibot Factory Secret 1 Complete": (
+            "CLIMB | SJUMP | UPPER",
+            "NONE",
+            "BOUNCE | SJUMP | UPPER | CRUSH",
+            "NONE"
+        ),
+        "Peppibot Factory Secret 2 Complete": (
+            "GRAB",
+            "GRAB | UPPER",
+            "GRAB",
+            "GRAB | UPPER"
+        ),
+        "Peppibot Factory Secret 3 Complete": (
+            "BOX",
+            "BOX",
+            "BOX",
+            "BOX | CRUSH"
         ),
         "Peppibot Factory Treasure": (
             "SJUMP+CLIMB+SLAM+BOX | SJUMP+UPPER+SLAM+BOX", 
@@ -1415,6 +1666,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SLAM+BOUNCE+STICKY | TORN+BOUNCE+STICKY | SLAM+SJUMP+STICKY | TORN+SJUMP+STICKY | SLAM+UPPER+STICKY | TORN+UPPER+STICKY | CRUSH+SJUMP+STICKY | CRUSH+BOUNCE+STICKY | CRUSH+UPPER+STICKY", 
             "SJUMP+SLAM+STICKY | SJUMP+TORN+STICKY | BOUNCE+STICKY | CRUSH+STICKY | UPPER+SLAM+STICKY | UPPER+TORN+STICKY"
         ),
+        "Oh Shit! Secret 1 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
+        ),
+        "Oh Shit! Secret 2 Complete": (
+            "STICKY",
+            "STICKY",
+            "STICKY",
+            "STICKY"
+        ),
+        "Oh Shit! Secret 3 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
+        ),
         "Oh Shit! Treasure": (
             "SLAM+CLIMB+STICKY", 
             "SLAM+CLIMB+STICKY", 
@@ -1505,6 +1774,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SATAN+CLIMB+SLAM+SJUMP", 
             "SATAN+SJUMP+SLAM | SATAN+CLIMB+SLAM", 
             "NONE", 
+            "NONE"
+        ),
+        "Freezerator Secret 1 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
+        ),
+        "Freezerator Secret 2 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
+        ),
+        "Freezerator Secret 3 Complete": (
+            "SATAN",
+            "SATAN | SJUMP",
+            "NONE",
             "NONE"
         ),
         "Freezerator Treasure": (
@@ -1599,6 +1886,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SJUMP+SLAM+BALL | SJUMP+TORN+BALL | SJUMP+CRUSH+BALL", 
             "CRUSH+BALL | SJUMP+SLAM+BALL | SJUMP+TORN+BALL | UPPER+SLAM+BALL | UPPER+TORN+BALL | BOUNCE+BALL"
         ),
+        "Pizzascare Secret 1 Complete": (
+            "BALL+CLIMB",
+            "BALL+SJUMP | BALL+CLIMB",
+            "BALL+BOUNCE | BALL+SJUMP | BALL+UPPER | BALL+CRUSH",
+            "BALL+BOUNCE | BALL+SJUMP | BALL+UPPER | BALL+CRUSH"
+        ),
+        "Pizzascare Secret 2 Complete": (
+            "CLIMB",
+            "CLIMB",
+            "BOUNCE | SJUMP | UPPER | CRUSH",
+            "BOUNCE | SJUMP | UPPER | CRUSH"
+        ),
+        "Pizzascare Secret 3 Complete": (
+            "CLIMB | SJUMP",
+            "CLIMB | SJUMP",
+            "BOUNCE | SJUMP | UPPER | CRUSH",
+            "BOUNCE | SJUMP | UPPER | CRUSH"
+        ),
         "Pizzascare Treasure": (
             "CLIMB+SLAM+BALL", 
             "SJUMP+SLAM+BALL | CLIMB+SLAM+BALL", 
@@ -1691,6 +1996,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SJUMP", 
             "SJUMP | CRUSH | BOUNCE"
         ),
+        "Don't Make A Sound Secret 1 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
+        ),
+        "Don't Make A Sound Secret 2 Complete": (
+            "CLIMB",
+            "CLIMB",
+            "SJUMP",
+            "SJUMP | CRUSH"
+        ),
+        "Don't Make A Sound Secret 3 Complete": (
+            "CLIMB | SJUMP",
+            "CLIMB | SJUMP",
+            "SJUMP",
+            "SJUMP | CRUSH"
+        ),
         "Don't Make A Sound Treasure": (
             "CLIMB+SLAM+GRAB+SHOTGUN", 
             "CLIMB+GRAB+SHOTGUN | CLIMB+UPPER+SHOTGUN", 
@@ -1782,6 +2105,24 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "GRAB+SHOTGUN+SJUMP+ROCKET | GRAB+SHOTGUN+CLIMB+ROCKET | UPPER+SHOTGUN+SJUMP+ROCKET | UPPER+SHOTGUN+CLIMB+ROCKET", 
             "GRAB+SHOTGUN+SJUMP+SLAM+ROCKET | GRAB+SHOTGUN+SJUMP+CRUSH+ROCKET | GRAB+SHOTGUN+SJUMP+TORN+ROCKET", 
             "GRAB+SHOTGUN+CRUSH+ROCKET | GRAB+SHOTGUN+SJUMP+ROCKET | GRAB+SHOTGUN+BOUNCE+ROCKET | GRAB+SHOTGUN+SLAM+ROCKET | UPPER+SHOTGUN+CRUSH+ROCKET | UPPER+SHOTGUN+SJUMP+ROCKET | UPPER+SHOTGUN+BOUNCE+ROCKET | UPPER+SHOTGUN+SLAM+ROCKET"
+        ),
+        "WAR Secret 1 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
+        ),
+        "WAR Secret 2 Complete": (
+            "CLIMB",
+            "CLIMB | UPPER",
+            "BOUNCE | UPPER | CRUSH | SJUMP",
+            "BOUNCE | UPPER | CRUSH | SJUMP"
+        ),
+        "WAR Secret 3 Complete": (
+            "NONE",
+            "NONE",
+            "NONE",
+            "NONE"
         ),
         "WAR Treasure": (
             "GRAB+SHOTGUN+SJUMP+SLAM+ROCKET", 
@@ -2147,389 +2488,6 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         "Floor 4 Slum": ("NONE", "NONE"),
     }
 
-    secret_rules_dict = { # for secret completion
-        "John Gutter": (
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            ),
-            (
-                "CLIMB",
-                "CLIMB | UPPER",
-                "BOUNCE | UPPER | SJUMP | CRUSH",
-                "BOUNCE | UPPER | SJUMP | CRUSH"
-            ),
-            (
-                "CLIMB | SJUMP",
-                "CLIMB | SJUMP",
-                "SJUMP | UPPER | CRUSH | BOUNCE",
-                "SJUMP | UPPER | CRUSH | BOUNCE",
-            )
-        ),
-        "Pizzascape": (
-            (
-                "KNIGHT",
-                "KNIGHT",
-                "KNIGHT",
-                "KNIGHT"
-            ),
-            (
-                "KNIGHT",
-                "KNIGHT",
-                "KNIGHT",
-                "KNIGHT"
-            ),
-            (
-                "BALL",
-                "BALL",
-                "BALL",
-                "BALL"
-            )
-        ),
-        "Ancient Cheese":(
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            ),
-            (
-                "GRAB",
-                "GRAB | UPPER",
-                "GRAB",
-                "GRAB | UPPER",
-            ),
-            (
-                "CLIMB",
-                "CLIMB",
-                "SJUMP | BOUNCE | UPPER | CRUSH",
-                "SJUMP | BOUNCE | UPPER | CRUSH"
-            )
-        ),
-        "Bloodsauce Dungeon": (
-            (
-                "CLIMB | SJUMP",
-                "CLIMB | SJUMP | UPPER",
-                "SJUMP | BOUNCE | UPPER | CRUSH",
-                "SJUMP | BOUNCE | UPPER | CRUSH"
-            ),
-            (
-                "CLIMB",
-                "CLIMB",
-                "BOUNCE | UPPER",
-                "BOUNCE | UPPER | CRUSH"
-            ),
-            (
-                "CLIMB | UPPER | SJUMP | SLAM",
-                "NONE", # both chars can corner correct
-                "BOUNCE | UPPER | SJUMP | CRUSH | SLAM",
-                "NONE"
-            )
-        ),
-        "Oregano Desert": (
-            (
-                "SLAM",
-                "SLAM",
-                "SLAM | TORN | CRUSH",
-                "SLAM | TORN | CRUSH"
-            ),
-            (
-                "FIRE",
-                "FIRE",
-                "FIRE",
-                "FIRE"
-            ),
-            (
-                "SJUMP",
-                "SJUMP",
-                "UPPER | BOUNCE | SJUMP",
-                "UPPER | BOUNCE | SJUMP | CRUSH"
-            )
-        ),
-        "Wasteyard": (
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            ),
-            (
-                "GHOST",
-                "GHOST",
-                "GHOST",
-                "GHOST"
-            ),
-            (
-                "CLIMB",
-                "CLIMB | UPPER",
-                "UPPER | BOUNCE | SJUMP | CRUSH",
-                "UPPER | BOUNCE | SJUMP | CRUSH"
-            )
-        ),
-        "Fun Farm": (
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            ),
-            (
-                "MORT",
-                "MORT",
-                "SJUMP | MORT",
-                "SJUMP | MORT | CRUSH"
-            ),
-            (
-                "CLIMB | SJUMP",
-                "CLIMB | SJUMP",
-                "BOUNCE | SJUMP | UPPER | CRUSH",
-                "BOUNCE | SJUMP | UPPER | CRUSH"
-            )
-        ),
-        "Fastfood Saloon": (
-            (
-                "SJUMP | CLIMB | UPPER",
-                "SJUMP | CLIMB | UPPER",
-                "SJUMP | BOUNCE | UPPER | CRUSH",
-                "SJUMP | BOUNCE | UPPER | CRUSH"
-            ),
-            (
-                "CLIMB",
-                "CLIMB",
-                "BOUNCE | UPPER",
-                "BOUNCE | UPPER | CRUSH",
-            ),
-            (
-                "CLIMB | SLAM",
-                "CLIMB+SLAM | SJUMP+SLAM",
-                "BOUNCE | CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN",
-                "BOUNCE | CRUSH | SJUMP+SLAM | SJUMP+TORN | UPPER+SLAM | UPPER+TORN"
-            )
-        ),
-        "Crust Cove": (
-            (
-                "BARREL",
-                "BARREL",
-                "NONE",
-                "NONE"
-            ),
-            (
-                "SJUMP | CLIMB",
-                "SJUMP | CLIMB",
-                "BOUNCE | SJUMP | UPPER | CRUSH",
-                "BOUNCE | SJUMP | UPPER | CRUSH"
-            ),
-            (
-                "TAUNT",
-                "TAUNT",
-                "TAUNT",
-                "TAUNT"
-            )
-        ),
-        "Gnome Forest": (
-            (
-                "DJUMP",
-                "DJUMP",
-                "CRUSH | UPPER",
-                "CRUSH | UPPER"
-            ),
-            (
-                "DJUMP",
-                "DJUMP",
-                "CRUSH | UPPER | SJUMP",
-                "CRUSH | UPPER | SJUMP"
-            ),
-            (
-                "CLIMB",
-                "CLIMB | SJUMP",
-                "SJUMP | BOUNCE",
-                "SJUMP | BOUNCE | CRUSH"
-            )
-        ),
-        "Deep-Dish 9": (
-            (
-                "BUBB",
-                "BUBB | CLIMB",
-                "BUBB | SJUMP | UPPER | CRUSH",
-                "BUBB | SJUMP | UPPER | CRUSH"
-            ),
-            (
-                "ROCKET",
-                "ROCKET",
-                "ROCKET",
-                "ROCKET | CRUSH"
-            ),
-            (
-                "SLAM+BUBB | SLAM+SJUMP",
-                "SLAM+BUBB | SLAM+SJUMP | SLAM+CLIMB",
-                "SLAM+SJUMP | SLAM+UPPER | SLAM+BUBB | CRUSH",
-                "SLAM+SJUMP | SLAM+UPPER | SLAM+BUBB | CRUSH"
-            )
-        ),
-        "GOLF": (
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            ),
-            (
-                "BALL",
-                "BALL",
-                "BALL",
-                "BALL"
-            ),
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            )
-        ),
-        "The Pig City": (
-            (
-                "CLIMB | SJUMP",
-                "CLIMB | SJUMP | UPPER",
-                "BOUNCE | SJUMP | UPPER | CRUSH",
-                "BOUNCE | SJUMP | UPPER | CRUSH"
-            ),
-            (
-                "DJUMP",
-                "DJUMP",
-                "BOUNCE | UPPER",
-                "BOUNCE | UPPER | CRUSH"
-            ),
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            )
-        ),
-        "Peppibot Factory": (
-            (
-                "CLIMB | SJUMP | UPPER",
-                "NONE",
-                "BOUNCE | SJUMP | UPPER | CRUSH",
-                "NONE"
-            ),
-            (
-                "GRAB",
-                "GRAB | UPPER",
-                "GRAB",
-                "GRAB | UPPER"
-            ),
-            (
-                "BOX",
-                "BOX",
-                "BOX",
-                "BOX | CRUSH"
-            )
-        ),
-        "Oh Shit!": (
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            ),
-            (
-                "STICKY",
-                "STICKY",
-                "STICKY",
-                "STICKY"
-            ),
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            )
-        ),
-        "Freezerator": (
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            ),
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            ),
-            (
-                "SATAN",
-                "SATAN | SJUMP",
-                "NONE",
-                "NONE"
-            )
-        ),
-        "Pizzascare": (
-            (
-                "BALL+CLIMB",
-                "BALL+SJUMP | BALL+CLIMB",
-                "BALL+BOUNCE | BALL+SJUMP | BALL+UPPER | BALL+CRUSH",
-                "BALL+BOUNCE | BALL+SJUMP | BALL+UPPER | BALL+CRUSH"
-            ),
-            (
-                "CLIMB",
-                "CLIMB",
-                "BOUNCE | SJUMP | UPPER | CRUSH",
-                "BOUNCE | SJUMP | UPPER | CRUSH"
-            ),
-            (
-                "CLIMB | SJUMP",
-                "CLIMB | SJUMP",
-                "BOUNCE | SJUMP | UPPER | CRUSH",
-                "BOUNCE | SJUMP | UPPER | CRUSH"
-            )
-        ),
-        "Don't Make A Sound": (
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            ),
-            (
-                "CLIMB",
-                "CLIMB",
-                "SJUMP",
-                "SJUMP | CRUSH"
-            ),
-            (
-                "CLIMB | SJUMP",
-                "CLIMB | SJUMP",
-                "SJUMP",
-                "SJUMP | CRUSH"
-            )
-        ),
-        "WAR": (
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            ),
-            (
-                "CLIMB",
-                "CLIMB | UPPER",
-                "BOUNCE | UPPER | CRUSH | SJUMP",
-                "BOUNCE | UPPER | CRUSH | SJUMP"
-            ),
-            (
-                "NONE",
-                "NONE",
-                "NONE",
-                "NONE"
-            )
-        )
-    }
-
     pt_swap_rules = { #for swap-specific rules
         "Chef Task: Strike!": "SLAM+DJUMP+KICK | CRUSH+KICK | BOUNCE+SLAM+KICK | UPPER+SLAM+KICK | SJUMP+SLAM+KICK",
     }
@@ -2545,7 +2503,10 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
     else:
         secrets_map = world.secret_map
 
-    def interpret_rule(rule_chk: str, hub_rule: bool):
+    def interpret_rule(rule_chk: str, hub_rule: bool = False, secret_complete_rule = False):
+        #swap out rule for the randomized secret
+        if secret_complete_rule:
+            rule_chk = f"{secrets_map[rule_chk.removesuffix(" Complete")]} Complete"
         if options.character != PTChars.SWAP:
             rule_index = options.difficulty + (options.character * 2)
             if hub_rule:
@@ -2627,6 +2588,11 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             else:
                 required_toppins = get_item_perc_amount(toppins, toppin_cost_list[hub_region.name])
             add_rule(gate_connection, lambda state, toppin_req = required_toppins: state.has("Toppin", world.player, toppin_req))
+        #connect secret regions
+        if (options.secret_checks.value or options.secret_complete_checks.value) and lvl != "Tutorial" and not level_data[lvl_region.name].is_boss:
+            for i in range(3):
+                secret_connection = lvl_region.connect(multiworld.get_region(f"{lvl_region.name} Secret {i+1}", world.player))
+                set_rule(secret_connection, interpret_rule(f"{lvl_region.name} Secret {i+1}"))
         if lvl != "Tutorial" and lvl != "Pizzaface":
             lvls_on_floor.setdefault(hub_region.name, []).append(lvl)
 
@@ -2644,6 +2610,8 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             for i in range(5):
                 add_rule(location, lambda state, index=i: state.can_reach(world.get_location(f"Tricky Treat Main Path Pumpkin {index+1}")))
                 add_rule(location, lambda state, index=i: state.can_reach(world.get_location(f"Tricky Treat Side Path Pumpkin {index+1}")))
+        elif ("Secret" in location.name and "Complete" in location.name):
+            set_rule(location, interpret_rule(location.name, False, True))
         else:
             set_rule(location, interpret_rule(location.name, False))    
 
@@ -2665,5 +2633,5 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         for floor_index in range(floors - 1):
             add_rule(multiworld.get_entrance(world.floors_list[floor_index]+" to "+world.floors_list[floor_index+1], world.player), lambda state, boss_keys = floor_index+1: state.has("Boss Key", world.player, boss_keys))
     
-    from Utils import visualize_regions
-    visualize_regions(world.get_region("Menu"), "pizzatower_regions.puml")
+    # from Utils import visualize_regions
+    # visualize_regions(world.get_region("Menu"), "pizzatower_regions.puml")

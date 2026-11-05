@@ -59,6 +59,14 @@ def internal_from_external(name: str):
         return level_data[name.replace(" Secret 3", "")].internal_name + "3"
     return level_data[name].internal_name
 
+def external_from_internal_secrets(name: str, aliases: dict):
+    if "1" in name:
+        return aliases[name.replace("1", "")] + " Secret 1"
+    if "2" in name:
+        return aliases[name.replace("2", "")] + " Secret 2"
+    if "3" in name:
+        return aliases[name.replace("3", "")] + " Secret 3"
+
 def launch_client(*args: str):
     from .Client import launch
     launch_component(launch, name="PTClient", args=args)
@@ -237,6 +245,7 @@ class PizzaTowerWorld(World):
 
         slot_data = re_gen_passthrough[self.game]
         self.gates_map = {external_from_internal[gate]: external_from_internal[slot_data["rando_gates"][gate]] for gate in slot_data["rando_gates"]}
+        self.secret_map = {external_from_internal_secrets(sec, external_from_internal): external_from_internal_secrets(slot_data["rando_secrets"][sec], external_from_internal) for sec in slot_data["rando_secrets"]}
         self.options.character.value = slot_data["character"]
         self.options.difficulty.value = slot_data["difficulty"]
         self.options.floor_1_cost.value = slot_data["floor_1_toppins"]
@@ -258,6 +267,7 @@ class PizzaTowerWorld(World):
         self.options.do_transfo_rando.value = slot_data["do_transfo_rando"]
         self.options.completion_goal.value = slot_data["completion_goal"]
         self.options.snotty_floor.value = slot_data["snotty_floor"]
+        self.options.secret_complete_checks.value = slot_data["secret_complete_checks"]
 
     def generate_early(self):
         if self.options.do_move_rando and self.options.do_transfo_rando:
@@ -477,4 +487,5 @@ class PizzaTowerWorld(World):
             "apworld_version": list(self.world_version),
             "completion_goal": int(self.options.completion_goal),
             "snotty_floor": int(self.options.snotty_floor),
+            "secret_complete_checks": bool(self.options.secret_complete_checks)
         }

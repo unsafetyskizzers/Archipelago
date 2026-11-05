@@ -628,7 +628,10 @@ level_checks = [
     "Treasure",
     "Secret 1",
     "Secret 2",
-    "Secret 3"
+    "Secret 3",
+    "Secret 1 Complete",
+    "Secret 2 Complete",
+    "Secret 3 Complete"
 ]
 
 level_achievements = {
