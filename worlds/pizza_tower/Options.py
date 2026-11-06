@@ -129,7 +129,7 @@ class RandomizeHubGates(Choice):
     "Levels" will only shuffle around levels
     "Bosses" will only shuffle around bosses
     "Levels and Bosses" will only shuffle levels with other levels, and bosses with other bosses
-    "Full Shuffle" will shuffle level/boss gates indiscriminately
+    "Full Shuffle" will shuffle level/boss gates indiscriminately, requires 'Shuffle Boss Keys' to be on.
     """
     display_name = "Shuffle Level/Boss Gates"
     option_vanilla = 0
