@@ -7,7 +7,7 @@ from math import floor
 from typing import Any, TextIO, NamedTuple
 from worlds.LauncherComponents import Component, components, icon_paths, launch as launch_component, Type
 from Options import OptionError
-import logging
+from logging import info
 
 class PTChars(IntEnum):
     PEPPINO = 0
@@ -169,7 +169,7 @@ class PizzaTowerWorld(World):
 
         if not self.options.shuffle_boss_keys.value and self.options.randomize_gates.value == self.options.randomize_gates.option_full_shuffle:
             self.options.randomize_gates.value = self.options.randomize_gates.option_levels_and_bosses
-            logging.warning("Option Full Shuffle requires Shuffle Boss Keys to be enabled, changing shuffle mode to Levels and Bosses")
+            info(f"{self.player_name} set Randomize Hub Gates to Full Shuffle which requires Shuffle Boss Keys to be enabled, changing shuffle mode to Levels and Bosses")
 
         #full shuffle
         if self.options.randomize_gates.value == self.options.randomize_gates.option_full_shuffle:
@@ -403,7 +403,7 @@ class PizzaTowerWorld(World):
                     for i in range(floor(one_percent_trap * (self.options.trap_weights[get_trapweight] * trapweight_mult))):
                         pizza_itempool.append(self.create_item(trap))
             else:
-                raise OptionError("Traps are enabled, but all trap weights are zero")
+                info(f"{self.player_name} set traps to enabled, but all trap weights are set to zero")
         
         #add filler
         one_percent_filler = (locations_to_fill - len(pizza_itempool)) / 100
@@ -416,7 +416,7 @@ class PizzaTowerWorld(World):
                 for i in range(floor(one_percent_filler * (self.options.filler_weights[filler] * fillerweight_mult))):
                     pizza_itempool.append(self.create_item(filler))
         else:
-            raise OptionError("Please set at least one filler weight to be greater than 0")
+            info(f"{self.player_name} set all filler weights to 0,, filling left over spaces with Primo Burg instead")
         
         #if there's still slots left over from rounding fill them with primo burgs
         for i in range(locations_to_fill - len(pizza_itempool)):
