@@ -383,9 +383,9 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "GRAB+BOUNCE | GRAB+SJUMP | UPPER"
         ),
         "Chef Task: Delicacy": (
+            "GRAB+SJUMP+SLAM | GRAB+CLIMB+SLAM", 
             "NONE", 
-            "NONE", 
-            "NONE", 
+            "GRAB+SJUMP+SLAM | GRAB+SJUMP+TORN | GRAB+SJUMP+CRUSH", 
             "NONE"
         ),
         "Ancient Cheese S Rank": (
