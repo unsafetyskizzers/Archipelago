@@ -488,5 +488,5 @@ class PizzaTowerWorld(World):
             "completion_goal": int(self.options.completion_goal),
             "snotty_floor": int(self.options.snotty_floor),
             "secret_complete_checks": bool(self.options.secret_complete_checks),
-            "rando_seed": int(self.random.randint(pow(-2, 63), pow(2, 63) - 1)) #random signed 64 bit int
+            "rando_seed": int(self.random.randint(0, pow(2, 32) - 1)) #random unsigned 32 bit int
         }
