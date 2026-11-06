@@ -302,6 +302,7 @@ class TrapWeights(OptionCounter):
         "Granny Trap": 20,
         "Timer Trap": 10,
         "Ghost Trap": 10,
+        "Goblin Captain Trap": 20
     }
     display_name = "Trap Weights"
     valid_keys = default.keys()

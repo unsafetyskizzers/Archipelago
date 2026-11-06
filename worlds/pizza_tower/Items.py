@@ -52,6 +52,7 @@ pt_items: dict[str, PTItemData] = {
     "Fake Santa Trap":          PTItemData("Trap", 124, ItemClassification.trap),
     "Oktoberfest!":             PTItemData("Trap", 125, ItemClassification.trap),
     "Granny Trap":              PTItemData("Trap", 147, ItemClassification.trap),
+    "Goblin Captain Trap":      PTItemData("Trap", 152, ItemClassification.trap),
 
     "Permanent 10 Points":      PTItemData("Filler", 126, ItemClassification.filler),
     "Permanent 50 Points":      PTItemData("Filler", 127, ItemClassification.filler),
