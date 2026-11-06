@@ -354,7 +354,7 @@ class PizzaTowerWorld(World):
         #add keys
         if not self.options.open_world:
             if self.options.shuffle_boss_keys:
-                for flr in self.floors_list:
+                for i in range(len(self.floors_list)-1):
                     pizza_itempool.append(self.create_item("Boss Key"))
             else:
                 for lvl in self.gates_map.values():
@@ -487,5 +487,6 @@ class PizzaTowerWorld(World):
             "apworld_version": list(self.world_version),
             "completion_goal": int(self.options.completion_goal),
             "snotty_floor": int(self.options.snotty_floor),
-            "secret_complete_checks": bool(self.options.secret_complete_checks)
+            "secret_complete_checks": bool(self.options.secret_complete_checks),
+            "rando_seed": int(self.random.randint(pow(-2, 63), pow(2, 63) - 1)) #random signed 64 bit int
         }
