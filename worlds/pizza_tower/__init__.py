@@ -376,6 +376,8 @@ class PizzaTowerWorld(World):
                     break
                 pizza_itempool.append(self.create_item("Pumpkin"))
                 self.pumpkin_number = i+1
+
+        starting_clothes = ["Clothes: Classic Cook", "Clothes: Noise"]
         
         #add clothes, if there's room
         if self.options.clothing_filler:
@@ -388,7 +390,8 @@ class PizzaTowerWorld(World):
             for clothing in total_clothes:
                 if locations_to_fill <= len(pizza_itempool):
                     break
-                pizza_itempool.append(self.create_item(clothing))
+                if clothing not in starting_clothes:
+                    pizza_itempool.append(self.create_item(clothing))
 
         #add traps
         if self.options.trap_percentage > 0:
