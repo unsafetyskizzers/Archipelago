@@ -131,7 +131,7 @@ class RandomizeHubGates(Choice):
     "Levels and Bosses" will only shuffle levels with other levels, and bosses with other bosses
     "Full Shuffle" will shuffle level/boss gates indiscriminately, requires 'Shuffle Boss Keys' to be on.
     """
-    display_name = "Shuffle Level/Boss Gates"
+    display_name = "Shuffle Hub Gates"
     option_vanilla = 0
     option_levels = 1
     option_bosses = 2
@@ -178,11 +178,11 @@ class TrapPercentage(Range):
 
 class FairlyRandom(DefaultOnToggle):
     """
-    On: The first two levels will have at least two accessible locations each, and the first boss will not require a grab to defeat.
+    On: The first two levels will have at least two accessible locations each.
 
-    Off: The first two levels and first boss can be anything.
+    Off: The first two levels can be anything.
 
-    Only applies when Shuffle Level Gates and/or Shuffle Boss Gates are enabled.
+    Only applies when Shuffle Hub Gates is configured to shuffle levels. Setting this to 'off' may create seeds where there are no locations reachable in sphere 1!
     """
     display_name = "Fairly Random"
 
@@ -391,12 +391,6 @@ pt_option_groups = [
         PumpkinCount,
         TrickyTreatDoor
     ]),
-    OptionGroup("Filler and Traps", [
-        TrapPercentage,
-        ClothingFiller,
-        FillerWeights,
-        TrapWeights
-    ]),
     OptionGroup("Randomization Options", [
         RandomizeHubGates,
         GatePlando,
@@ -407,6 +401,12 @@ pt_option_groups = [
         TransfosToRandomize,
         ShuffleLap2,
         FairlyRandom
+    ]),
+    OptionGroup("Filler and Traps", [
+        TrapPercentage,
+        ClothingFiller,
+        FillerWeights,
+        TrapWeights
     ])
 ]
 

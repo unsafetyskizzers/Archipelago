@@ -147,7 +147,8 @@ class PizzaTowerWorld(World):
 
         if self.options.randomize_gates.value != self.options.randomize_gates.option_vanilla:
             #grab starting levels
-            place_locked.update(self.get_starting_levels())
+            if self.options.fairly_random:
+                place_locked.update(self.get_starting_levels())
             #load plando settings
             place_locked.update(self.options.gate_plando)
 
@@ -227,8 +228,8 @@ class PizzaTowerWorld(World):
             ]
         
         starting_gates = [
-            "John Gutter",
-            "Pizzascape"
+            "Tutorial",
+            "John Gutter"
         ]
         #manually place start levels
         if ok_start_levels:
