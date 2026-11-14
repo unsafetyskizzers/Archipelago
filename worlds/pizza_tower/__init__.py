@@ -228,8 +228,8 @@ class PizzaTowerWorld(World):
             ]
         
         starting_gates = [
-            "Tutorial",
-            "John Gutter"
+            "John Gutter",
+            "Pizzascape"
         ]
         #manually place start levels
         if ok_start_levels:
@@ -453,14 +453,15 @@ class PizzaTowerWorld(World):
         ex_hint_info = dict()
         gates_map_inv = {value: key for key, value in self.gates_map.items()}
         for location in self.multiworld.get_locations(self.player):
-            if location.parent_region.name in list(level_data.values()):
-                ex_hint_info.update({location.address: level_data[gates_map_inv[location.parent_region.name]].floor})
-            elif location.parent_region.name == "The Crumbling Tower of Pizza":
+            if location.parent_region.name == "The Crumbling Tower of Pizza":
                 ex_hint_info.update({location.address: "Floor 5 Staff Only"})
             elif location.parent_region.name == "Tricky Treat":
                 ex_hint_info.update({location.address: "Floor 1 Tower Lobby"})
             else:
                 ex_hint_info.update({location.address: location.parent_region.name})
+                for lvl in level_data.keys():
+                    if lvl in location.parent_region.name:
+                        ex_hint_info.update({location.address: level_data[gates_map_inv[lvl]].floor})
         hint_data[self.player] = ex_hint_info
 
 
