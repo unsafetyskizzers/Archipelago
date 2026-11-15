@@ -573,16 +573,16 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SLAM | TORN | CRUSH"
         ),
         "Oregano Desert Secret 2 Complete": (
-            "FIRE",
-            "FIRE",
-            "FIRE",
-            "FIRE"
+            "FIRE | CLIMB",
+            "FIRE | GRAB+UPPER | CLIMB",
+            "FIRE | CRUSH | UPPERCUT",
+            "FIRE | CRUSH | UPPERCUT | SJUMP"
         ),
         "Oregano Desert Secret 3 Complete": (
             "SJUMP",
             "SJUMP",
-            "UPPER | BOUNCE | SJUMP",
-            "UPPER | BOUNCE | SJUMP | CRUSH"
+            "UPPER | SJUMP",
+            "UPPER | SJUMP | CRUSH"
         ),
         "Oregano Desert Treasure": (
             "CLIMB+FIRE", 
@@ -1429,7 +1429,7 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SJUMP+SLAM | BOUNCE+SLAM | CRUSH | UPPER+SLAM"
         ),
         "The Pig City Secret 1": (
-            "NONE", 
+            "DJUMP", 
             "NONE", 
             "NONE", 
             "NONE"
