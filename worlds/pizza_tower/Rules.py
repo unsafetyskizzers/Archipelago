@@ -573,8 +573,8 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
             "SLAM | TORN | CRUSH"
         ),
         "Oregano Desert Secret 2 Complete": (
-            "FIRE | CLIMB",
-            "FIRE | GRAB+UPPER | CLIMB",
+            "FIRE | CLIMB+MACH4",
+            "FIRE | GRAB+UPPER | CLIMB+MACH4",
             "FIRE | CRUSH | UPPERCUT",
             "FIRE | CRUSH | UPPERCUT | SJUMP"
         ),
