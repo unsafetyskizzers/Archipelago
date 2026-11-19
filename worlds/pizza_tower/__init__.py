@@ -449,7 +449,7 @@ class PizzaTowerWorld(World):
                 for i in range(floor(one_percent_filler * (self.options.filler_weights[filler] * fillerweight_mult))):
                     pizza_itempool.append(self.create_item(filler))
         else:
-            info(f"{self.player_name} set all filler weights to 0,, filling left over spaces with Primo Burg instead")
+            info(f"{self.player_name} set all filler weights to 0, filling left over spaces with Primo Burg instead")
         
         #if there's still slots left over from rounding fill them with primo burgs
         for i in range(locations_to_fill - len(pizza_itempool)):
