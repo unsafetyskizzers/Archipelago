@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from Options import DefaultOnToggle, Range, NamedRange, Toggle, Choice, PerGameCommonOptions, OptionSet, OptionGroup, OptionCounter, OptionDict
 from . import level_data
 
-class ToppinCount(Range):
+class ToppinCount(NamedRange):
     """
     Number of toppins shuffled into the item pool.
     
@@ -11,52 +11,70 @@ class ToppinCount(Range):
     display_name = "Toppin Count"
     range_start = 0
     range_end = 150
-    default = 95
+    default = 100
+    special_range_names = {
+        "vanilla": 95
+    }
 
-class Floor1Door(Range):
+class Floor1Door(NamedRange):
     """
     Percentage of Toppins required to fight the Floor 1 Boss.
     """
     display_name = "Floor 1 Boss Toppins"
     range_start = 0
     range_end = 100
-    default = 11
+    default = 10
+    special_range_names = {
+        "vanilla": 11
+    }
 
-class Floor2Door(Range):
+class Floor2Door(NamedRange):
     """
     Percentage of Toppins required to fight the Floor 2 Boss.
     """
     display_name = "Floor 2 Boss Toppins"
     range_start = 0
     range_end = 100
-    default = 27
+    default = 25
+    special_range_names = {
+        "vanilla": 27
+    }
 
-class Floor3Door(Range):
+class Floor3Door(NamedRange):
     """
     Percentage of Toppins required to fight the Floor 3 Boss.
     """
     display_name = "Floor 3 Boss Toppins"
     range_start = 0
     range_end = 100
-    default = 48
+    default = 40
+    special_range_names = {
+        "vanilla": 48
+    }
 
-class Floor4Door(Range):
+class Floor4Door(NamedRange):
     """
     Percentage of Toppins required to fight the Floor 4 Boss.
     """
     display_name = "Floor 4 Boss Toppins"
     range_start = 0
     range_end = 100
-    default = 69
+    default = 55
+    special_range_names = {
+        "vanilla": 69
+    }
 
-class Floor5Door(Range):
+class Floor5Door(NamedRange):
     """
     Percentage of Toppins required to fight the Floor 5 Boss.
     """
     display_name = "Floor 5 Boss Toppins"
     range_start = 0
     range_end = 100
-    default = 91
+    default = 70
+    special_range_names = {
+        "vanilla": 91
+    }
 
 class TreasureChecks(DefaultOnToggle):
     """
