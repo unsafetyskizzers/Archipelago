@@ -270,37 +270,35 @@ class PizzaTowerWorld(World):
         self.options.snotty_floor.value = slot_data["snotty_floor"]
         self.options.secret_complete_checks.value = slot_data["secret_complete_checks"]
 
-    def generate_early(self):
+    def balance_toppin_percent(self):
         #patch for impossible toppin options with shuffle boss keys turned off
-        if not self.options.shuffle_boss_keys.value:
-            approx_locations = 5
-            option_locs = [
-                [self.options.secret_checks.value, 3],
-                [self.options.secret_complete_checks.value, 3],
-                [self.options.cheftask_checks.value, 3],
-                [self.options.treasure_checks.value, 1],
-                [self.options.srank_checks.value, 1],
-                [self.options.prank_checks.value, 1]
-            ]
-            for option in range(len(option_locs)):
-                if option_locs[option][0]:
-                    approx_locations += option_locs[option][1]
-            
-            floor_cost_list = [
-                self.options.floor_1_cost,
-                self.options.floor_2_cost,
-                self.options.floor_3_cost,
-                self.options.floor_4_cost,
-                self.options.floor_5_cost
-            ]
-            lvls = 4
-            for floor_cost in floor_cost_list:
-                needed_toppins = (floor_cost.value / 100) * self.options.toppin_count.value
-                if needed_toppins > (approx_locations * lvls):
-                    floor_cost.value = floor(((approx_locations * lvls) / self.options.toppin_count.value) * 100)
-                    info(f"Set option '{floor_cost.display_name}' of {self.player_name} to {floor_cost.value} due to a lack of available locations.")
-                lvls += 4
+        approx_locations = 5
+        option_locs = [
+            [self.options.secret_checks.value, 3],
+            [self.options.secret_complete_checks.value, 3],
+            [self.options.cheftask_checks.value, 3],
+            [self.options.treasure_checks.value, 1]
+        ]
+        for option in range(len(option_locs)):
+            if option_locs[option][0]:
+                approx_locations += option_locs[option][1]
+        
+        floor_cost_list = [
+            self.options.floor_1_cost,
+            self.options.floor_2_cost,
+            self.options.floor_3_cost,
+            self.options.floor_4_cost,
+            self.options.floor_5_cost
+        ]
+        lvls = 4
+        for floor_cost in floor_cost_list:
+            needed_toppins = (floor_cost.value / 100) * self.toppin_number
+            if needed_toppins > (approx_locations * lvls):
+                floor_cost.value = floor(((approx_locations * lvls) / self.toppin_number) * 100)
+                info(f"Set option '{floor_cost.display_name}' of {self.player_name} to {floor_cost.value} due to a lack of available locations.")
+            lvls += 4
 
+    def generate_early(self):
         #place movement items early with move and transfo rando on due to restrictive starts
         if self.options.do_move_rando and self.options.do_transfo_rando:
             if self.options.character == PTChars.PEPPINO:
@@ -460,6 +458,9 @@ class PizzaTowerWorld(World):
         self.multiworld.itempool += pizza_itempool
 
     def set_rules(self):
+        if not self.options.shuffle_boss_keys.value:
+            self.balance_toppin_percent()
+        
         from .Rules import set_rules
         set_rules(self.multiworld, self, self.options, self.toppin_number, self.pumpkin_number, self.gates_map)
         if self.options.completion_goal == self.options.completion_goal.option_CTOP:
