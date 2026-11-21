@@ -240,13 +240,7 @@ class PizzaTowerWorld(World):
         return locked_starting_levels
 
     def prepare_ut(self, re_gen_passthrough):
-        external_from_internal = {}
-        for level in level_data.keys():
-            external_from_internal.update({level_data[level].internal_name: level})
-
         slot_data = re_gen_passthrough[self.game]
-        self.gates_map = {external_from_internal[gate]: external_from_internal[slot_data["rando_gates"][gate]] for gate in slot_data["rando_gates"]}
-        self.secret_map = {external_from_internal_secrets(sec, external_from_internal): external_from_internal_secrets(slot_data["rando_secrets"][sec], external_from_internal) for sec in slot_data["rando_secrets"]}
         self.options.character.value = slot_data["character"]
         self.options.difficulty.value = slot_data["difficulty"]
         self.options.floor_1_cost.value = slot_data["floor_1_toppins"]
@@ -269,6 +263,17 @@ class PizzaTowerWorld(World):
         self.options.completion_goal.value = slot_data["completion_goal"]
         self.options.snotty_floor.value = slot_data["snotty_floor"]
         self.options.secret_complete_checks.value = slot_data["secret_complete_checks"]
+
+        external_from_internal = {}
+        for level in level_data.keys():
+            #skip over noise/doise based on selected character
+            if ((self.options.character.value == PTChars.PEPPINO and level == "The Doise")
+                or (self.options.character.value != PTChars.PEPPINO and level == "The Noise")):
+                continue
+            external_from_internal.update({level_data[level].internal_name: level})
+
+        self.gates_map = {external_from_internal[gate]: external_from_internal[slot_data["rando_gates"][gate]] for gate in slot_data["rando_gates"]}
+        self.secret_map = {external_from_internal_secrets(sec, external_from_internal): external_from_internal_secrets(slot_data["rando_secrets"][sec], external_from_internal) for sec in slot_data["rando_secrets"]}
 
     def balance_toppin_percent(self):
         #patch for impossible toppin options with shuffle boss keys turned off
@@ -458,7 +463,8 @@ class PizzaTowerWorld(World):
         self.multiworld.itempool += pizza_itempool
 
     def set_rules(self):
-        if not self.options.shuffle_boss_keys.value:
+        re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough",{})
+        if not self.options.shuffle_boss_keys.value and not (re_gen_passthrough and self.game in re_gen_passthrough):
             self.balance_toppin_percent()
         
         from .Rules import set_rules

@@ -2582,8 +2582,9 @@ def set_rules(multiworld: MultiWorld, world: PizzaTowerWorld, options: PTOptions
         gate_connection = hub_region.connect(lvl_region, hub_region.name + " to " + lvl_region.name)
         set_rule(gate_connection, interpret_rule(gate, True))
         #add toppin req for boss gates
+        re_gen_passthrough = getattr(multiworld, "re_gen_passthrough",{})
         if level_data[gate].is_boss:
-            if getattr(multiworld,"re_gen_passthrough",{}):
+            if re_gen_passthrough and world.game in re_gen_passthrough:
                 required_toppins = toppin_cost_list[hub_region.name]
             else:
                 required_toppins = get_item_perc_amount(toppins, toppin_cost_list[hub_region.name])
