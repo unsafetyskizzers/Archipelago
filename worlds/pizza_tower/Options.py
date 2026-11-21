@@ -196,11 +196,10 @@ class TrapPercentage(Range):
 
 class FairlyRandom(DefaultOnToggle):
     """
-    On: The first two levels will have at least two accessible locations each.
+    When randomizing levels, the generator will ensure that the first 2 levels will contain at least 2 reachable locations.
+    If both move and transformation randomization are enabled, certain items will be placed early based on your 2 starting levels.
 
-    Off: The first two levels can be anything.
-
-    Only applies when Shuffle Hub Gates is configured to shuffle levels. Setting this to 'off' may create seeds where there are no locations reachable in sphere 1!
+    Setting this to 'off' may create seeds where there are no locations reachable in sphere 1! It's recommended to keep this setting enabled unless you know what you're doing.
     """
     display_name = "Fairly Random"
 
@@ -251,7 +250,6 @@ class MovesToRandomize(OptionSet):
 class RandomizeTransfos(Toggle):
     """
     Determines whether any level-specific Transformations will be shuffled into the item pool.
-    Enabling this setting in combination with moveset randomization will place 2 movement abilities at the beginning of your world to prevent a restrictive start.
     """
     display_name = "Randomize Transformations"
 

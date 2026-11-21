@@ -205,7 +205,7 @@ class PizzaTowerWorld(World):
 
             if self.options.character != PTChars.PEPPINO:
                 ok_start_levels.append("Freezerator")
-            if self.options.difficulty.value > 0 and not self.options.do_transfo_rando.value:
+            if self.options.difficulty.value > 0:
                 ok_start_levels.append("Wasteyard")
                 ok_start_levels.append("GOLF")
             
@@ -238,6 +238,47 @@ class PizzaTowerWorld(World):
                 locked_starting_levels.update({gate: ok_start_levels.pop()})
 
         return locked_starting_levels
+
+    def place_early_items(self):
+        starting_gates = [
+            "John Gutter",
+            "Pizzascape"
+        ]
+
+        early_items_list = []
+
+        early_starting_items: dict[str, list[list[str]]] = {}
+        if self.options.character.value == PTChars.PEPPINO:
+            early_starting_items = {
+                "Pizzascape": [["Grab"], ["Knight"]],
+                "Bloodsauce Dungeon": [["Bodyslam"]],
+                "Don't Make A Sound": [["Wallclimb"]],
+                "The Pig City": [["Wallclimb", "Superjump"]],
+                "Ancient Cheese": [["Grab"]],
+                "Wasteyard": [["Superjump", "Wallclimb"], ["Ghost"]],
+                "GOLF": [["Ball"]]
+            }
+        else:
+            early_starting_items = {
+                "Pizzascape": [["Grab"], ["Knight"]],
+                "Bloodsauce Dungeon": [["Bodyslam", "Crusher", "Tornado"]],
+                "Don't Make A Sound": [["Superjump"]],
+                "The Pig City": [["Superjump"]],
+                "Ancient Cheese": [["Grab"]],
+                "Wasteyard": [["Superjump", "Uppercut", "Crusher", "Wallbounce"], ["Ghost"]],
+                "GOLF": [["Ball"]]
+            }
+
+        for gate in starting_gates:
+            #add early items
+            lvl = self.gates_map[gate]
+            if early_starting_items.get(lvl, []):
+                for itemset in early_starting_items[lvl]:
+                    early_items_list.append(self.random.choice(itemset))
+
+        for item in early_items_list:
+            info(f"Placing {self.player_name}'s {item} early to prevent a restrictive start.")
+            self.multiworld.early_items[self.player][item] = 1
 
     def prepare_ut(self, re_gen_passthrough):
         slot_data = re_gen_passthrough[self.game]
@@ -304,23 +345,6 @@ class PizzaTowerWorld(World):
             lvls += 4
 
     def generate_early(self):
-        #place movement items early with move and transfo rando on due to restrictive starts
-        if self.options.do_move_rando and self.options.do_transfo_rando:
-            if self.options.character == PTChars.PEPPINO:
-                early_item_list = ["Superjump", "Wallclimb"]
-            elif self.options.character == PTChars.NOISE:
-                early_item_list = ["Superjump", "Wallbounce"]
-            else:
-                early_item_list = ["Superjump", "Wallclimb", "Wallbounce"]
-            early_item_name = self.random.choice(early_item_list)
-            self.multiworld.early_items[self.player][early_item_name] = 1
-            if self.options.character != PTChars.PEPPINO:
-                early_item_list_1 = ["Bodyslam", "Crusher", "Tornado"]
-                early_item_name_1 = self.random.choice(early_item_list_1)
-            else:
-                early_item_name_1 = "Bodyslam"
-            self.multiworld.early_items[self.player][early_item_name_1] = 1
-
         self.gates_map: dict[str, str] = {}
         self.secret_map = {}
         
@@ -334,6 +358,9 @@ class PizzaTowerWorld(World):
             self.prepare_ut(re_gen_passthrough)
         else:
             self.gates_map = self.hub_gate_rando()
+
+        if self.options.do_move_rando.value and self.options.do_transfo_rando.value and self.options.fairly_random.value:
+            self.place_early_items()
 
         #slice floors/levels/bosses list if snotty goal
         if self.options.completion_goal == self.options.completion_goal.option_Snotty:
